@@ -1,0 +1,14 @@
+{
+  "name": "@mliebelt/pgn-parser",
+  "version": "0.9.8",
+  "main": "pgn-parser.js",
+  "module": "src/index.js",
+  "author": "mliebelt",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mliebelt/pgn-parser.git"
+  },
+  "devDependencies": {},
+  "dependencies": {}
+}
