@@ -9,6 +9,11 @@
     "type": "git",
     "url": "https://github.com/mliebelt/pgn-parser.git"
   },
-  "devDependencies": {},
-  "dependencies": {}
+  "devDependencies": {
+    "pegjs": "^0.10.0"
+  },
+  "dependencies": {},
+  "scripts": {
+    "build": "pegjs -o pgn-parser.js src/pgn-rules.pegjs"
+  }
 }
