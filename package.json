@@ -1,6 +1,6 @@
 {
   "name": "@mliebelt/pgn-parser",
-  "version": "0.9.8",
+  "version": "0.9.9",
   "main": "pgn-parser.js",
   "module": "src/index.js",
   "author": "mliebelt",
