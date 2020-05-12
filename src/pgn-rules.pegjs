@@ -41,12 +41,12 @@ pgnBlack
   / endGame
 
 endGame
-  = "1:0" { return ["1:0"]; }
-  / "0:1" { return ["0:1"]; }
-  / "1-0" { return ["1-0"]; }
-  / "0-1" { return ["0-1"]; }
-  / "1/2-1/2"  { return ["1/2-1/2"]; }
-  / "*"  { return ["*"]; }
+  = "1:0" whiteSpace? { return ["1:0"]; }
+  / "0:1" whiteSpace? { return ["0:1"]; }
+  / "1-0" whiteSpace? { return ["1-0"]; }
+  / "0-1" whiteSpace? { return ["0-1"]; }
+  / "1/2-1/2" whiteSpace?  { return ["1/2-1/2"]; }
+  / "*" whiteSpace?  { return ["*"]; }
 
 comments
   = cf:comment cfl:(whiteSpace? comment)*
