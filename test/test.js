@@ -3,15 +3,15 @@ var parser = require("../pgn-parser.js");
 var expect = require('expect.js');
 
 describe("When working with PGN as string", function() {
-    var my_result;
+    let my_result;
     describe("When having read the moves", function() {
         it("should have 16 half-moves read", function() {
             my_result =  parser.parse("1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6 5. Nc3 a6 6. Be3 e6 7. f3 Be7 8. Qd2 Qc7 ");
             let moves = my_result[0];
             expect(moves.length).to.be(16);
-            var first = moves[0];
-            var sec = moves[1];
-            var seventh = moves[6];
+            const first = moves[0];
+            const sec = moves[1];
+            const seventh = moves[6];
             expect(first.notation.notation).to.be("e4");
             expect(first.turn).to.be('w');
             expect(sec.turn).to.be('b');
@@ -130,5 +130,53 @@ describe("Reading PGN game with all kinds of comments", function () {
         expect(my_res[0].commentDiag.colorArrows[2]).to.be("Ga1h8")
         expect(my_res[0].commentDiag.colorArrows[3]).to.be("Bh1c7")
     })
+    it("should understand combination of fields and arrows", function () {
+        let my_res = parser.parse("1. e4 { [%cal Ye4e8] [%csl Rd4] }")[0]
+        expect(my_res[0].commentDiag).not.to.equal(null)
+        expect(my_res[0].commentDiag.colorFields).to.be.ok()
+        expect(my_res[0].commentDiag.colorArrows).to.be.ok()
+        expect(my_res[0].commentDiag.colorFields[0]).to.be("Rd4")
+        expect(my_res[0].commentDiag.colorArrows[0]).to.be("Ye4e8")
+    })
+    it("should understand permutations of fields and arrows", function () {
+        let my_res = parser.parse("1. e4 { [%csl Rd4] [%cal Ye4e8]  }")[0]
+        expect(my_res[0].commentDiag).not.to.equal(null)
+        expect(my_res[0].commentDiag.colorFields).to.be.ok()
+        expect(my_res[0].commentDiag.colorArrows).to.be.ok()
+        expect(my_res[0].commentDiag.colorFields[0]).to.be("Rd4")
+        expect(my_res[0].commentDiag.colorArrows[0]).to.be("Ye4e8")
+    })
+    it("should understand whitespace when adding fields and arrows", function () {
+        let my_res = parser.parse("1. e4 { [ %csl   Rd4 ] [%cal   Ye4e8  ,  Gd1d3]  }")[0]
+        expect(my_res[0].commentDiag).not.to.equal(null)
+        expect(my_res[0].commentDiag.colorFields).to.be.ok()
+        expect(my_res[0].commentDiag.colorArrows).to.be.ok()
+        expect(my_res[0].commentDiag.colorFields[0]).to.be("Rd4")
+        expect(my_res[0].commentDiag.colorArrows[0]).to.be("Ye4e8")
+        expect(my_res[0].commentDiag.colorArrows[1]).to.be("Gd1d3")
+    })
+    it("should understand clock annnotations", function () {
+        // [ clg|egt|emt|mct  00:01:17 ]
+    })
 })
 
+describe("Parsing PGN game with all kinds of variation", function () {
+    it("should read 1 variation")
+    it("should read many variation")
+    it("should read hierarchical variation")
+})
+
+describe("Parsing PGN game with different notations used", function () {
+    it("should read SAN (short algebraic notation)")
+    it("should read LAN (long algebraic notation)")
+})
+
+describe("Parsing PGN game with all kinds of special move character", function () {
+
+})
+
+describe("Parsing PGN game with all kinds of NAGs")
+
+describe("Parsing PGN game with all kinds of promotions")
+
+describe("Parsing PGN game with all kinds of discriminators")
