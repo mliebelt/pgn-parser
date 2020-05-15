@@ -266,14 +266,19 @@ describe("Parsing PGN game with all kinds of NAGs", function () {
 
 describe("Parsing PGN game with all kinds of promotions", function () {
     it("should understand all promotions for white and black", function () {
-        let my_res = parser.parse("e4=Q e5=R f3=B c6=N c4=P c5=K")[0]
+        let my_res = parser.parse("e4=Q e5=R f3=B c6=N c4 c5")[0]
+        //let my_res = parser.parse("e4=Q e5=R f3=B c6=N c4=P c5=K")[0]
         expect(my_res.length).to.be(6)
         expect(my_res[0].notation.promotion).to.be('=Q')
         expect(my_res[1].notation.promotion).to.be('=R')
         expect(my_res[2].notation.promotion).to.be('=B')
         expect(my_res[3].notation.promotion).to.be('=N')
-        expect(my_res[4].notation.promotion).to.be('=P')    // TODO: Don't allow this
-        expect(my_res[5].notation.promotion).to.be('=K')    // TODO: Don't allow this
+        expect(my_res[4].notation.promotion).not.to.be('=P')    // TODO: Don't allow this
+        expect(my_res[5].notation.promotion).not.to.be('=K')    // TODO: Don't allow this
+    })
+    it("should throw an exception if promoting to king or pawn", function () {
+        expect(function () { parser.parse("c8=P") } ).throwError()
+        expect( function() { parser.parse("c8=K") }).throwError()
     })
 })
 

@@ -164,7 +164,7 @@ check
   / ch:(! '$$$' '#') { return ch[1]; }
 
 promotion
-  = '=' f:figure { return '=' + f; }
+  = '=' f:promFigure { return '=' + f; }
 
 nags
   = nag:nag whiteSpace? nags:nags? { var arr = (nags ? nags : []); arr.unshift(nag); return arr; }
@@ -207,6 +207,9 @@ checkdisc
 
 figure
   = [RNBQKP]
+
+promFigure
+  = [RNBQ]
 
 column
   = [a-h]
