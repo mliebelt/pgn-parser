@@ -17,6 +17,7 @@
   "dependencies": {},
   "scripts": {
     "build": "pegjs -o pgn-parser.js src/pgn-rules.pegjs",
-    "test": "mocha -w"
+    "test": "mocha",
+    "test-interactive": "mocha -w"
   }
 }
