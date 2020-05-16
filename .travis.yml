@@ -1,0 +1,15 @@
+language: node_js
+
+os:
+  - linux
+  - osx
+
+node_js:
+  - "node"
+  - "lts/*"
+  - "8"
+
+script:
+  - npm install
+  - npm run-script build
+  - npm test

@@ -291,3 +291,9 @@ describe("Parsing PGN game with all kinds of discriminators", function () {
         expect(my_res[2].notation.disc).to.be('4')
     })
 })
+
+describe("Just examples of complex notations", function () {
+    it("should be useful in the documentation", function () {
+        let my_res = parser.parse("1. {first move} e4! {my favorite} e5 (1... c5!?)")
+    })
+})
