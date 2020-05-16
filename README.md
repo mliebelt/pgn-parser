@@ -2,7 +2,7 @@
 
 ![Node.js CI](https://github.com/mliebelt/pgn-parser/workflows/Node.js%20CI/badge.svg)
 
-Javascript library to allow reading of a PGN (Portable Game Notation) chess game notation, and providing the result as JSON.
+Javascript library to allow reading of a PGN (Portable Game Notation) chess game notation, and providing the result as JSON. Just a change ...
 
 ## What is it?
 
