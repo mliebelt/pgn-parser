@@ -1,8 +1,11 @@
 # pgn-parser
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/mliebelt/pgn-parser/Node.js%20CI?logo=github&label=Build%26Test)
+![Libraries.io dependency status for GitHub repo](https://img.shields.io/librariesio/github/mliebelt/pgn-parser?label=Dependencies)
+![GitHub package.json version](https://img.shields.io/github/package-json/v/mliebelt/pgn-parser?color=33aa33&label=Version&logo=npm)
+![npm](https://img.shields.io/npm/dm/@mliebelt/pgn-parser?label=Downloads&logo=npm)
+![GitHub](https://img.shields.io/github/license/mliebelt/pgn-parser?label=License)
 
-![Node.js CI](https://github.com/mliebelt/pgn-parser/workflows/Node.js%20CI/badge.svg)
-
-Javascript library to allow reading of a PGN (Portable Game Notation) chess game notation, and providing the result as JSON. Just a change ...
+Javascript library to allow reading of a PGN (Portable Game Notation) chess game notation, and providing the result as JSON. 
 
 ## What is it?
 
@@ -29,3 +32,9 @@ Look at the many test cases that show how to use it. Here is an example:
 It does not have an API, just a JSON structure that has to be read then.
 
 ![Example JON for above PGN](doc/pgn-json.png)
+
+## References
+
+* [pegjs](https://github.com/pegjs/pegjs) Parser Generator implemented in Javascript. Used for regenerating the javascript library completely by an automatic build.
+* [PGN Specification](http://www.saremba.de/chessgml/standards/pgn/pgn-complete.htm): PGN (Portable Game Notation) specification, there the section 8.2. This parser currently does **not** implement the section 8.1, the tags.
+* [NAG Specification](http://en.wikipedia.org/wiki/Numeric_Annotation_Glyphs) Definition of the NAGs (Numeric Annotation Glyphs)
