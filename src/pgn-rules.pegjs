@@ -4,6 +4,129 @@
     }
 }
 
+game = tags? ws pgn
+
+tags = members:(
+      head:tag
+      tail:(ws m:tag { return m; })*
+      {
+        var result = {};
+        [head].concat(tail).forEach(function(element) {
+          result[element.name] = element.value;
+        });
+        return result;
+      }
+    )?
+    { return members !== null ? members: {}; }
+
+
+tag = bl tag:tagKeyValue br { return tag; }
+
+tagKeyValue = eventKey ws value:string { return { name: 'Event', value: value }; }
+	/ siteKey ws value:string  { return { name: 'Site', value: value }; }
+	/ dateKey ws value:date  { return { name: 'Date', value: value }; }
+	/ roundKey ws value:string  { return { name: 'Round', value: value }; }
+	/ whiteKey ws value:string  { return { name: 'White', value: value }; }
+	/ blackKey ws value:string  { return { name: 'Black', value: value }; }
+	/ resultKey ws value:result  { return { name: 'Result', value: value }; }
+	/ whiteTitleKey ws value:string  { return { name: 'WhiteTitle', value: value }; }
+	/ blackTitleKey ws value:string  { return { name: 'BlackTitle', value: value }; }
+	/ whiteEloKey ws value:integerOrDash  { return { name: 'WhiteELO', value: value }; }
+	/ blackEloKey ws value:integerOrDash  { return { name: 'BlackELO', value: value }; }
+	/ whiteUSCFKey ws value:integerString  { return { name: 'WhiteUSCF', value: value }; }
+	/ blackUSCFKey ws value:integerString  { return { name: 'BlackUSCF', value: value }; }
+	/ whiteNAKey ws value:string  { return { name: 'WhiteNA', value: value }; }
+	/ blackNAKey ws value:string  { return { name: 'BlackNA', value: value }; }
+	/ whiteTypeKey ws value:string  { return { name: 'WhiteType', value: value }; }
+	/ blackTypeKey ws value:string  { return { name: 'BlackType', value: value }; }
+	/ eventDateKey ws value:date  { return { name: 'EventDate', value: value }; }
+	/ eventSponsorKey ws value:string  { return { name: 'EventSponsor', value: value }; }
+	/ sectionKey ws value:string  { return { name: 'Section', value: value }; }
+	/ stageKey ws value:string  { return { name: 'Stage', value: value }; }
+	/ boardKey ws value:integerString  { return { name: 'Board', value: value }; }
+	/ openingKey ws value:string  { return { name: 'Opening', value: value }; }
+	/ variationKey ws value:string  { return { name: 'Variation', value: value }; }
+	/ subVariationKey ws value:string  { return { name: 'SubVariation', value: value }; }
+	/ ecoKey ws value:string  { return { name: 'ECO', value: value }; }
+	/ nicKey ws value:string  { return { name: 'NIC', value: value }; }
+	/ timeKey ws value:string  { return { name: 'Time', value: value }; }
+	/ utcTimeKey ws value:string  { return { name: 'UTCTime', value: value }; }
+	/ utcDateKey ws value:string  { return { name: 'UTCDate', value: value }; }
+	/ timeControlKey ws value:string  { return { name: 'TimeControl', value: value }; }
+	/ setUpKey ws value:string  { return { name: 'SetUp', value: value }; }
+	/ fenKey ws value:string  { return { name: 'FEN', value: value }; }
+	/ terminationKey ws value:string  { return { name: 'Termination', value: value }; }
+	/ anotatorKey ws value:string  { return { name: 'Annotator', value: value }; }
+	/ modeKey ws value:string  { return { name: 'Mode', value: value }; }
+	/ plyCountKey ws value:integerString  { return { name: 'PlyCount', value: value }; }
+
+eventKey 				= '"' 'Event' '"'
+siteKey 				= '"' 'Site' '"'
+dateKey 				= '"' 'Date' '"'
+roundKey				= '"' 'Round' '"'
+whiteKey 				= '"' 'White' '"'
+blackKey 				= '"' 'Black' '"'
+resultKey 				= '"' 'Result' '"'
+whiteTitleKey           = '"' 'WhiteTitle' '"'
+blackTitleKey           = '"' 'BlackTitle' '"'
+whiteEloKey             = '"' 'WhiteELO' '"'
+blackEloKey             = '"' 'BlackELO' '"'
+whiteUSCFKey            = '"' 'WhiteUSCF' '"'
+blackUSCFKey            = '"' 'BlackUSCF' '"'
+whiteNAKey              = '"' 'WhiteNA' '"'
+blackNAKey              = '"' 'BlackNA' '"'
+whiteTypeKey            = '"' 'WhiteType' '"'
+blackTypeKey            = '"' 'BlackType' '"'
+eventDateKey            = '"' 'EventDate' '"'
+eventSponsorKey         = '"' 'EventSponsor' '"'
+sectionKey              = '"' 'Section' '"'
+stageKey                = '"' 'Stage' '"'
+boardKey                = '"' 'Board' '"'
+openingKey              = '"' 'Opening' '"'
+variationKey            = '"' 'Variation' '"'
+subVariationKey         = '"' 'SubVariation' '"'
+ecoKey                  = '"' 'ECO' '"'
+nicKey                  = '"' 'NIC' '"'
+timeKey                 = '"' 'Time' '"'
+utcTimeKey              = '"' 'UTCTime' '"'
+utcDateKey              = '"' 'UTCDate' '"'
+timeControlKey          = '"' 'TimeControl' '"'
+setUpKey                = '"' 'SetUp' '"'
+fenKey                  = '"' 'FEN' '"'
+terminationKey          = '"' 'Termination' '"'
+anotatorKey             = '"' 'Annotator' '"'
+modeKey                 = '"' 'Mode' '"'
+plyCountKey             = '"' 'PlyCount' '"'
+
+ws "whitespace" = [ \t\n\r]*
+
+string "string"
+  = quotation_mark chars:char* quotation_mark { return chars.join(""); }
+
+quotation_mark
+  = '"'
+
+char  = [^\0-\x1F\x22\x5C]
+
+date = quotation_mark year:([0-9] [0-9] [0-9] [0-9]) '.' month:([0-9] [0-9]) '.' day:([0-9] [0-9]) quotation_mark
+	{ return "" + year.join("") + '.' + month.join("") + '.' + day.join("");}
+
+result = quotation_mark res:inner_result quotation_mark { return res; }
+inner_result =
+	res:"1-0" {return res; }
+    / res:"1:0" { return res; }
+    / res:"0-1" { return res; }
+    / res:"0:1" { return res; }
+    / res:"1/2-1/2" { return res; }
+    / res:"*" { return res; }
+
+integerOrDash =
+ 	integerString
+    / quotation_mark '-' quotation_mark
+
+integerString =
+	quotation_mark digits:[0-9]+ quotation_mark { return makeInteger(digits); }
+
 pgn
   = pw:pgnStartWhite all:pgnBlack?
       { var arr = (all ? all : []); arr.unshift(pw);return arr; }
