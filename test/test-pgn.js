@@ -273,8 +273,8 @@ describe("Parsing PGN game with all kinds of promotions", function () {
         expect(my_res[1].notation.promotion).to.be('=R')
         expect(my_res[2].notation.promotion).to.be('=B')
         expect(my_res[3].notation.promotion).to.be('=N')
-        expect(my_res[4].notation.promotion).not.to.be('=P')    // TODO: Don't allow this
-        expect(my_res[5].notation.promotion).not.to.be('=K')    // TODO: Don't allow this
+        expect(my_res[4].notation.promotion).not.to.be('=P')
+        expect(my_res[5].notation.promotion).not.to.be('=K')
     })
     it("should throw an exception if promoting to king or pawn", function () {
         expect(function () { parser.parse("c8=P") } ).throwError()
