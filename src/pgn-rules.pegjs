@@ -4,9 +4,7 @@
     }
 }
 
-game = tags? ws pgn
-
-tags = members:(
+tags = ws members:(
       head:tag
       tail:(ws m:tag { return m; })*
       {
@@ -16,7 +14,7 @@ tags = members:(
         });
         return result;
       }
-    )?
+    )? ws
     { return members !== null ? members: {}; }
 
 
