@@ -1,7 +1,12 @@
 {
   "name": "@mliebelt/pgn-parser",
   "description": "A PEG parser to read PGN (Portable Game Notation) games.",
-  "keywords": ["chess", "pgn", "peg",  "parser"],
+  "keywords": [
+    "chess",
+    "pgn",
+    "peg",
+    "parser"
+  ],
   "version": "0.10.0",
   "homepage": "https://github.com/mliebelt/pgn-parser/blob/master/README.md",
   "bugs": "https://github.com/mliebelt/pgn-parser/issues",
@@ -14,9 +19,9 @@
     "url": "https://github.com/mliebelt/pgn-parser.git"
   },
   "devDependencies": {
-    "expect.js": "^0.3.1",
     "mocha": "^7.1.2",
-    "pegjs": "^0.10.0"
+    "pegjs": "^0.10.0",
+    "should": "^13.2.3"
   },
   "dependencies": {},
   "scripts": {
