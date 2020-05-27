@@ -4,6 +4,8 @@
     }
 }
 
+game = t:tags? p:pgn { return { tags: t, moves: p[0] }; }
+
 tags = ws members:(
       head:tag
       tail:(ws m:tag { return m; })*
