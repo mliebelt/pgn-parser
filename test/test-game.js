@@ -8,7 +8,7 @@ function parse_game(string) {
 
 describe("When working with games", function () {
     it("should read a complete game inclusive tags", function () {
-        let res = parse_game('["White" "Me"] ["Black" "Magnus"] 1. f4 e5 2. g4 Qh4#')
+        let res = parse_game('[White "Me"] [Black "Magnus"] 1. f4 e5 2. g4 Qh4#')
         should.exist(res)
         should.exist(res.tags)
         should.exist(res.moves)
@@ -20,7 +20,7 @@ describe("When working with games", function () {
     })
 
     it("should read tags without notation", function () {
-        let res = parse_game('["White" "Me"] ["Black" "Magnus"]')
+        let res = parse_game('[White "Me"] [Black "Magnus"]')
         should.exist(res)
         should.exist(res.tags)
         should.exist(res.moves)
