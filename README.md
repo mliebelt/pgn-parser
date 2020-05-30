@@ -29,7 +29,35 @@ Look at the many test cases that show how to use it. Here is an example:
     let moves = parser.parse("1. {first move} e4! {my favorite} e5 (1... c5!?)")
     moves[0].moveNumber
     
-It does not have an API, just a JSON structure that has to be read then.
+It does not have an API, just a JSON structure that has to be read then. You have 3 top level rules to use the parser:
+
+* `game`: Reads a complete game, and returns an object with keys `tags` and `moves`.
+* `tags`: Reads only the tags from the given input. The input most not contain any moves.
+* `pgn`: Reads only the moves of the game (as array).
+
+A code example to read a complete game then looks like:
+
+    import parser from '@mliebelt/pgn-parser'
+    let game = parser.parse('[White "Me"] [Black "Magnus"] 1. f4 e5 2. g4 Qh4#', {startRule: "game"})
+    console.log(JSON.stringify(res, null, 2))
+    ==>
+    JSON.stringify(res, null, 2)
+    {
+      "tags": {
+        "White": "Me",
+        "Black": "Magnus"
+      },
+      "moves": [
+        {
+          "turn": "w",
+          "moveNumber": 1,
+        ...
+        },
+        {...},
+        ...
+      ]
+    }
+    
 
 ![Example JON for above PGN](doc/pgn-json.png)
 
