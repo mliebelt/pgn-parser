@@ -26,9 +26,6 @@ tagKeyValue = eventKey ws value:string { return { name: 'Event', value: value };
 	/ siteKey ws value:string  { return { name: 'Site', value: value }; }
 	/ dateKey ws value:date  { return { name: 'Date', value: value }; }
 	/ roundKey ws value:string  { return { name: 'Round', value: value }; }
-	/ whiteKey ws value:string  { return { name: 'White', value: value }; }
-	/ blackKey ws value:string  { return { name: 'Black', value: value }; }
-	/ resultKey ws value:result  { return { name: 'Result', value: value }; }
 	/ whiteTitleKey ws value:string  { return { name: 'WhiteTitle', value: value }; }
 	/ blackTitleKey ws value:string  { return { name: 'BlackTitle', value: value }; }
 	/ whiteEloKey ws value:integerOrDash  { return { name: 'WhiteELO', value: value }; }
@@ -39,6 +36,9 @@ tagKeyValue = eventKey ws value:string { return { name: 'Event', value: value };
 	/ blackNAKey ws value:string  { return { name: 'BlackNA', value: value }; }
 	/ whiteTypeKey ws value:string  { return { name: 'WhiteType', value: value }; }
 	/ blackTypeKey ws value:string  { return { name: 'BlackType', value: value }; }
+	/ whiteKey ws value:string  { return { name: 'White', value: value }; }
+	/ blackKey ws value:string  { return { name: 'Black', value: value }; }
+	/ resultKey ws value:result  { return { name: 'Result', value: value }; }
 	/ eventDateKey ws value:date  { return { name: 'EventDate', value: value }; }
 	/ eventSponsorKey ws value:string  { return { name: 'EventSponsor', value: value }; }
 	/ sectionKey ws value:string  { return { name: 'Section', value: value }; }
@@ -59,49 +59,53 @@ tagKeyValue = eventKey ws value:string { return { name: 'Event', value: value };
 	/ anotatorKey ws value:string  { return { name: 'Annotator', value: value }; }
 	/ modeKey ws value:string  { return { name: 'Mode', value: value }; }
 	/ plyCountKey ws value:integerString  { return { name: 'PlyCount', value: value }; }
+	/ any:stringNoQuot ws value:string { return { name: any, value: value }; }
 
-eventKey 				=  'Event'
-siteKey 				=  'Site'
-dateKey 				=  'Date'
-roundKey				=  'Round'
-whiteKey 				=  'White'
-blackKey 				=  'Black'
-resultKey 				=  'Result'
-whiteTitleKey           =  'WhiteTitle'
-blackTitleKey           =  'BlackTitle'
-whiteEloKey             =  'WhiteELO'
-blackEloKey             =  'BlackELO'
-whiteUSCFKey            =  'WhiteUSCF'
-blackUSCFKey            =  'BlackUSCF'
-whiteNAKey              =  'WhiteNA'
-blackNAKey              =  'BlackNA'
-whiteTypeKey            =  'WhiteType'
-blackTypeKey            =  'BlackType'
-eventDateKey            =  'EventDate'
-eventSponsorKey         =  'EventSponsor'
-sectionKey              =  'Section'
-stageKey                =  'Stage'
-boardKey                =  'Board'
-openingKey              =  'Opening'
-variationKey            =  'Variation'
-subVariationKey         =  'SubVariation'
-ecoKey                  =  'ECO'
-nicKey                  =  'NIC'
-timeKey                 =  'Time'
-utcTimeKey              =  'UTCTime'
-utcDateKey              =  'UTCDate'
-timeControlKey          =  'TimeControl'
-setUpKey                =  'SetUp'
-fenKey                  =  'FEN'
-terminationKey          =  'Termination'
-anotatorKey             =  'Annotator' 
-modeKey                 =  'Mode'
-plyCountKey             =  'PlyCount'
+eventKey 				=  'Event' / 'event'
+siteKey 				=  'Site' / 'site'
+dateKey 				=  'Date' / 'date'
+roundKey				=  'Round' / 'round'
+whiteKey 				=  'White' / 'White'
+blackKey 				=  'Black' / 'black'
+resultKey 				=  'Result' / 'result'
+whiteTitleKey           =  'WhiteTitle' / 'Whitetitle' / 'whitetitle'
+blackTitleKey           =  'BlackTitle' / 'Blacktitle' / 'blacktitle'
+whiteEloKey             =  'WhiteELO' / 'WhiteElo' / 'Whiteelo' / 'whiteelo'
+blackEloKey             =  'BlackELO' / 'BlackElo' / 'Blackelo' / 'blackelo'
+whiteUSCFKey            =  'WhiteUSCF' / 'WhiteUscf' / 'Whiteuscf' / 'whiteuscf'
+blackUSCFKey            =  'BlackUSCF' / 'BlackUscf' / 'Blackuscf' / 'blackuscf'
+whiteNAKey              =  'WhiteNA' / 'WhiteNa' / 'Whitena' / 'whitena'
+blackNAKey              =  'BlackNA' / 'BlackNa' / 'Blackna' / 'blackna'
+whiteTypeKey            =  'WhiteType' / 'Whitetype' / 'whitetype'
+blackTypeKey            =  'BlackType' / 'Blacktype' / 'blacktype'
+eventDateKey            =  'EventDate' / 'Eventdate' / 'eventdate'
+eventSponsorKey         =  'EventSponsor' / 'Eventsponsor' / 'eventsponsor'
+sectionKey              =  'Section' / 'section'
+stageKey                =  'Stage' / 'stage'
+boardKey                =  'Board' / 'board'
+openingKey              =  'Opening' / 'opening'
+variationKey            =  'Variation' / 'variation'
+subVariationKey         =  'SubVariation' / 'Subvariation' / 'subvariation'
+ecoKey                  =  'ECO' / 'Eco' / 'eco'
+nicKey                  =  'NIC' / 'Nic' / 'nic'
+timeKey                 =  'Time' / 'time'
+utcTimeKey              =  'UTCTime' / 'UTCtime' / 'UtcTime' / 'Utctime' / 'utctime'
+utcDateKey              =  'UTCDate' / 'UTCdate' / 'UtcDate' / 'Utcdate' / 'utcdate'
+timeControlKey          =  'TimeControl' / 'Timecontrol' / 'timecontrol'
+setUpKey                =  'SetUp' / 'Setup' / 'setup'
+fenKey                  =  'FEN' / 'Fen' / 'fen'
+terminationKey          =  'Termination'  / 'termination'
+anotatorKey             =  'Annotator'  / 'annotator'
+modeKey                 =  'Mode' / 'mode'
+plyCountKey             =  'PlyCount'  / 'Plycount' / 'plycount'
 
 ws "whitespace" = [ \t\n\r]*
 
 string "string"
   = quotation_mark chars:char* quotation_mark { return chars.join(""); }
+
+stringNoQuot
+  = chars:[a-zA-Z0-9]* { return chars.join(""); }
 
 quotation_mark
   = '"'

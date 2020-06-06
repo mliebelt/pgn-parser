@@ -13,7 +13,7 @@ describe("When working with all kind of tags", function () {
     })
     it("should read all 7 rooster tags", function () {
         let res = parse_tags('[Event "What a tournament"] [Site "My home town"] [Date "2020.05.16"] ' +
-            '[Round "1"] [White "Me"] [Black "Magnus"] [Result "1-0"]')
+            '[Round "1"] [White "Me"] [Black "Magnus"] [Result "1-0"][WhiteTitle "GM"]')
         should(res.Event).equal("What a tournament")
         should(res.Site).equal("My home town")
         should(res.Round).equal("1")
@@ -105,5 +105,28 @@ describe("When trying to find different variations how to write tags", function 
     // TODO Define the rules how much variation is allowed
     xit("should allow some variations in upper- and lowercase", function () {
 
+    })
+})
+describe("When mixing different kinds of tags", function () {
+    it("should understand if tags begin with the same word", function () {
+        let res = parse_tags('[White "Me"][WhiteELO "1234"]')
+    })
+    it("should understand if tags begin with the same word for black as well", function () {
+        let res = parse_tags('[Black "Me"][BlackTitle "GM"][BlackELO "1234"]')
+    })
+    it("should understand all mixes of Event in the tags", function () {
+        let res = parse_tags('[Event "Me"][EventDate "2020.06.05"][EventSponsor "Magnus"]')
+    })
+})
+
+describe("Allow many more case changes and unknown keys", function () {
+    it("should read any key not known", function () {
+        let res = parse_tags('[Bar "Foo"]')
+        should(res["Bar"]).equal("Foo")
+    })
+    it("should allow variations of SetUp and WhiteELO", function () {
+        let res = parse_tags('[Setup "1"][WhiteElo "2700"]')
+        should(res.SetUp).equal("1")
+        should(res.WhiteELO).equal(2700)
     })
 })
