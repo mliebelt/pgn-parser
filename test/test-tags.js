@@ -81,6 +81,25 @@ describe("When working with all kind of tags", function () {
         should(res.PlyCount).equal(17)
     })
 })
+
+describe("When working with different formats for dates", function () {
+    it("should read the date if well formed", function () {
+        let res = parse_tags(('[Date "2020.06.16"] [EventDate "2020.05.31"]'))
+        should(res.Date).equal("2020.06.16")
+        should(res.EventDate).equal("2020.05.31")
+    })
+    it("should signal an error if not well formed", function () {
+        // should(function () { parse_tags('[Date "2020"]') } ).throwError()
+        let res = parse_tags('[Date "2020"]')
+        should(res.Date).equal("2020")
+    })
+    it("should allow question marks instead of parts of the date", function () {
+        let res = parse_tags('[Date "2020.??.??"] [EventDate "2020.12.??"]')
+        should(res.Date).equal("2020.??.??")
+        should(res.EventDate).equal("2020.12.??")
+    })
+})
+
 describe("When trying to find different variations how to write tags", function () {
     it("should read any order (just some examples)", function () {
         let res = parse_tags('[Black "Me"] [Round "3"] [White "Magnus"] [Site "Oslo"] ' +
