@@ -31,6 +31,7 @@ Look at the many test cases that show how to use it. Here is an example:
     
 It does not have an API, just a JSON structure that has to be read then. You have 3 top level rules to use the parser:
 
+* `games`: Reads many games from the string given, returns an array of games (object with keys `tags` and `moves`).
 * `game`: Reads a complete game, and returns an object with keys `tags` and `moves`.
 * `tags`: Reads only the tags from the given input. The input most not contain any moves.
 * `pgn`: Reads only the moves of the game (as array).
@@ -57,9 +58,6 @@ A code example to read a complete game then looks like:
         ...
       ]
     }
-    
-
-![Example JON for above PGN](doc/pgn-json.png)
 
 ## References
 

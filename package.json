@@ -7,11 +7,14 @@
     "peg",
     "parser"
   ],
-  "version": "1.0.1",
+  "version": "1.1.0",
   "homepage": "https://github.com/mliebelt/pgn-parser/blob/master/README.md",
   "bugs": "https://github.com/mliebelt/pgn-parser/issues",
   "main": "pgn-parser.js",
-  "module": "src/index.js",
+  "files": [
+    "_pgn-parser.js",
+    "README.md"
+  ],
   "author": "mliebelt",
   "license": "Apache-2.0",
   "repository": {
@@ -25,7 +28,7 @@
   },
   "dependencies": {},
   "scripts": {
-    "build": "pegjs --allowed-start-rules pgn,tags,game -o pgn-parser.js src/pgn-rules.pegjs",
+    "build": "node_modules/pegjs/bin/pegjs --allowed-start-rules pgn,tags,game,games -o _pgn-parser.js src/pgn-rules.pegjs",
     "test": "mocha",
     "test-interactive": "mocha -w"
   }

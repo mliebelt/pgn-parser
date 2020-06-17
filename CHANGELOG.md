@@ -6,11 +6,20 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 
 ### Changed
+### Fixed
+
+## [1.1.0]() 20-06-17
+
+### Changed
 
 * Updated `CHANGELOG.md` to include the latest changes.
 * Updated `README.md` to explain how to use different start rules.
+* Allowed additional start rule `games` to read many games in one run. Incredible speed (>9.000 games in 2.5s).
 
 ### Fixed
+
+* [#13](https://github.com/mliebelt/pgn-parser/issues/13) Not necessary, closed therefore.
+* [#12](https://github.com/mliebelt/pgn-parser/issues/12) Read many complete games.
 
 ## [1.0.1]() 20-05-29
 

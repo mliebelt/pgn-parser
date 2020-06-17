@@ -4,6 +4,12 @@
     }
 }
 
+games = ws games:(
+       head:game
+         tail:(wsp m:game { return m; })*
+         { return [head].concat(tail) }
+       )? { return games }
+
 game = t:tags? p:pgn { return { tags: t, moves: p[0] }; }
 
 tags = ws members:(
@@ -100,6 +106,7 @@ modeKey                 =  'Mode' / 'mode'
 plyCountKey             =  'PlyCount'  / 'Plycount' / 'plycount'
 
 ws "whitespace" = [ \t\n\r]*
+wsp = [ \t\n\r]+
 
 string "string"
   = quotation_mark chars:char* quotation_mark { return chars.join(""); }
@@ -112,7 +119,7 @@ quotation_mark
 
 char  = [^\0-\x1F\x22\x5C]
 
-date = quotation_mark year:([0-9] [0-9] [0-9] [0-9]) '.' month:([0-9] [0-9]) '.' day:([0-9] [0-9]) quotation_mark
+date = quotation_mark year:([0-9\?] [0-9\?] [0-9\?] [0-9\?]) '.' month:([0-9\?] [0-9\?]) '.' day:([0-9\?] [0-9\?]) quotation_mark
 	{ return "" + year.join("") + '.' + month.join("") + '.' + day.join("");}
 
 result = quotation_mark res:inner_result quotation_mark { return res; }
@@ -136,7 +143,7 @@ pgn
       { var arr = (all ? all : []); arr.unshift(pw);return arr; }
   / pb:pgnStartBlack all:pgnWhite?
     { var arr = (all ? all : []); arr.unshift(pb); return arr; }
-  / whiteSpace?
+  / ws
     { return [[]]; }
 
 pgnStartWhite
@@ -146,8 +153,8 @@ pgnStartBlack
   = pb:pgnBlack { return pb; }
 
 pgnWhite
-  = whiteSpace? cm:comments? whiteSpace? mn:moveNumber? whiteSpace? cb:comments? whiteSpace?
-    hm:halfMove  whiteSpace? nag:nags?  whiteSpace? ca:comments? whiteSpace? cd:commentDiag? whiteSpace? vari:variationWhite? all:pgnBlack?
+  = ws cm:comments? ws mn:moveNumber? ws cb:comments? ws
+    hm:halfMove  ws nag:nags?  ws ca:comments? ws cd:commentDiag? ws vari:variationWhite? all:pgnBlack?
     { var arr = (all ? all : []);
       var move = {}; move.turn = 'w'; move.moveNumber = mn;
       move.notation = hm; move.commentBefore = cb; move.commentAfter = ca; move.commentMove = cm;
@@ -157,8 +164,8 @@ pgnWhite
   / endGame
 
 pgnBlack
-  = whiteSpace? cm:comments? whiteSpace? me:moveNumber? whiteSpace? cb:comments? whiteSpace?
-    hm:halfMove whiteSpace?  nag:nags? whiteSpace? ca:comments? whiteSpace? cd:commentDiag? whiteSpace? vari:variationBlack? all:pgnWhite?
+  = ws cm:comments? ws me:moveNumber? ws cb:comments? ws
+    hm:halfMove ws  nag:nags? ws ca:comments? ws cd:commentDiag? ws vari:variationBlack? all:pgnWhite?
     { var arr = (all ? all : []);
       var move = {}; move.turn = 'b'; move.moveNumber = me;
       move.notation = hm; move.commentBefore = cb; move.commentAfter = ca; move.commentMove = cm;
@@ -168,25 +175,25 @@ pgnBlack
   / endGame
 
 endGame
-  = "1:0" whiteSpace? { return ["1:0"]; }
-  / "0:1" whiteSpace? { return ["0:1"]; }
-  / "1-0" whiteSpace? { return ["1-0"]; }
-  / "0-1" whiteSpace? { return ["0-1"]; }
-  / "1/2-1/2" whiteSpace?  { return ["1/2-1/2"]; }
-  / "*" whiteSpace?  { return ["*"]; }
+  = "1:0"  { return ["1:0"]; }
+  / "0:1"  { return ["0:1"]; }
+  / "1-0"  { return ["1-0"]; }
+  / "0-1"  { return ["0-1"]; }
+  / "1/2-1/2"   { return ["1/2-1/2"]; }
+  / "*"   { return ["*"]; }
 
 comments
-  = cf:comment cfl:(whiteSpace? comment)*
+  = cf:comment cfl:(ws comment)*
   { var comm = cf; for (var i=0; i < cfl.length; i++) { comm += " " + cfl[i][1]}; return comm; }
 
 comment
   = ! commentDiag cl cm:[^}]+ cr { return cm.join("").trim(); }
 
 commentDiag
-  = cl whiteSpace? cas:commentAnnotations whiteSpace? cr { return cas; }
+  = cl ws cas:commentAnnotations ws cr { return cas; }
 
 commentAnnotations
-  = ca:commentAnnotation whiteSpace? cal:(commentAnnotation)*
+  = ca:commentAnnotation ws cal:(commentAnnotation)*
   { var ret = { }; if (cal) { var o = cal[0]; return {...ca, ...o}; } return ca; }
 
 commentAnnotation
@@ -195,20 +202,20 @@ commentAnnotation
   / cac:commentAnnotationClock { var ret = {}; ret.clock = cac; return ret; }
 
 commentAnnotationFields
-  = bl whiteSpace? "%csl" whiteSpace cfs:colorFields whiteSpace? br { return cfs; }
+  = bl ws "%csl" whiteSpace cfs:colorFields ws br { return cfs; }
 
 commentAnnotationArrows
-  = bl whiteSpace? "%cal" whiteSpace cfs:colorArrows whiteSpace? br { return cfs; }
+  = bl ws "%cal" whiteSpace cfs:colorArrows ws br { return cfs; }
 
 colorFields
-  = cf:colorField whiteSpace? cfl:("," whiteSpace? colorField)*
+  = cf:colorField ws cfl:("," ws colorField)*
   { var arr = []; arr.push(cf); for (var i=0; i < cfl.length; i++) { arr.push(cfl[i][2])}; return arr; }
 
 colorField
   = col:color f:field { return col + f; }
 
 colorArrows
-  = cf:colorArrow whiteSpace? cfl:("," whiteSpace? colorArrow)*
+  = cf:colorArrow ws cfl:("," ws colorArrow)*
   { var arr = []; arr.push(cf); for (var i=0; i < cfl.length; i++) { arr.push(cfl[i][2])}; return arr; }
 
 colorArrow
@@ -232,7 +239,7 @@ bl = '['
 br = ']'
 
 commentAnnotationClock
-  = bl whiteSpace? "%" cc:clockCommand whiteSpace cv:clockValue whiteSpace? br
+  = bl ws "%" cc:clockCommand whiteSpace cv:clockValue ws br
   { var ret = {}; ret.type = cc; ret.value = cv; return ret; }
 
 clockCommand
@@ -249,11 +256,11 @@ digit
   = d:[0-9] { return d; }
 
 variationWhite
-  = pl vari:pgnWhite pr whiteSpace? all:variationWhite? whiteSpace? me:moveNumber?
+  = pl vari:pgnWhite pr ws all:variationWhite? ws me:moveNumber?
     { var arr = (all ? all : []); arr.unshift(vari); return arr; }
 
 variationBlack
-  = pl vari:pgnStartBlack pr whiteSpace? all:variationBlack?
+  = pl vari:pgnStartBlack pr ws all:variationBlack?
     { var arr = (all ? all : []); arr.unshift(vari); return arr; }
 
 pl = '('
@@ -294,7 +301,7 @@ promotion
   = '=' f:promFigure { return '=' + f; }
 
 nags
-  = nag:nag whiteSpace? nags:nags? { var arr = (nags ? nags : []); arr.unshift(nag); return arr; }
+  = nag:nag ws nags:nags? { var arr = (nags ? nags : []); arr.unshift(nag); return arr; }
 
 nag
   = '$' num:integer { return '$' + num; }
