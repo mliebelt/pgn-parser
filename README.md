@@ -59,6 +59,30 @@ A code example to read a complete game then looks like:
       ]
     }
 
+## How to use it in the browser?
+
+If you want to use the library in the browser, the above method will not work. In the [ticket 22](https://github.com/mliebelt/pgn-parser/issues/22), Bebul explained how to do it. Here is the complete recipe:
+
+1. Install [Browserify](http://browserify.org/).
+1. Store the parse function as window property
+
+        File: parsePgn.js
+        ----
+        const parser =  require('./pgn-parser.js')
+        window.parsePgn = parser.parse
+        
+1. Process newly created parsePgn.js through Browserify.
+       
+       browserify parsePgn.js -o pgn-bundle.js
+       
+1. In the `index.html` then use:
+
+        <script type="text/javascript" src="pgn/pgn-bundle.js"></script>
+        
+1. And the parsePgn is now available:
+
+         let gameList = parsePgn('[White "Me"] [Black "Magnus"] 1. f4 e5 2. g4 Qh4#', {startRule: "game"});        
+
 ## References
 
 * [pegjs](https://github.com/pegjs/pegjs) Parser Generator implemented in Javascript. Used for regenerating the javascript library completely by an automatic build.
