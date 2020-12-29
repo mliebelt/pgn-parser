@@ -40,3 +40,17 @@ describe("When working with games", function () {
         should(res.moves[0].notation.notation).equal("f4")
     })
 })
+
+describe("When reading games be more robust", function () {
+    it("when reading 1 space at the beginning", function () {
+        let res = parse_game(" 1. e4")
+        should.exist(res)
+        should.exist(res.moves)
+    })
+
+    it("when reading more spaces at the beginning", function () {
+        let res = parse_game("  1. e4")
+        should.exist(res)
+        should.exist(res.moves)
+    })
+})
