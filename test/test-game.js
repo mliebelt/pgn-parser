@@ -6,6 +6,10 @@ function parse_game(string) {
     return parser.parse(string, {startRule: "game"})
 }
 
+function parse_games(string) {
+    return parser.parse(string, {startRule: "games"})
+}
+
 describe("When working with games", function () {
     it("should read a complete game inclusive tags", function () {
         let res = parse_game('[White "Me"] [Black "Magnus"] 1. f4 e5 2. g4 Qh4#')
@@ -52,5 +56,25 @@ describe("When reading games be more robust", function () {
         let res = parse_game("  1. e4")
         should.exist(res)
         should.exist(res.moves)
+    })
+
+    it("when reading many games", function () {
+        let res = parse_games("  1. e4")
+        should.exist(res)
+        should.exist(res[0])
+    })
+
+    it("when reading game ending", function () {
+        let res = parse_game("37. cxb7 Rxh3#{ Wunderschön!}")
+        should.exist(res)
+        res = parse_game("37. cxb7 Rxh3# { Wunderschön!}")
+        should.exist(res)
+        res = parse_game("37. cxb7 Rxh3# { Wunderschön! }  ")
+        should.exist(res)
+    })
+
+    it("should read result including whitespace", function () {
+        let res = parse_game("27. Ng2 Qxg2# 0-1 ")
+        should.exist(res)
     })
 })
