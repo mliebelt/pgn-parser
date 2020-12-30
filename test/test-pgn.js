@@ -93,7 +93,7 @@ describe("When a game notes a result at the end", function () {
     })
     it("should ignore 1 space before or after", function () {
         let my_res = parser.parse("27. Ng2 Qxg2# 0-1 ")[0]
-        should(my_res[2]).equal("1:0")
+        should(my_res[2]).equal("0-1")
     })
 })
 

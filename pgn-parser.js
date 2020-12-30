@@ -8,7 +8,7 @@ const parse = function(input, options) {
     // Had to trim the grammar to allow no whitespace after a game, this is consumed only when read many games
     // Therefore the strings are trimmed here.
     if (! options || (options.startRule === 'pgn') || (options.startRule === 'game')) {
-        return parser.parse(input.trim())
+        input = input.trim()
     }
     let result = parser.parse(input, options)
     if (options && (options.startRule === 'games')) {
