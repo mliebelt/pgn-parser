@@ -256,7 +256,7 @@ digit
   = d:[0-9] { return d; }
 
 variationWhite
-  = pl vari:pgnWhite pr ws all:variationWhite? ws me:moveNumber?
+  = pl vari:pgnWhite pr ws all:variationWhite?
     { var arr = (all ? all : []); arr.unshift(vari); return arr; }
 
 variationBlack

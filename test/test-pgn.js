@@ -87,13 +87,29 @@ describe("When a game notes a result at the end", function () {
         let my_res = parser.parse("1. e4     *    ")[0]
         should(my_res[1]).equal("*")
     })
-    it("should ignore additional white space before or after", function () {
-        let my_res = parser.parse("1. e4     1:0    ")[0]
+    it("should ignore additional white space before or after success", function () {
+        let my_res = parser.parse("1. e4    1:0    ")[0]
         should(my_res[1]).equal("1:0")
     })
     it("should ignore 1 space before or after", function () {
         let my_res = parser.parse("27. Ng2 Qxg2# 0-1 ")[0]
         should(my_res[2]).equal("0-1")
+    })
+    it("should handle variation at the end", function () {
+        let my_res = parser.parse("1. e4 (1. d4) 1/2-1/2")[0]
+        should(my_res[1]).equal("1/2-1/2")
+    })
+    it("should handle variation at the end even for wins", function () {
+        let my_res = parser.parse("1. e4 (1. d4) 1:0")[0]
+        should(my_res[1]).equal("1:0")
+    })
+    it("should handle variation at the end even for wins with different format", function () {
+        let my_res = parser.parse("1. e4 (1. d4) 1-0")[0]
+        should(my_res[1]).equal("1-0")
+    })
+    it("should handle variation at the end even for unclear results", function () {
+        let my_res = parser.parse("1. e4 (1. d4) *")[0]
+        should(my_res[1]).equal("*")
     })
 })
 
