@@ -33,7 +33,7 @@ It does not have an API, just a JSON structure that has to be read then. You hav
 
 * `games`: Reads many games from the string given, returns an array of games (object with keys `tags` and `moves`).
 * `game`: Reads a complete game, and returns an object with keys `tags` and `moves`.
-* `tags`: Reads only the tags from the given input. The input most not contain any moves.
+* `tags`: Reads only the tags from the given input. The input must not contain any moves.
 * `pgn`: Reads only the moves of the game (as array).
 
 A code example to read a complete game then looks like:
