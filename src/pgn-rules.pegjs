@@ -207,10 +207,10 @@ commentAnnotation
   / cac:commentAnnotationClock { var ret = {}; ret.clock = cac; return ret; }
 
 commentAnnotationFields
-  = bl ws "%csl" whiteSpace cfs:colorFields ws br { return cfs; }
+  = bl ws "%csl" ws cfs:colorFields ws br { return cfs; }
 
 commentAnnotationArrows
-  = bl ws "%cal" whiteSpace cfs:colorArrows ws br { return cfs; }
+  = bl ws "%cal" ws cfs:colorArrows ws br { return cfs; }
 
 colorFields
   = cf:colorField ws cfl:("," ws colorField)*
@@ -244,7 +244,7 @@ bl = '['
 br = ']'
 
 commentAnnotationClock
-  = bl ws "%" cc:clockCommand whiteSpace cv:clockValue ws br
+  = bl ws "%" cc:clockCommand ws cv:clockValue ws br
   { var ret = {}; ret.type = cc; ret.value = cv; return ret; }
 
 clockCommand
