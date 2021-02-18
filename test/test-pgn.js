@@ -123,6 +123,19 @@ describe("Reading PGN game with all kinds of comments", function () {
         should(my_res[1].commentBefore).equal(null)
         should(my_res[1].commentAfter).equal("fourth")
     })
+    it("should read many comment in one location", function () {
+        let my_res = parser.parse("1. e4 {first} {second} e5!")[0]
+        should(my_res.length).equal(2)
+        should(my_res[0].commentAfter).equal("first second")
+    })
+
+    it("should read many comment and annotations in one location", function () {
+        let my_res = parser.parse("1. e4 {first} {[%cal Re4e6] [%csl Rd4]} e5!")[0]
+        should(my_res.length).equal(2)
+        should(my_res[0].commentAfter).equal("first")
+        should(my_res[0].commentDiag.colorArrows[0]).equal("Re4e6")
+        should(my_res[0].commentDiag.colorFields[0]).equal("Rd4")
+    })
     it("should ignore additional whitespace when reading comments", function () {
         let my_res = parser.parse("  {First  } 1. {  second}   e4   {  third  } e5! {    fourth  }   ")[0]
         should(my_res.length).equal(2)
@@ -148,6 +161,37 @@ describe("Reading PGN game with all kinds of comments", function () {
         should(my_res[0].commentDiag.colorArrows[1]).equal("Rd4a4")
         should(my_res[0].commentDiag.colorArrows[2]).equal("Ga1h8")
         should(my_res[0].commentDiag.colorArrows[3]).equal("Bh1c7")
+    })
+    it("should understand combination of comment and arrows", function () {
+        let my_res = parser.parse("1. e4 { [%cal Ye4e8] comment }")[0]
+        should.exist(my_res[0].commentDiag)
+        should.exist(my_res[0].commentDiag.colorArrows)
+
+        should(my_res[0].commentDiag.text).equal("comment")
+        should(my_res[0].commentAfter).equal("comment")
+        should(my_res[0].commentDiag.colorArrows[0]).equal("Ye4e8")
+    })
+    it("should understand combination of comment, arrows and fields", function () {
+        let my_res = parser.parse("1. e4 { [%cal Ye4e8] [%csl Rd4] comment }")[0]
+        should.exist(my_res[0].commentDiag)
+        should.exist(my_res[0].commentDiag.colorArrows)
+        should.exist(my_res[0].commentDiag.colorFields)
+
+        should(my_res[0].commentDiag.text).equal("comment")
+        should(my_res[0].commentAfter).equal("comment")
+        should(my_res[0].commentDiag.colorArrows[0]).equal("Ye4e8")
+        should(my_res[0].commentDiag.colorFields[0]).equal("Rd4")
+    })
+    it("should understand permutations of comment, arrows and fields", function () {
+        let my_res = parser.parse("1. e4 { [%csl Rd4] [%cal Ye4e8] comment }")[0]
+        should.exist(my_res[0].commentDiag)
+        should.exist(my_res[0].commentDiag.colorArrows)
+        should.exist(my_res[0].commentDiag.colorFields)
+
+        should(my_res[0].commentDiag.text).equal("comment")
+        should(my_res[0].commentAfter).equal("comment")
+        should(my_res[0].commentDiag.colorArrows[0]).equal("Ye4e8")
+        should(my_res[0].commentDiag.colorFields[0]).equal("Rd4")
     })
     it("should understand combination of fields and arrows", function () {
         let my_res = parser.parse("1. e4 { [%cal Ye4e8] [%csl Rd4] }")[0]
