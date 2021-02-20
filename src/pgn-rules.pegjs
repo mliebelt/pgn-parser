@@ -160,17 +160,19 @@ pgnWhite
       move.notation = hm; move.commentBefore = cb; move.commentAfter = ca; move.commentMove = cm;
       move.variations = (vari ? vari : []); move.nag = (nag ? nag : null); arr.unshift(move); 
       move.commentDiag = cd;
+      if (cd && cd.text) { move.commentAfter = [move.commentAfter, cd.text].join(' ').trim(); }
       return arr; }
   / endGame
 
 pgnBlack
   = ws cm:comments? ws me:moveNumber? ws cb:comments? ws
-    hm:halfMove ws  nag:nags? ws ca:comments? ws cd:commentDiag? ws vari:variationBlack? all:pgnWhite?
+    hm:halfMove ws nag:nags? ws ca:comments? ws cd:commentDiag? ws vari:variationBlack? all:pgnWhite?
     { var arr = (all ? all : []);
       var move = {}; move.turn = 'b'; move.moveNumber = me;
       move.notation = hm; move.commentBefore = cb; move.commentAfter = ca; move.commentMove = cm;
       move.variations = (vari ? vari : []); arr.unshift(move); move.nag = (nag ? nag : null);
       move.commentDiag = cd;
+      if (cd && cd.text) { move.commentAfter = [move.commentAfter, cd.text].join(' ').trim(); }
       return arr; }
   / endGame
 
@@ -187,10 +189,13 @@ comments
   { var comm = cf; for (var i=0; i < cfl.length; i++) { comm += " " + cfl[i][1]}; return comm; }
 
 comment
-  = ! commentDiag cl cm:[^}]+ cr { return cm.join("").trim(); }
+  = ! commentDiag cl cm:commentText cr { return cm; }
+
+commentText
+  = cm:([^}]+) { return cm.join("").trim(); }
 
 commentDiag
-  = cl ws cas:commentAnnotations ws cr { return cas; }
+  = cl ws cas:commentAnnotations ws cm:commentText? cr { return {...cas, text: cm}; }
 
 commentAnnotations
   = ca:commentAnnotation ws cal:(commentAnnotation)*
@@ -202,10 +207,10 @@ commentAnnotation
   / cac:commentAnnotationClock { var ret = {}; ret.clock = cac; return ret; }
 
 commentAnnotationFields
-  = bl ws "%csl" whiteSpace cfs:colorFields ws br { return cfs; }
+  = bl ws "%csl" ws cfs:colorFields ws br { return cfs; }
 
 commentAnnotationArrows
-  = bl ws "%cal" whiteSpace cfs:colorArrows ws br { return cfs; }
+  = bl ws "%cal" ws cfs:colorArrows ws br { return cfs; }
 
 colorFields
   = cf:colorField ws cfl:("," ws colorField)*
@@ -239,7 +244,7 @@ bl = '['
 br = ']'
 
 commentAnnotationClock
-  = bl ws "%" cc:clockCommand whiteSpace cv:clockValue ws br
+  = bl ws "%" cc:clockCommand ws cv:clockValue ws br
   { var ret = {}; ret.type = cc; ret.value = cv; return ret; }
 
 clockCommand
