@@ -123,10 +123,16 @@ describe("Reading PGN game with all kinds of comments", function () {
         should(my_res[1].commentBefore).equal(null)
         should(my_res[1].commentAfter).equal("fourth")
     })
-    it("should read many comment in one location", function () {
+    it("should read 2 comments in one location", function () {
         let my_res = parser.parse("1. e4 {first} {second} e5!")[0]
         should(my_res.length).equal(2)
         should(my_res[0].commentAfter).equal("first second")
+    })
+
+    it("should read 3 comments in one location", function () {
+        let my_res = parser.parse("1. e4 {first} {second} {third} e5!")[0]
+        should(my_res.length).equal(2)
+        should(my_res[0].commentAfter).equal("first second third")
     })
 
     it("should read many comment and annotations in one location", function () {
@@ -136,13 +142,13 @@ describe("Reading PGN game with all kinds of comments", function () {
         should(my_res[0].commentDiag.colorArrows[0]).equal("Re4e6")
         should(my_res[0].commentDiag.colorFields[0]).equal("Rd4")
     })
-    it("should ignore additional whitespace when reading comments", function () {
+    it("should read additional whitespace when reading comments (according to the spec)", function () {
         let my_res = parser.parse("  {First  } 1. {  second}   e4   {  third  } e5! {    fourth  }   ")[0]
         should(my_res.length).equal(2)
-        should(my_res[0].commentBefore).equal("second")
-        should(my_res[0].commentAfter).equal("third")
+        should(my_res[0].commentBefore).equal("  second")
+        should(my_res[0].commentAfter).equal("  third  ")
         should(my_res[1].commentBefore).equal(null)
-        should(my_res[1].commentAfter).equal("fourth")
+        should(my_res[1].commentAfter).equal("    fourth  ")
     })
     it("should understand comment annotations: fields", function () {
         let my_res = parser.parse("1. e4 {[%csl Ye4,Rd4,Ga1,Bh1]}")[0]
@@ -163,12 +169,12 @@ describe("Reading PGN game with all kinds of comments", function () {
         should(my_res[0].commentDiag.colorArrows[3]).equal("Bh1c7")
     })
     it("should understand combination of comment and arrows", function () {
-        let my_res = parser.parse("1. e4 { [%cal Ye4e8] comment }")[0]
+        let my_res = parser.parse("1. e4 { [%cal Ye4e8] comment}")[0]
         should.exist(my_res[0].commentDiag)
         should.exist(my_res[0].commentDiag.colorArrows)
 
         should(my_res[0].commentDiag.text).equal("comment")
-        should(my_res[0].commentAfter).equal("comment")
+        should(my_res[0].commentAfter).equal(" comment")
         should(my_res[0].commentDiag.colorArrows[0]).equal("Ye4e8")
     })
     it("should understand combination of comment, arrows and fields", function () {
@@ -177,8 +183,33 @@ describe("Reading PGN game with all kinds of comments", function () {
         should.exist(my_res[0].commentDiag.colorArrows)
         should.exist(my_res[0].commentDiag.colorFields)
 
-        should(my_res[0].commentDiag.text).equal("comment")
-        should(my_res[0].commentAfter).equal("comment")
+        should(my_res[0].commentDiag.text).equal("comment ")
+        should(my_res[0].commentAfter).equal(" comment ")
+        should(my_res[0].commentDiag.colorArrows[0]).equal("Ye4e8")
+        should(my_res[0].commentDiag.colorFields[0]).equal("Rd4")
+    })
+    it("should understand combination of comment, arrows and fields with a comment", function () {
+        let my_res = parser.parse("1. e4 { comment1 } { [%cal Ye4e8] [%csl Rd4] comment2 }")[0]
+        should.exist(my_res[0].commentDiag)
+        should.exist(my_res[0].commentDiag.colorArrows)
+        should.exist(my_res[0].commentDiag.colorFields)
+        should.exist(my_res[0].commentAfter)
+
+        should(my_res[0].commentDiag.text).equal("comment2 ")
+        should(my_res[0].commentAfter).equal(" comment1  comment2 ")
+        should(my_res[0].commentDiag.colorArrows[0]).equal("Ye4e8")
+        should(my_res[0].commentDiag.colorFields[0]).equal("Rd4")
+    })
+    xit("should understand combination of comment, arrows and fields, and comment again", function () {
+        // Currently not supported, order of normal comments  and arrows / fields is restricted.
+        let my_res = parser.parse("1. e4 { comment1 } { [%cal Ye4e8] [%csl Rd4] } { comment2 }")[0]
+        should.exist(my_res[0].commentDiag)
+        should.exist(my_res[0].commentDiag.colorArrows)
+        should.exist(my_res[0].commentDiag.colorFields)
+        should.exist(my_res[0].commentAfter)
+
+        should(my_res[0].commentDiag.text).equal("comment2")
+        should(my_res[0].commentAfter).equal("comment1 comment2")
         should(my_res[0].commentDiag.colorArrows[0]).equal("Ye4e8")
         should(my_res[0].commentDiag.colorFields[0]).equal("Rd4")
     })
@@ -188,8 +219,8 @@ describe("Reading PGN game with all kinds of comments", function () {
         should.exist(my_res[0].commentDiag.colorArrows)
         should.exist(my_res[0].commentDiag.colorFields)
 
-        should(my_res[0].commentDiag.text).equal("comment")
-        should(my_res[0].commentAfter).equal("comment")
+        should(my_res[0].commentDiag.text).equal("comment ")
+        should(my_res[0].commentAfter).equal(" comment ")
         should(my_res[0].commentDiag.colorArrows[0]).equal("Ye4e8")
         should(my_res[0].commentDiag.colorFields[0]).equal("Rd4")
     })
@@ -247,6 +278,36 @@ describe("Reading PGN game with all kinds of comments", function () {
         should(my_res[0].commentDiag.clock.value).equal("2:10:30")
         should(my_res[1].commentDiag.clock.type).equal("egt")
         should(my_res[1].commentDiag.clock.value).equal("2:10:31")
+    })
+    it("should understand end-of-line comment", function () {
+        let input = `c4 ; This is ignored up to end of line
+c5 Nf3`
+        let my_res = parser.parse(input)[0]
+        should(my_res.length).equal(3)
+        should(my_res[0].commentAfter).equal(" This is ignored up to end of line")
+    })
+    it("should parse both eol and normal comments", function () {
+        let input = `c4 { normal } c5;symmetrical move
+Nf3 Nf6 { black stays symmetric }`
+        let my_res = parser.parse(input)[0]
+        should(my_res.length).equal(4)
+        should(my_res[0].commentAfter).equal(" normal ")
+        should(my_res[1].commentAfter).equal("symmetrical move")
+        should(my_res[3].commentAfter).equal(" black stays symmetric ")
+    })
+    it("should ignore in eol comment all other characters, even comments", function () {
+        let input = `c3 ; ignore other comments like { comment } and ; eol comment
+c6 {strange moves}`
+        let my_res = parser.parse(input)[0]
+        should(my_res.length).equal(2)
+        should(my_res[0].commentAfter).equal(" ignore other comments like { comment } and ; eol comment")
+    })
+    it("should ignore an eol comment inside a normal comment", function () {
+        let input = `c3 { start; not an eol comment
+does this work?? } c6`
+        let my_res = parser.parse(input)[0]
+        should(my_res.length).equal(2)
+        should(my_res[0].commentAfter).equal(" start; not an eol comment\ndoes this work?? ")
     })
 })
 

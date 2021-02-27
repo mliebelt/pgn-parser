@@ -107,6 +107,7 @@ plyCountKey             =  'PlyCount'  / 'Plycount' / 'plycount'
 
 ws "whitespace" = [ \t\n\r]*
 wsp = [ \t\n\r]+
+eol = [\n\r]+
 
 string "string"
   = quotation_mark chars:char* quotation_mark { return chars.join(""); }
@@ -160,7 +161,7 @@ pgnWhite
       move.notation = hm; move.commentBefore = cb; move.commentAfter = ca; move.commentMove = cm;
       move.variations = (vari ? vari : []); move.nag = (nag ? nag : null); arr.unshift(move); 
       move.commentDiag = cd;
-      if (cd && cd.text) { move.commentAfter = [move.commentAfter, cd.text].join(' ').trim(); }
+      if (cd && cd.text) { move.commentAfter = [move.commentAfter, cd.text].join(' '); }
       return arr; }
   / endGame
 
@@ -190,9 +191,13 @@ comments
 
 comment
   = ! commentDiag cl cm:commentText cr { return cm; }
+  / cm:commentEndOfLine { return cm; }
+
+commentEndOfLine
+  = semicolon cm:[^\n\r]* eol { return cm.join(""); }
 
 commentText
-  = cm:([^}]+) { return cm.join("").trim(); }
+  = cm:([^}]+) { return cm.join(""); }
 
 commentDiag
   = cl ws cas:commentAnnotations ws cm:commentText? cr { return {...cas, text: cm}; }
@@ -242,6 +247,8 @@ cr = '}'
 bl = '['
 
 br = ']'
+
+semicolon = ';'
 
 commentAnnotationClock
   = bl ws "%" cc:clockCommand ws cv:clockValue ws br
