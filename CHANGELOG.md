@@ -3,25 +3,67 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## Not released
+
+### Changed
+
+* [#33](https://github.com/mliebelt/pgn-parser/issues/33) Allow end-of-line comments triggered by `;`.
+* [#29](https://github.com/mliebelt/pgn-parser/pull/29) Integrate Chessbase style of arrows mixing comments in.
+
+### Fixed
+
+* [#28](https://github.com/mliebelt/pgn-parser/pull/28) Fixes typo in README.
+* [#27](https://github.com/mliebelt/pgn-parser/pull/27) Update Mocha (dependabot).
+* [#25](https://github.com/mliebelt/pgn-parser/issues/25) Fixes problem with SAN, RAV and result in PGN.
+
+## [1.1.4](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.1.4) 21-01-21
+
+NPM trouble.
+
+## [1.1.3](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.1.3) 20-12-30
 
 ### Changed
 ### Fixed
 
-## [1.1.0]() 20-06-17
+* [#24](https://github.com/mliebelt/pgn-parser/issues/24) Fixing whitespace problems.
+
+## [1.1.2](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.1.2) 20-12-29
+
+### Changed
+
+* [#23](https://github.com/mliebelt/pgn-parser/issues/23) Add test case to demonstrate how to read one game.
+* [#22](https://github.com/mliebelt/pgn-parser/issues/22) How to use library in the browser.
+* [#21](https://github.com/mliebelt/pgn-parser/pull/21) Update Mocha (dependabot).
+* [#20](https://github.com/mliebelt/pgn-parser/pull/20) Update Mocha (dependabot).
+* [#19](https://github.com/mliebelt/pgn-parser/pull/19) Update Mocha (dependabot).
+* [#18](https://github.com/mliebelt/pgn-parser/pull/18) Update Mocha (dependabot).
+* [#17](https://github.com/mliebelt/pgn-parser/pull/17) Update Mocha (dependabot).
+* [#16](https://github.com/mliebelt/pgn-parser/pull/16) Update Mocha (dependabot).
+* [#15](https://github.com/mliebelt/pgn-parser/pull/15) Update Lodash (dependabot).
+
+### Fixed
+
+## [1.1.1](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.1.1) 20-06-17
+
+NPM trouble.
+
+## [1.1.0](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.1.0) 20-06-17
 
 ### Changed
 
 * Updated `CHANGELOG.md` to include the latest changes.
 * Updated `README.md` to explain how to use different start rules.
-* Allowed additional start rule `games` to read many games in one run. Incredible speed (>9.000 games in 2.5s).
+* Adding test cases missing.
+* [12](https://github.com/mliebelt/pgn-parser/issues/12) New parse rule `games`. Incredible speed (>9.000 games in 2.5s).
+* [#9](https://github.com/mliebelt/pgn-parser/issues/9) Working on tags, spelling, case ...
+* [#14](https://github.com/mliebelt/pgn-parser/pull/14) Update Mocha (dependabot).
 
 ### Fixed
 
 * [#13](https://github.com/mliebelt/pgn-parser/issues/13) Not necessary, closed therefore.
 * [#12](https://github.com/mliebelt/pgn-parser/issues/12) Read many complete games.
 
-## [1.0.1]() 20-05-29
+## [1.0.1](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.0.1) 20-05-29
 
 ### Changed
 
@@ -29,7 +71,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
-## [1.0.0]() 20-05-27
+## [1.0.0](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.0.0) 20-05-27
 
 ### Changed
 
@@ -40,7 +82,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 * [#11](https://github.com/mliebelt/pgn-parser/issues/11) Read a complete game at once (tags and pgn).
 
-## [0.10.0]() 20-05-17
+## [0.10.0](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/0.10.0) 20-05-17
 
 ### Changed
 
@@ -55,7 +97,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * [#3](https://github.com/mliebelt/pgn-parser/issues/3) Provide a useful README to explain installation, usage, ...
 * [#6](https://github.com/mliebelt/pgn-parser/issues/6) Integrates tags into the grammar.
 
-## [0.9.9]() 20-05-11
+## [0.9.9](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/0.9.9) 20-05-11
 
 ### Changed
 
@@ -65,7 +107,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * [#1](https://github.com/mliebelt/pgn-parser/issues/1) Defined a lot of test cases to have the complete scope of the grammar.
 * [#2](https://github.com/mliebelt/pgn-parser/issues/2) Automate the build of the generation of the parser.
 
-## [0.9.8]() 2019-05-10
+## [0.9.8](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/0.9.8) 2019-05-10
 
 Inital version, functional identical to file `PgnViewerJS/src/pgn-parser.js` (now deleted).
 
