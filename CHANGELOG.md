@@ -6,6 +6,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Not released
 
 ### Changed
+### Fixed
+
+## [1.1.5](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.1.5) 21-02-28
+
+### Changed
 
 * [#33](https://github.com/mliebelt/pgn-parser/issues/33) Allow end-of-line comments triggered by `;`.
 * [#29](https://github.com/mliebelt/pgn-parser/pull/29) Integrate Chessbase style of arrows mixing comments in.
