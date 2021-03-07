@@ -2,6 +2,19 @@
     function makeInteger(o) {
         return parseInt(o.join(""), 10);
     }
+
+  function merge(array) {
+    var ret = {}
+   // return array
+    array.forEach(function(json) {
+      for (var key in json) {
+        if (typeof json[key] == "string") ret[key] = ret[key] ? ret[key] + " " + json[key] : json[key]
+        if (Array.isArray(json[key])) ret[key] = ret[key] ? ret[key].concat(json[key]) : json[key]
+      }
+    })
+    return ret
+  }
+
 }
 
 games = ws games:(
@@ -155,25 +168,23 @@ pgnStartBlack
 
 pgnWhite
   = ws cm:comments? ws mn:moveNumber? ws cb:comments? ws
-    hm:halfMove  ws nag:nags?  ws ca:comments? ws cd:commentDiag? ws vari:variationWhite? all:pgnBlack?
+    hm:halfMove  ws nag:nags?  ws ca:comments? ws vari:variationWhite? all:pgnBlack?
     { var arr = (all ? all : []);
       var move = {}; move.turn = 'w'; move.moveNumber = mn;
-      move.notation = hm; move.commentBefore = cb; move.commentAfter = ca; move.commentMove = cm;
+      move.notation = hm; move.commentBefore = cb; if (ca) { move.commentAfter = ca.comment } move.commentMove = cm;
       move.variations = (vari ? vari : []); move.nag = (nag ? nag : null); arr.unshift(move); 
-      move.commentDiag = cd;
-      if (cd && cd.text) { move.commentAfter = [move.commentAfter, cd.text].join(' '); }
+      move.commentDiag = ca;
       return arr; }
   / endGame
 
 pgnBlack
   = ws cm:comments? ws me:moveNumber? ws cb:comments? ws
-    hm:halfMove ws nag:nags? ws ca:comments? ws cd:commentDiag? ws vari:variationBlack? all:pgnWhite?
+    hm:halfMove ws nag:nags? ws ca:comments? ws ws vari:variationBlack? all:pgnWhite?
     { var arr = (all ? all : []);
       var move = {}; move.turn = 'b'; move.moveNumber = me;
-      move.notation = hm; move.commentBefore = cb; move.commentAfter = ca; move.commentMove = cm;
+      move.notation = hm; move.commentBefore = cb; if (ca) { move.commentAfter = ca.comment; } move.commentMove = cm;
       move.variations = (vari ? vari : []); arr.unshift(move); move.nag = (nag ? nag : null);
-      move.commentDiag = cd;
-      if (cd && cd.text) { move.commentAfter = [move.commentAfter, cd.text].join(' ').trim(); }
+      move.commentDiag = ca;
       return arr; }
   / endGame
 
@@ -186,36 +197,28 @@ endGame
   / "*"   { return ["*"]; }
 
 comments
-  = cf:comment cfl:(ws comment)*
-  { var comm = cf; for (var i=0; i < cfl.length; i++) { comm += " " + cfl[i][1]}; return comm; }
+  = cf:comment cfl:(ws c:comment { return c })*
+  { return merge([cf].concat(cfl)) }
 
 comment
-  = ! commentDiag cl cm:commentText cr { return cm; }
+  = cl ws cm:innerComment ws cr { return cm;}
   / cm:commentEndOfLine { return cm; }
+
+innerComment
+  = bl "%csl" wsp cf:colorFields ws br tail:(ws ic:innerComment { return ic })*
+      { return merge([{ colorFields: cf }].concat(tail[0])) }
+  / bl "%cal" wsp ca:colorArrows ws br tail:(ws ic:innerComment { return ic })*
+      { return merge([{ colorArrows: ca }].concat(tail[0])) }
+  / bl "%" cc:clockCommand wsp cv:clockValue ws br tail:(ws ic:innerComment { return ic })*
+      { var ret = {}; ret[cc]= cv; return merge([ret].concat(tail[0])) }
+  / c:nonCommand+ tail:(ws ic:innerComment { return ic })*
+      { return merge([{ comment: c.join("") }].concat(tail[0])) }
+
+nonCommand
+  = !"[%" !"}" char:. { return char; }
 
 commentEndOfLine
   = semicolon cm:[^\n\r]* eol { return cm.join(""); }
-
-commentText
-  = cm:([^}]+) { return cm.join(""); }
-
-commentDiag
-  = cl ws cas:commentAnnotations ws cm:commentText? cr { return {...cas, text: cm}; }
-
-commentAnnotations
-  = ca:commentAnnotation ws cal:(commentAnnotation)*
-  { var ret = { }; if (cal) { var o = cal[0]; return {...ca, ...o}; } return ca; }
-
-commentAnnotation
-  = caf:commentAnnotationFields { var ret = {}; ret.colorFields = caf; return ret; }
-  / caa:commentAnnotationArrows { var ret = {}; ret.colorArrows = caa; return ret; }
-  / cac:commentAnnotationClock { var ret = {}; ret.clock = cac; return ret; }
-
-commentAnnotationFields
-  = bl ws "%csl" ws cfs:colorFields ws br { return cfs; }
-
-commentAnnotationArrows
-  = bl ws "%cal" ws cfs:colorArrows ws br { return cfs; }
 
 colorFields
   = cf:colorField ws cfl:("," ws colorField)*
@@ -249,10 +252,6 @@ bl = '['
 br = ']'
 
 semicolon = ';'
-
-commentAnnotationClock
-  = bl ws "%" cc:clockCommand ws cv:clockValue ws br
-  { var ret = {}; ret.type = cc; ret.value = cv; return ret; }
 
 clockCommand
   = "clk" { return "clk"; }
