@@ -6,7 +6,21 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## Not released
 
 ### Changed
+
 ### Fixed
+
+## [1.1.6](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.1.6) 21-03-10
+
+### Changed
+
+* Restructured grammar, especially the part about comments.
+* Reformatted test cases to avoid `var`.
+
+### Fixed
+
+* [#8](https://github.com/mliebelt/pgn-parser/issues/8) Changed format `{ clock: { key: "clk", value: "01:01:01" } }` to `{ clk: "01:01:01" }`.
+* [#31](https://github.com/mliebelt/pgn-parser/issues/31) Reworked grammar according to the spec and supplement.
+* [#32](https://github.com/mliebelt/pgn-parser/issues/32) All mix of comments now possible.
 
 ## [1.1.5](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.1.5) 21-02-28
 

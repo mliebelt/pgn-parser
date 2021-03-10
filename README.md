@@ -1,6 +1,6 @@
 # pgn-parser
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/mliebelt/pgn-parser/Node.js%20CI?logo=github&label=Build%26Test)
-![Libraries.io dependency status for GitHub repo](https://img.shields.io/librariesio/github/mliebelt/pgn-parser?label=Dependencies)
+![Libraries.io dependency status for GitHub repo](https://img.shields.io/librariesio/github/:mliebelt/:pgn-parser)
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/mliebelt/pgn-parser?color=33aa33&label=Version&logo=npm)
 ![npm](https://img.shields.io/npm/dm/@mliebelt/pgn-parser?label=Downloads&logo=npm)
 ![GitHub](https://img.shields.io/github/license/mliebelt/pgn-parser?label=License)
@@ -86,5 +86,6 @@ If you want to use the library in the browser, the above method will not work. I
 ## References
 
 * [pegjs](https://github.com/pegjs/pegjs) Parser Generator implemented in Javascript. Used for regenerating the javascript library completely by an automatic build.
-* [PGN Specification](http://www.saremba.de/chessgml/standards/pgn/pgn-complete.htm): PGN (Portable Game Notation) specification, there the section 8.2. This parser currently does **not** implement the section 8.1, the tags.
+* [PGN Specification](https://github.com/mliebelt/pgn-spec-commented/blob/main/pgn-specification.md): PGN (Portable Game Notation) specification, there the section 8.2. Most other parts of the spec are implemented as well.
+* [PGN Supplement](https://github.com/mliebelt/pgn-spec-commented/blob/main/pgn-spec-supplement.md) Additional specification for adding structured comments, like circles, arrows and clock annotations.  
 * [NAG Specification](http://en.wikipedia.org/wiki/Numeric_Annotation_Glyphs) Definition of the NAGs (Numeric Annotation Glyphs)
