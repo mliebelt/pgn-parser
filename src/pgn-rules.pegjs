@@ -8,11 +8,23 @@
    // return array
     array.forEach(function(json) {
       for (var key in json) {
-        if (typeof json[key] == "string") ret[key] = ret[key] ? ret[key] + " " + json[key] : json[key]
+        if (typeof json[key] == "string") ret[key] = ret[key] ? trimEnd(ret[key]) + " " + trimStart(json[key]) : json[key]
         if (Array.isArray(json[key])) ret[key] = ret[key] ? ret[key].concat(json[key]) : json[key]
       }
     })
     return ret
+  }
+
+  function trimStart(st) {
+    if (typeof st !== "string") return st
+    var r=/^\s+/
+    return st.replace(r,'')
+  }
+
+  function trimEnd(st) {
+    if (typeof st !== "string") return st
+    var r=/\s+$/
+    return st.replace(r,'')
   }
 
 }
@@ -170,8 +182,9 @@ pgnWhite
   = ws cm:comments? ws mn:moveNumber? ws cb:comments? ws
     hm:halfMove  ws nag:nags?  ws ca:comments? ws vari:variationWhite? all:pgnBlack?
     { var arr = (all ? all : []);
-      var move = {}; move.turn = 'w'; move.moveNumber = mn;
-      move.notation = hm; move.commentBefore = cb; if (ca) { move.commentAfter = ca.comment } move.commentMove = cm;
+      var move = {}; move.turn = 'w'; move.moveNumber = mn; move.notation = hm;
+      if (cb) { move.commentBefore = cb.comment }; if (ca) { move.commentAfter = ca.comment };
+      if (cm) { move.commentMove = cm.comment };
       move.variations = (vari ? vari : []); move.nag = (nag ? nag : null); arr.unshift(move); 
       move.commentDiag = ca;
       return arr; }
@@ -181,8 +194,9 @@ pgnBlack
   = ws cm:comments? ws me:moveNumber? ws cb:comments? ws
     hm:halfMove ws nag:nags? ws ca:comments? ws ws vari:variationBlack? all:pgnWhite?
     { var arr = (all ? all : []);
-      var move = {}; move.turn = 'b'; move.moveNumber = me;
-      move.notation = hm; move.commentBefore = cb; if (ca) { move.commentAfter = ca.comment; } move.commentMove = cm;
+      var move = {}; move.turn = 'b'; move.moveNumber = me; move.notation = hm;
+      if (cb) { move.commentBefore = cb.comment }; if (ca) { move.commentAfter = ca.comment };
+      if (cm) { move.commentMove = cm.comment };
       move.variations = (vari ? vari : []); arr.unshift(move); move.nag = (nag ? nag : null);
       move.commentDiag = ca;
       return arr; }
@@ -201,18 +215,19 @@ comments
   { return merge([cf].concat(cfl)) }
 
 comment
-  = cl ws cm:innerComment ws cr { return cm;}
-  / cm:commentEndOfLine { return cm; }
+  = cl cm:innerComment cr { return cm;}
+  / cm:commentEndOfLine { return { comment: cm}; }
 
 innerComment
-  = bl "%csl" wsp cf:colorFields ws br tail:(ws ic:innerComment { return ic })*
+  = ws bl "%csl" wsp cf:colorFields ws br tail:(ic:innerComment { return ic })*
       { return merge([{ colorFields: cf }].concat(tail[0])) }
-  / bl "%cal" wsp ca:colorArrows ws br tail:(ws ic:innerComment { return ic })*
+  / ws bl "%cal" wsp ca:colorArrows ws br tail:(ic:innerComment { return ic })*
       { return merge([{ colorArrows: ca }].concat(tail[0])) }
-  / bl "%" cc:clockCommand wsp cv:clockValue ws br tail:(ws ic:innerComment { return ic })*
+  / ws bl "%" cc:clockCommand wsp cv:clockValue ws br tail:(ic:innerComment { return ic })*
       { var ret = {}; ret[cc]= cv; return merge([ret].concat(tail[0])) }
   / c:nonCommand+ tail:(ws ic:innerComment { return ic })*
-      { return merge([{ comment: c.join("") }].concat(tail[0])) }
+      { if (tail.length > 0) { return merge([{ comment: trimEnd(c.join("")) }].concat(trimStart(tail[0]))) }
+        else { return { comment: c.join("") } } }
 
 nonCommand
   = !"[%" !"}" char:. { return char; }

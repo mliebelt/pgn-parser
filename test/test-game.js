@@ -1,6 +1,6 @@
-var parser = require("../pgn-parser.js");
+let parser = require("../pgn-parser.js");
 
-var should = require('should');
+let should = require('should');
 
 function parse_game(string) {
     return parser.parse(string, {startRule: "game"})
@@ -16,8 +16,8 @@ describe("When working with games", function () {
         should.exist(res)
         should.exist(res.tags)
         should.exist(res.moves)
-        should(res.tags.White).equal("Me")
-        should(res.tags.Black).equal("Magnus")
+        should(res.tags["White"]).equal("Me")
+        should(res.tags["Black"]).equal("Magnus")
         should(res.moves.length).equal(4)
         should.exist(res.moves[0])
         should(res.moves[0].notation.notation).equal("f4")
@@ -29,8 +29,8 @@ describe("When working with games", function () {
         should.exist(res.tags)
         should.exist(res.moves)
         should(res.moves.length).equal(0)
-        should(res.tags.White).equal("Me")
-        should(res.tags.Black).equal("Magnus")
+        should(res.tags["White"]).equal("Me")
+        should(res.tags["Black"]).equal("Magnus")
     })
 
     it("should read moves without tags", function () {

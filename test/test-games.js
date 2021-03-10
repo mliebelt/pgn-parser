@@ -1,6 +1,6 @@
-var parser = require("../pgn-parser.js");
+let parser = require("../pgn-parser.js");
 
-var should = require('should');
+let should = require('should');
 
 function parse_games(string) {
     return parser.parse(string, {startRule: "games"})
@@ -12,7 +12,7 @@ describe("When working with many games", function () {
         should.exist(res)
         let moves = res[0].moves
         let pgn = ''
-        for (move of moves) {
+        for (let move of moves) {
             pgn += move.notation.notation
             pgn += ' '
         }

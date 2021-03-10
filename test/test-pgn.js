@@ -1,6 +1,6 @@
-var parser = require("../pgn-parser.js");
+let parser = require("../pgn-parser.js");
 
-var should = require('should');
+let should = require('should');
 
 describe("When working with PGN as string", function() {
     let my_result;
@@ -120,7 +120,7 @@ describe("Reading PGN game with all kinds of comments", function () {
         should(my_res[0].commentMove).equal("First")
         should(my_res[0].commentBefore).equal("second")
         should(my_res[0].commentAfter).equal("third")
-        should(my_res[1].commentBefore).equal(null)
+        should.not.exist(my_res[1].commentBefore)
         should(my_res[1].commentAfter).equal("fourth")
     })
     it("should read 2 comments in one location", function () {
@@ -147,7 +147,7 @@ describe("Reading PGN game with all kinds of comments", function () {
         should(my_res.length).equal(2)
         should(my_res[0].commentBefore).equal("  second")
         should(my_res[0].commentAfter).equal("  third  ")
-        should(my_res[1].commentBefore).equal(null)
+        should.not.exist(my_res[1].commentBefore)
         should(my_res[1].commentAfter).equal("    fourth  ")
     })
     it("should understand comment annotations: fields", function () {
@@ -173,7 +173,6 @@ describe("Reading PGN game with all kinds of comments", function () {
         should.exist(my_res[0].commentDiag)
         should.exist(my_res[0].commentDiag.colorArrows)
 
-        should(my_res[0].commentDiag.text).equal("comment")
         should(my_res[0].commentAfter).equal(" comment")
         should(my_res[0].commentDiag.colorArrows[0]).equal("Ye4e8")
     })
@@ -183,7 +182,6 @@ describe("Reading PGN game with all kinds of comments", function () {
         should.exist(my_res[0].commentDiag.colorArrows)
         should.exist(my_res[0].commentDiag.colorFields)
 
-        should(my_res[0].commentDiag.text).equal("comment ")
         should(my_res[0].commentAfter).equal(" comment ")
         should(my_res[0].commentDiag.colorArrows[0]).equal("Ye4e8")
         should(my_res[0].commentDiag.colorFields[0]).equal("Rd4")
@@ -195,12 +193,11 @@ describe("Reading PGN game with all kinds of comments", function () {
         should.exist(my_res[0].commentDiag.colorFields)
         should.exist(my_res[0].commentAfter)
 
-        should(my_res[0].commentDiag.text).equal("comment2 ")
-        should(my_res[0].commentAfter).equal(" comment1  comment2 ")
+        should(my_res[0].commentAfter).equal(" comment1 comment2 ")
         should(my_res[0].commentDiag.colorArrows[0]).equal("Ye4e8")
         should(my_res[0].commentDiag.colorFields[0]).equal("Rd4")
     })
-    xit("should understand combination of comment, arrows and fields, and comment again", function () {
+    it("should understand combination of comment, arrows and fields, and comment again", function () {
         // Currently not supported, order of normal comments  and arrows / fields is restricted.
         let my_res = parser.parse("1. e4 { comment1 } { [%cal Ye4e8] [%csl Rd4] } { comment2 }")[0]
         should.exist(my_res[0].commentDiag)
@@ -208,8 +205,7 @@ describe("Reading PGN game with all kinds of comments", function () {
         should.exist(my_res[0].commentDiag.colorFields)
         should.exist(my_res[0].commentAfter)
 
-        should(my_res[0].commentDiag.text).equal("comment2")
-        should(my_res[0].commentAfter).equal("comment1 comment2")
+        should(my_res[0].commentAfter).equal(" comment1 comment2 ")
         should(my_res[0].commentDiag.colorArrows[0]).equal("Ye4e8")
         should(my_res[0].commentDiag.colorFields[0]).equal("Rd4")
     })
@@ -219,7 +215,6 @@ describe("Reading PGN game with all kinds of comments", function () {
         should.exist(my_res[0].commentDiag.colorArrows)
         should.exist(my_res[0].commentDiag.colorFields)
 
-        should(my_res[0].commentDiag.text).equal("comment ")
         should(my_res[0].commentAfter).equal(" comment ")
         should(my_res[0].commentDiag.colorArrows[0]).equal("Ye4e8")
         should(my_res[0].commentDiag.colorFields[0]).equal("Rd4")
@@ -241,7 +236,7 @@ describe("Reading PGN game with all kinds of comments", function () {
         should(my_res[0].commentDiag.colorArrows[0]).equal("Ye4e8")
     })
     it("should understand whitespace when adding fields and arrows", function () {
-        let my_res = parser.parse("1. e4 { [ %csl   Rd4 ] [%cal   Ye4e8  ,  Gd1d3]  }")[0]
+        let my_res = parser.parse("1. e4 { [%csl   Rd4 ] [%cal   Ye4e8  ,  Gd1d3]  }")[0]
         should.exist(my_res[0].commentDiag)
         should.exist(my_res[0].commentDiag.colorFields)
         should.exist(my_res[0].commentDiag.colorArrows)
@@ -249,7 +244,8 @@ describe("Reading PGN game with all kinds of comments", function () {
         should(my_res[0].commentDiag.colorArrows[0]).equal("Ye4e8")
         should(my_res[0].commentDiag.colorArrows[1]).equal("Gd1d3")
     })
-    it("should understand lack of whitespace when adding fields and arrows", function () {
+    // Does not meet the supplement specification, which requires (at least) one whitespace
+    xit("should understand lack of whitespace when adding fields and arrows", function () {
         let my_res = parser.parse("1. e4 { [%cslRd4] [%calYe4e8,Gd1d3] }")[0]
         should.exist(my_res[0].commentDiag)
         should.exist(my_res[0].commentDiag.colorFields)
@@ -258,26 +254,41 @@ describe("Reading PGN game with all kinds of comments", function () {
         should(my_res[0].commentDiag.colorArrows[0]).equal("Ye4e8")
         should(my_res[0].commentDiag.colorArrows[1]).equal("Gd1d3")
     })
-    it("should understand clock annnotations", function () {
-        // [ clg|egt|emt|mct  00:01:17 ]
+    it("should understand one clock annotation per move", function () {
+        // [ clk|egt|emt|mct  00:01:17 ]
         let my_res = parser.parse("c4 {[%clk 2:10:30]} Nf6 {[%egt 2:10:31]}")[0]
         should.exist(my_res[0].commentDiag)
-        should.exist(my_res[0].commentDiag.clock)
-        should.exist(my_res[1].commentDiag.clock)
-        should(my_res[0].commentDiag.clock.type).equal("clk")
-        should(my_res[0].commentDiag.clock.value).equal("2:10:30")
-        should(my_res[1].commentDiag.clock.type).equal("egt")
-        should(my_res[1].commentDiag.clock.value).equal("2:10:31")
+        should(my_res[0].commentDiag["clk"]).equal("2:10:30")
+        should(my_res[1].commentDiag["egt"]).equal("2:10:31")
     })
-    it("should understand clock annnotations without whitespace", function () {
+    // Not allowed due to the spec
+    xit("should understand clock annotations without whitespace", function () {
         let my_res = parser.parse("c4 {[%clk2:10:30]} Nf6 {[%egt2:10:31]}")[0]
         should.exist(my_res[0].commentDiag)
-        should.exist(my_res[0].commentDiag.clock)
-        should.exist(my_res[1].commentDiag.clock)
-        should(my_res[0].commentDiag.clock.type).equal("clk")
-        should(my_res[0].commentDiag.clock.value).equal("2:10:30")
-        should(my_res[1].commentDiag.clock.type).equal("egt")
-        should(my_res[1].commentDiag.clock.value).equal("2:10:31")
+        should(my_res[0].commentDiag["clk"]).equal("2:10:30")
+        should(my_res[1].commentDiag["egt"]).equal("2:10:31")
+    })
+    it("should understand many clock annotations in one move only", function () {
+        let my_res = parser.parse("c4 {[%clk 0:10:10] [%egt 0:10:10] [%emt 0:08:08] [%mct 1:10:11]}")[0]
+        should.exist(my_res[0].commentDiag)
+        should(my_res[0].commentDiag["clk"]).equal("0:10:10")
+        should(my_res[0].commentDiag["egt"]).equal("0:10:10")
+        should(my_res[0].commentDiag["emt"]).equal("0:08:08")
+        should(my_res[0].commentDiag["mct"]).equal("1:10:11")
+    })
+    it("should understand mix of clock comments and normal comments", function () {
+        let my_res = parser.parse("c4 {Start [%clk 0:10:10] comment [%egt 0:10:10] up to end}")[0]
+        should.exist(my_res[0].commentDiag)
+        should(my_res[0].commentDiag["clk"]).equal("0:10:10")
+        should(my_res[0].commentDiag["egt"]).equal("0:10:10")
+        should(my_res[0].commentAfter).equal("Start comment up to end")
+    })
+    it("should understand mix of clock comment and other annotation comment", function () {
+        let my_res = parser.parse("1. e4 { First move } { [%cal Gd2d4] } { [%clk 0:02:00] }")[0]
+        should.exist(my_res[0].commentDiag)
+        should(my_res[0].commentDiag["clk"]).equal("0:02:00")
+        should(my_res[0].commentDiag.colorArrows[0]).equal("Gd2d4")
+        should(my_res[0].commentAfter).equal(" First move ")
     })
     it("should understand end-of-line comment", function () {
         let input = `c4 ; This is ignored up to end of line
