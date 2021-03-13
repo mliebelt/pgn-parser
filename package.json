@@ -26,7 +26,6 @@
     "pegjs": "^0.10.0",
     "should": "^13.2.3"
   },
-  "dependencies": {},
   "scripts": {
     "build": "node_modules/pegjs/bin/pegjs --allowed-start-rules pgn,tags,game,games -o _pgn-parser.js src/pgn-rules.pegjs",
     "test": "mocha",

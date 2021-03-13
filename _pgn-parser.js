@@ -144,7 +144,7 @@ function peg$parse(input, options) {
       peg$c0 = function(head, m) { return m; },
       peg$c1 = function(head, tail) { return [head].concat(tail) },
       peg$c2 = function(games) { return games },
-      peg$c3 = function(t, p) { return { tags: t, moves: p[0] }; },
+      peg$c3 = function(t, c, p) { return { tags: t, gameComment: c, moves: p[0] }; },
       peg$c4 = function(head, tail) {
               var result = {};
               [head].concat(tail).forEach(function(element) {
@@ -858,7 +858,7 @@ function peg$parse(input, options) {
   }
 
   function peg$parsegame() {
-    var s0, s1, s2;
+    var s0, s1, s2, s3;
 
     s0 = peg$currPos;
     s1 = peg$parsetags();
@@ -866,11 +866,20 @@ function peg$parse(input, options) {
       s1 = null;
     }
     if (s1 !== peg$FAILED) {
-      s2 = peg$parsepgn();
+      s2 = peg$parsecomments();
+      if (s2 === peg$FAILED) {
+        s2 = null;
+      }
       if (s2 !== peg$FAILED) {
-        peg$savedPos = s0;
-        s1 = peg$c3(s1, s2);
-        s0 = s1;
+        s3 = peg$parsepgn();
+        if (s3 !== peg$FAILED) {
+          peg$savedPos = s0;
+          s1 = peg$c3(s1, s2, s3);
+          s0 = s1;
+        } else {
+          peg$currPos = s0;
+          s0 = peg$FAILED;
+        }
       } else {
         peg$currPos = s0;
         s0 = peg$FAILED;

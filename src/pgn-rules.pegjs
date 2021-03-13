@@ -35,7 +35,7 @@ games = ws games:(
          { return [head].concat(tail) }
        )? { return games }
 
-game = t:tags? p:pgn { return { tags: t, moves: p[0] }; }
+game = t:tags? c:comments? p:pgn { return { tags: t, gameComment: c, moves: p[0] }; }
 
 tags = ws members:(
       head:tag
