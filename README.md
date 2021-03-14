@@ -29,7 +29,7 @@ Look at the many test cases that show how to use it. Here is an example:
     let moves = parser.parse("1. {first move} e4! {my favorite} e5 (1... c5!?)")
     moves[0].moveNumber
     
-It does not have an API, just a JSON structure that has to be read then. You have 3 top level rules to use the parser:
+It does not have an API, just a JSON structure that has to be read then. You have 4 top level rules to use the parser:
 
 * `games`: Reads many games from the string given, returns an array of games (object with keys `tags` and `moves`).
 * `game`: Reads a complete game, and returns an object with keys `tags` and `moves`.

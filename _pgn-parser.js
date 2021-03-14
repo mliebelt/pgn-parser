@@ -5220,21 +5220,32 @@ function peg$parse(input, options) {
   }
 
   function peg$parsemoveNumber() {
-    var s0, s1, s2, s3;
+    var s0, s1, s2, s3, s4;
 
     s0 = peg$currPos;
     s1 = peg$parseinteger();
     if (s1 !== peg$FAILED) {
       s2 = [];
-      s3 = peg$parsedotOrWhitespace();
+      s3 = peg$parsewhiteSpace();
       while (s3 !== peg$FAILED) {
         s2.push(s3);
-        s3 = peg$parsedotOrWhitespace();
+        s3 = peg$parsewhiteSpace();
       }
       if (s2 !== peg$FAILED) {
-        peg$savedPos = s0;
-        s1 = peg$c377(s1);
-        s0 = s1;
+        s3 = [];
+        s4 = peg$parsedot();
+        while (s4 !== peg$FAILED) {
+          s3.push(s4);
+          s4 = peg$parsedot();
+        }
+        if (s3 !== peg$FAILED) {
+          peg$savedPos = s0;
+          s1 = peg$c377(s1);
+          s0 = s1;
+        } else {
+          peg$currPos = s0;
+          s0 = peg$FAILED;
+        }
       } else {
         peg$currPos = s0;
         s0 = peg$FAILED;
@@ -5333,17 +5344,6 @@ function peg$parse(input, options) {
       s1 = peg$c381();
     }
     s0 = s1;
-
-    return s0;
-  }
-
-  function peg$parsedotOrWhitespace() {
-    var s0;
-
-    s0 = peg$parsedot();
-    if (s0 === peg$FAILED) {
-      s0 = peg$parsewhiteSpace();
-    }
 
     return s0;
   }

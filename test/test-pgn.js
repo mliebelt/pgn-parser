@@ -455,4 +455,15 @@ describe("Just examples of complex notations or errors of the past", function ()
         let my_res = parser.parse("1. e4 (1. d4) 1-0")
         should.exist(my_res)
     })
+    it("should check error #36 first example", function () {
+        should(function () {
+            parser.parse("1. . .")
+        }).throw()
+        let my_res = parser.parse("1..... e4")[0]
+        should.exist(my_res)
+        should(my_res[0].moveNumber).equal(1)
+        my_res = parser.parse("1     ..... e4")[0]
+        should.exist(my_res)
+        should(my_res[0].moveNumber).equal(1)
+    })
 })

@@ -294,7 +294,7 @@ pl = '('
 pr = ')'
 
 moveNumber
-    = num:integer dotOrWhitespace* { return num; }
+    = num:integer whiteSpace* dot* { return num; }
 
 dot = "."
 
@@ -303,10 +303,6 @@ integer "integer"
 
 whiteSpace
     = " "+ { return '';}
-
-dotOrWhitespace
-    = dot
-    / whiteSpace
 
 halfMove
   = fig:figure? & checkdisc disc:discriminator str:strike?
