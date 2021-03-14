@@ -115,12 +115,10 @@ describe("When a game notes a result at the end", function () {
 
 describe("Reading PGN game with all kinds of comments", function () {
     it("should read comments at all locations", function () {
-        let my_res = parser.parse("{First} 1. {second} e4 {third} e5! {fourth}")[0]
+        let my_res = parser.parse("{First} 1. e4 {third} e5! {fourth}")[0]
         should(my_res.length).equal(2)
         should(my_res[0].commentMove).equal("First")
-        should(my_res[0].commentBefore).equal("second")
         should(my_res[0].commentAfter).equal("third")
-        should.not.exist(my_res[1].commentBefore)
         should(my_res[1].commentAfter).equal("fourth")
     })
     it("should read 2 comments in one location", function () {
@@ -143,11 +141,9 @@ describe("Reading PGN game with all kinds of comments", function () {
         should(my_res[0].commentDiag.colorFields[0]).equal("Rd4")
     })
     it("should read additional whitespace when reading comments (according to the spec)", function () {
-        let my_res = parser.parse("  {First  } 1. {  second}   e4   {  third  } e5! {    fourth  }   ")[0]
+        let my_res = parser.parse("  {First  } 1....    e4   {  third  } e5! {    fourth  }   ")[0]
         should(my_res.length).equal(2)
-        should(my_res[0].commentBefore).equal("  second")
         should(my_res[0].commentAfter).equal("  third  ")
-        should.not.exist(my_res[1].commentBefore)
         should(my_res[1].commentAfter).equal("    fourth  ")
     })
     it("should understand comment annotations: fields", function () {
@@ -449,7 +445,7 @@ describe("Parsing PGN game with all kinds of discriminators", function () {
 
 describe("Just examples of complex notations or errors of the past", function () {
     it("should be useful in the documentation", function () {
-        let my_res = parser.parse("1. {first move} e4! {my favorite} e5 (1... c5!?)")
+        let my_res = parser.parse("1. e4! {my favorite} e5 (1... c5!?)")
     })
     it("should check error #25", function () {
         let my_res = parser.parse("1. e4 (1. d4) 1-0")

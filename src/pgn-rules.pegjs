@@ -179,11 +179,10 @@ pgnStartBlack
   = pb:pgnBlack { return pb; }
 
 pgnWhite
-  = ws cm:comments? ws mn:moveNumber? ws cb:comments? ws
-    hm:halfMove  ws nag:nags?  ws ca:comments? ws vari:variationWhite? all:pgnBlack?
+  = ws cm:comments? ws mn:moveNumber? ws hm:halfMove  ws nag:nags?  ws ca:comments? ws vari:variationWhite? all:pgnBlack?
     { var arr = (all ? all : []);
       var move = {}; move.turn = 'w'; move.moveNumber = mn; move.notation = hm;
-      if (cb) { move.commentBefore = cb.comment }; if (ca) { move.commentAfter = ca.comment };
+      if (ca) { move.commentAfter = ca.comment };
       if (cm) { move.commentMove = cm.comment };
       move.variations = (vari ? vari : []); move.nag = (nag ? nag : null); arr.unshift(move); 
       move.commentDiag = ca;
@@ -191,11 +190,10 @@ pgnWhite
   / endGame
 
 pgnBlack
-  = ws cm:comments? ws me:moveNumber? ws cb:comments? ws
-    hm:halfMove ws nag:nags? ws ca:comments? ws ws vari:variationBlack? all:pgnWhite?
+  = ws cm:comments? ws me:moveNumber? ws hm:halfMove ws nag:nags? ws ca:comments? ws ws vari:variationBlack? all:pgnWhite?
     { var arr = (all ? all : []);
       var move = {}; move.turn = 'b'; move.moveNumber = me; move.notation = hm;
-      if (cb) { move.commentBefore = cb.comment }; if (ca) { move.commentAfter = ca.comment };
+      if (ca) { move.commentAfter = ca.comment };
       if (cm) { move.commentMove = cm.comment };
       move.variations = (vari ? vari : []); arr.unshift(move); move.nag = (nag ? nag : null);
       move.commentDiag = ca;
