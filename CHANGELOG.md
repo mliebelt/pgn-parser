@@ -9,6 +9,20 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [1.2.0](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.2.0) 21-03-14
+
+### Changed
+
+* Cleaned up grammar about comments, with a breaking change (removing `commentBefore`).
+
+### Fixed
+
+* [#25](https://github.com/mliebelt/pgn-parser/issues/25) Was fixed some time before, added a test case.
+* [#34](https://github.com/mliebelt/pgn-parser/issues/34) Add game comment at the beginning, could be used for graphical annotations of the start position as well. PGN works with Chesstempo, Lichess, Scid. 
+* [#35](https://github.com/mliebelt/pgn-parser/issues/35) Cleaned up grammar, remove `commentBefore`.
+* [#36](https://github.com/mliebelt/pgn-parser/issues/36) Restricted move numbers to the valid format from spec.
+
+
 ## [1.1.6](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.1.6) 21-03-10
 
 ### Changed

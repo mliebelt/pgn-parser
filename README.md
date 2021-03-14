@@ -1,9 +1,10 @@
 # pgn-parser
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/mliebelt/pgn-parser/Node.js%20CI?logo=github&label=Build%26Test)
-![Libraries.io dependency status for GitHub repo](https://img.shields.io/librariesio/github/:mliebelt/:pgn-parser)
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/mliebelt/pgn-parser?color=33aa33&label=Version&logo=npm)
 ![npm](https://img.shields.io/npm/dm/@mliebelt/pgn-parser?label=Downloads&logo=npm)
 ![GitHub](https://img.shields.io/github/license/mliebelt/pgn-parser?label=License)
+<!--- ![Libraries.io dependency status for GitHub repo](https://img.shields.io/librariesio/github/:mliebelt/:pgn-parser)
+is currently not working, so it is skipped. Check that later again. --->
 
 Javascript library to allow reading of a PGN (Portable Game Notation) chess game notation, and providing the result as JSON. 
 
