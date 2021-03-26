@@ -316,6 +316,32 @@ does this work?? } c6`
         should(my_res.length).equal(2)
         should(my_res[0].commentAfter).equal(" start; not an eol comment\ndoes this work?? ")
     })
+    it("should ignore commands it cannot parse inside comments", function () {
+        let my_res = parser.parse("1. e4 { [%foo 1.0] [%bar any,string] }")[0]
+        should(my_res.length).equal(1)
+        should(my_res[0].commentDiag.empty)
+    })
+    it("should ignore commands sprinkled in comments it cannot parse", function () {
+        let my_res = parser.parse("1. e4 { [%foo 1.0] } { [%bar any,string] }")[0]
+        should(my_res.length).equal(1)
+        should(my_res[0].commentDiag.empty)
+    })
+    it("should ignore commands it cannot parse, read diag comments", function () {
+        let my_res = parser.parse("1. e4 { [%foo 1.0] } { [%clk 0:02:00] }")[0]
+        should(my_res.length).equal(1)
+        should(my_res[0].commentDiag.clk).equal("0:02:00")
+    })
+    it("should ignore commands it cannot parse inside comments, but read other comments", function () {
+        let my_res = parser.parse("1. e4 { first comment [%foo 1.0] second comment [%bar any,string] }")[0]
+        should(my_res.length).equal(1)
+        should(my_res[0].commentDiag.empty)
+        should(my_res[0].commentAfter).equal(" first comment second comment ")
+    })
+    it("should read eval command", function () {
+        let my_res = parser.parse("1. e4 { [%eval -1.02] }")[0]
+        should(my_res.length).equal(1)
+        should(my_res[0].commentDiag.eval).equal("-1.02")
+    })
 })
 
 describe("Parsing PGN game with all kinds of variation", function () {
