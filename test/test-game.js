@@ -113,6 +113,6 @@ describe("When reading a game with gameComment", function () {
         should(res.gameComment.colorArrows[0]).equal("Ye4e8")
         should(res.gameComment.colorFields.length).equal(1)
         should(res.gameComment.colorFields[0]).equal("Rd4")
-        should(res.gameComment.comment).equal("comment1 comment2 ")
+        should(res.gameComment.comment).equal("comment1 comment2")
     })
 })

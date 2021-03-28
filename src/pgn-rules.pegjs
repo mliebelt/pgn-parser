@@ -217,15 +217,15 @@ comment
   / cm:commentEndOfLine { return { comment: cm}; }
 
 innerComment
-  = ws bl "%csl" wsp cf:colorFields ws br tail:(ic:innerComment { return ic })*
+  = ws bl "%csl" wsp cf:colorFields ws br ws tail:(ic:innerComment { return ic })*
       { return merge([{ colorFields: cf }].concat(tail[0])) }
-  / ws bl "%cal" wsp ca:colorArrows ws br tail:(ic:innerComment { return ic })*
+  / ws bl "%cal" wsp ca:colorArrows ws br ws tail:(ic:innerComment { return ic })*
       { return merge([{ colorArrows: ca }].concat(tail[0])) }
-  / ws bl "%" cc:clockCommand wsp cv:clockValue ws br tail:(ic:innerComment { return ic })*
+  / ws bl "%" cc:clockCommand wsp cv:clockValue ws br ws tail:(ic:innerComment { return ic })*
       { var ret = {}; ret[cc]= cv; return merge([ret].concat(tail[0])) }
-  / ws bl "%eval" wsp ev:stringNoQuot ws br tail:(ic:innerComment { return ic })*
+  / ws bl "%eval" wsp ev:stringNoQuot ws br ws tail:(ic:innerComment { return ic })*
       { var ret = {};  ret["eval"]= ev; return merge([ret].concat(tail[0])) }
-  / ws bl "%" ac:stringNoQuot wsp nbr+ br tail:(ic:innerComment { return ic })*
+  / ws bl "%" ac:stringNoQuot wsp nbr+ br ws tail:(ic:innerComment { return ic })*
       { return tail[0] }
   / c:nonCommand+ tail:(ws ic:innerComment { return ic })*
       { if (tail.length > 0) { return merge([{ comment: trimEnd(c.join("")) }].concat(trimStart(tail[0]))) }

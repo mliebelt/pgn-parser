@@ -169,7 +169,7 @@ describe("Reading PGN game with all kinds of comments", function () {
         should.exist(my_res[0].commentDiag)
         should.exist(my_res[0].commentDiag.colorArrows)
 
-        should(my_res[0].commentAfter).equal(" comment")
+        should(my_res[0].commentAfter).equal("comment")
         should(my_res[0].commentDiag.colorArrows[0]).equal("Ye4e8")
     })
     it("should understand combination of comment, arrows and fields", function () {
@@ -178,7 +178,7 @@ describe("Reading PGN game with all kinds of comments", function () {
         should.exist(my_res[0].commentDiag.colorArrows)
         should.exist(my_res[0].commentDiag.colorFields)
 
-        should(my_res[0].commentAfter).equal(" comment ")
+        should(my_res[0].commentAfter).equal("comment ")
         should(my_res[0].commentDiag.colorArrows[0]).equal("Ye4e8")
         should(my_res[0].commentDiag.colorFields[0]).equal("Rd4")
     })
@@ -211,7 +211,7 @@ describe("Reading PGN game with all kinds of comments", function () {
         should.exist(my_res[0].commentDiag.colorArrows)
         should.exist(my_res[0].commentDiag.colorFields)
 
-        should(my_res[0].commentAfter).equal(" comment ")
+        should(my_res[0].commentAfter).equal("comment ")
         should(my_res[0].commentDiag.colorArrows[0]).equal("Ye4e8")
         should(my_res[0].commentDiag.colorFields[0]).equal("Rd4")
     })
@@ -335,12 +335,24 @@ does this work?? } c6`
         let my_res = parser.parse("1. e4 { first comment [%foo 1.0] second comment [%bar any,string] }")[0]
         should(my_res.length).equal(1)
         should(my_res[0].commentDiag.empty)
-        should(my_res[0].commentAfter).equal(" first comment second comment ")
+        should(my_res[0].commentAfter).equal(" first comment second comment")
     })
     it("should read eval command", function () {
         let my_res = parser.parse("1. e4 { [%eval -1.02] }")[0]
         should(my_res.length).equal(1)
         should(my_res[0].commentDiag.eval).equal("-1.02")
+    })
+    it("should read comment from issue #203 (of PgnViewerJS)", function () {
+        let input = "1. d4 d5 2. Nf3 { Here black & white look good }"
+        let my_res = parser.parse(input)[0]
+        should.exist(my_res)
+    })
+    it("should read action comments, and avoid text comment on only whitespace", function () {
+        let my_res = parser.parse("e5 { [%csl Gf6] }")[0]
+        should.exist(my_res)
+        should(my_res[0].commentDiag.colorFields.length).equal(1)
+        should(my_res[0].commentDiag.colorFields[0]).equal("Gf6")
+        should(my_res[0].commentAfter).undefined()
     })
 })
 
