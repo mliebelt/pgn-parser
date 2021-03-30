@@ -24,11 +24,11 @@ describe("When working with games", function () {
     })
 
     it("should read tags without notation", function () {
-        let res = parse_game('[White "Me"] [Black "Magnus"]')
+        let res = parse_game('[White "Me"] [Black "Magnus"] *')
         should.exist(res)
         should.exist(res.tags)
         should.exist(res.moves)
-        should(res.moves.length).equal(0)
+        should(res.moves.length).equal(1)   // end game
         should(res.tags["White"]).equal("Me")
         should(res.tags["Black"]).equal("Magnus")
     })
@@ -42,6 +42,13 @@ describe("When working with games", function () {
         should(res.moves.length).equal(4)
         should.exist(res.moves[0])
         should(res.moves[0].notation.notation).equal("f4")
+    })
+    it("should read comments without moves", function () {
+        let res = parse_game("{ [%csl Ya4,Gh8,Be1] } *")
+        should.exist(res)
+        should.exist(res.gameComment)
+        should.exist(res.gameComment.colorFields)
+        should(res.gameComment.colorFields.length).equal(3)
     })
 })
 

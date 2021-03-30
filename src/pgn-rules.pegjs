@@ -31,7 +31,7 @@
 
 games = ws games:(
        head:game
-         tail:(wsp m:game { return m; })*
+         tail:(ws m:game { return m; })*
          { return [head].concat(tail) }
        )? { return games }
 
@@ -165,18 +165,16 @@ integerString =
 	quotation_mark digits:[0-9]+ quotation_mark { return makeInteger(digits); }
 
 pgn
-  = pw:pgnStartWhite all:pgnBlack?
+  = ws pw:pgnStartWhite all:pgnBlack?
       { var arr = (all ? all : []); arr.unshift(pw);return arr; }
-  / pb:pgnStartBlack all:pgnWhite?
+  / ws pb:pgnStartBlack all:pgnWhite?
     { var arr = (all ? all : []); arr.unshift(pb); return arr; }
-  / ws
-    { return [[]]; }
 
 pgnStartWhite
-  = pw:pgnWhite { return pw; }
+  = pw:pgnWhite ws { return pw; }
 
 pgnStartBlack
-  = pb:pgnBlack { return pb; }
+  = pb:pgnBlack ws { return pb; }
 
 pgnWhite
   = ws cm:comments? ws mn:moveNumber? ws hm:halfMove  ws nag:nags?  ws ca:comments? ws vari:variationWhite? all:pgnBlack?
@@ -187,7 +185,7 @@ pgnWhite
       move.variations = (vari ? vari : []); move.nag = (nag ? nag : null); arr.unshift(move); 
       move.commentDiag = ca;
       return arr; }
-  / endGame
+  / ws e:endGame ws {return e; }
 
 pgnBlack
   = ws cm:comments? ws me:moveNumber? ws hm:halfMove ws nag:nags? ws ca:comments? ws ws vari:variationBlack? all:pgnWhite?
@@ -198,7 +196,7 @@ pgnBlack
       move.variations = (vari ? vari : []); arr.unshift(move); move.nag = (nag ? nag : null);
       move.commentDiag = ca;
       return arr; }
-  / endGame
+  / ws e:endGame ws { return e; }
 
 endGame
   = "1:0"  { return ["1:0"]; }
