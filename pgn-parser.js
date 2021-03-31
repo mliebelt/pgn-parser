@@ -13,7 +13,7 @@ const parse = function(input, options) {
     let result = parser.parse(input, options)
     if (options && (options.startRule === 'games')) {
         // result should be an array of games. Check the last game, if it is empty, and remove it then
-        if (! Array.isArray(result)) return result
+        if (! Array.isArray(result)) return []
         if (result.length === 0) return result
         let last = result.pop()
         if ( (Object.keys(last.tags).length > 0) || (last.moves.length > 0) ) {
