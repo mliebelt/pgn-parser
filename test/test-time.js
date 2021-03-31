@@ -37,7 +37,7 @@ describe("When reading many games", function () {
         })
     })
     // I have kept that bigger file only locally so the test will not run in Github actions
-    it("should read the correct number of games: 2885", function (done) {
+    xit("should read the correct number of games: 2885", function (done) {
         fs.readFile(process.cwd() + '/test/pgn/twic-02-2885games.pgn', 'utf8', function (err, data) {
             if (err) { throw err }
             let res = parser.parse(data, { startRule: "games" } )
@@ -46,7 +46,7 @@ describe("When reading many games", function () {
         })
     })
     // Same here, file is even bigger
-    it("should read the correct number of games: 9072", function (done) {
+    xit("should read the correct number of games: 9072", function (done) {
         this.timeout(15000);
         fs.readFile(process.cwd() + '/test/pgn/twic1333-9072games.pgn', 'utf8', function (err, data) {
             if (err) { throw err }
