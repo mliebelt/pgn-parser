@@ -55,17 +55,9 @@ describe("When reading complete game starting with the first move", function () 
 
 describe("When a game notes a result at the end", function () {
     it("should have the result as last entry of the array", function () {
-        let my_res = parser.parse("1. e4 1:0")[0]
+        let my_res = parser.parse("1. e4 1-0")[0]
         should(my_res.length).equal(2)
-        should(my_res[1]).equal("1:0")
-    })
-    it("should have all kinds or result: 1:0", function () {
-        let my_res = parser.parse("1. e4 1:0")[0]
-        should(my_res[1]).equal("1:0")
-    })
-    it("should have all kinds or result: 0:1", function () {
-        let my_res = parser.parse("1. e4 0:1")[0]
-        should(my_res[1]).equal("0:1")
+        should(my_res[1]).equal("1-0")
     })
     it("should have all kinds or result: 1-0", function () {
         let my_res = parser.parse("1. e4 1-0")[0]
@@ -88,8 +80,8 @@ describe("When a game notes a result at the end", function () {
         should(my_res[1]).equal("*")
     })
     it("should ignore additional white space before or after success", function () {
-        let my_res = parser.parse("1. e4    1:0    ")[0]
-        should(my_res[1]).equal("1:0")
+        let my_res = parser.parse("1. e4    1-0    ")[0]
+        should(my_res[1]).equal("1-0")
     })
     it("should ignore 1 space before or after", function () {
         let my_res = parser.parse("27. Ng2 Qxg2# 0-1 ")[0]
@@ -100,8 +92,8 @@ describe("When a game notes a result at the end", function () {
         should(my_res[1]).equal("1/2-1/2")
     })
     it("should handle variation at the end even for wins", function () {
-        let my_res = parser.parse("1. e4 (1. d4) 1:0")[0]
-        should(my_res[1]).equal("1:0")
+        let my_res = parser.parse("1. e4 (1. d4) 1-0")[0]
+        should(my_res[1]).equal("1-0")
     })
     it("should handle variation at the end even for wins with different format", function () {
         let my_res = parser.parse("1. e4 (1. d4) 1-0")[0]
