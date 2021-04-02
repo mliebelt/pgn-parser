@@ -90,7 +90,14 @@ tagKeyValue = eventKey ws value:string { return { name: 'Event', value: value };
 	/ anotatorKey ws value:string  { return { name: 'Annotator', value: value }; }
 	/ modeKey ws value:string  { return { name: 'Mode', value: value }; }
 	/ plyCountKey ws value:integerString  { return { name: 'PlyCount', value: value }; }
-	/ any:stringNoQuot ws value:string { return { name: any, value: value }; }
+	/ variantKey ws value:string { return { name: 'Variant', value: value }; }
+	/ whiteRatingDiffKey ws value:string { return { name: 'WhiteRatingDiff', value: value }; }
+	/ blackRatingDiffKey ws value:string { return { name: 'BlackRatingDiff', value: value }; }
+	/ whiteFideIdKey ws value:string { return { name: 'WhiteFideId', value: value }; }
+	/ blackFideIdKey ws value:string { return { name: 'BlackFideId', value: value }; }
+	/ whiteTeamKey ws value:string { return { name: 'WhiteTeam', value: value }; }
+	/ blackTeamKey ws value:string { return { name: 'BlackTeam', value: value }; }
+/*	/ a:anyKey ws value:string { console.log('Key: ' + a); return { name: a, value: value }; }  */
 
 eventKey 				=  'Event' / 'event'
 siteKey 				=  'Site' / 'site'
@@ -129,6 +136,15 @@ terminationKey          =  'Termination'  / 'termination'
 anotatorKey             =  'Annotator'  / 'annotator'
 modeKey                 =  'Mode' / 'mode'
 plyCountKey             =  'PlyCount'  / 'Plycount' / 'plycount'
+variantKey              =  'Variant' / 'variant'
+whiteRatingDiffKey      =  'WhiteRatingDiff'
+blackRatingDiffKey      =  'BlackRatingDiff'
+whiteFideIdKey          =  'WhiteFideId'
+blackFideIdKey          =  'BlackFideId'
+whiteTeamKey            =  'WhiteTeam'
+blackTeamKey            =  'BlackTeam'
+anyKey                  =  stringNoQuot
+
 
 ws "whitespace" = [ \t\n\r]*
 wsp = [ \t\n\r]+
@@ -148,12 +164,10 @@ char  = [^\0-\x1F\x22\x5C]
 date = quotation_mark year:([0-9\?] [0-9\?] [0-9\?] [0-9\?]) '.' month:([0-9\?] [0-9\?]) '.' day:([0-9\?] [0-9\?]) quotation_mark
 	{ return "" + year.join("") + '.' + month.join("") + '.' + day.join("");}
 
-result = quotation_mark res:inner_result quotation_mark { return res; }
-inner_result =
+result = quotation_mark res:innerResult quotation_mark { return res; }
+innerResult =
 	res:"1-0" {return res; }
-    / res:"1:0" { return res; }
     / res:"0-1" { return res; }
-    / res:"0:1" { return res; }
     / res:"1/2-1/2" { return res; }
     / res:"*" { return res; }
 
@@ -199,12 +213,7 @@ pgnBlack
   / ws e:endGame ws { return e; }
 
 endGame
-  = "1:0"  { return ["1:0"]; }
-  / "0:1"  { return ["0:1"]; }
-  / "1-0"  { return ["1-0"]; }
-  / "0-1"  { return ["0-1"]; }
-  / "1/2-1/2"   { return ["1/2-1/2"]; }
-  / "*"   { return ["*"]; }
+  = eg:innerResult { return [eg]; }
 
 comments
   = cf:comment cfl:(ws c:comment { return c })*

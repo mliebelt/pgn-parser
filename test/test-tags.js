@@ -88,10 +88,10 @@ describe("When working with different formats for dates", function () {
         should(res.Date).equal("2020.06.16")
         should(res.EventDate).equal("2020.05.31")
     })
+    //TODO this is not ok!! Check the specification ... See #46
     it("should signal an error if not well formed", function () {
-        // should(function () { parse_tags('[Date "2020"]') } ).throwError()
-        let res = parse_tags('[Date "2020"]')
-        should(res.Date).equal("2020")
+        should(function () { parse_tags('[Date "2020"]') } ).throwError()
+        //should(res.Date).equal("2020")
     })
     it("should allow question marks instead of parts of the date", function () {
         let res = parse_tags('[Date "2020.??.??"] [EventDate "2020.12.??"]')
@@ -103,11 +103,11 @@ describe("When working with different formats for dates", function () {
 describe("When trying to find different variations how to write tags", function () {
     it("should read any order (just some examples)", function () {
         let res = parse_tags('[Black "Me"] [Round "3"] [White "Magnus"] [Site "Oslo"] ' +
-            '[Result "1:0"] [Date "2020.04.28"]')
+            '[Result "1-0"] [Date "2020.04.28"]')
         should(res.White).equal("Magnus")
         should(res.Site).equal("Oslo")
         should(res.Date).equal("2020.04.28")
-        should(res.Result).equal("1:0")
+        should(res.Result).equal("1-0")
         should(res.Round).equal("3")
         should(res.Black).equal("Me")
     })
@@ -138,14 +138,66 @@ describe("When mixing different kinds of tags", function () {
     })
 })
 
-describe("Allow many more case changes and unknown keys", function () {
-    it("should read any key not known", function () {
-        let res = parse_tags('[Bar "Foo"]')
-        should(res["Bar"]).equal("Foo")
+describe("Allow many more case changes and signal error for unknown keys", function () {
+    it("should signal errors for any key not known", function () {
+        should(function () { parse_tags('[Bar "Foo"]') } ).throwError()
     })
     it("should allow variations of SetUp and WhiteELO", function () {
         let res = parse_tags('[Setup "1"][WhiteElo "2700"]')
         should(res.SetUp).equal("1")
         should(res.WhiteELO).equal(2700)
+    })
+})
+
+describe("Allow different kind of results", function () {
+    it("should read all kind of results: *", function () {
+        let res = parse_tags('[Result "*"]')
+        should(res.Result).equal("*")
+    })
+    it("should read all kind of results: 1-0", function () {
+        let res = parse_tags('[Result "1-0"]')
+        should(res.Result).equal("1-0")
+    })
+    it("should read all kind of results: 0-1", function () {
+        let res = parse_tags('[Result "0-1"]')
+        should(res.Result).equal("0-1")
+    })
+    it("should read all kind of results: 1/2-1/2", function () {
+        let res = parse_tags('[Result "1/2-1/2"]')
+        should(res.Result).equal("1/2-1/2")
+    })
+    it("should read all kind of results: 1:0", function () {
+        should(function () { parse_tags('[Result "1:0"]') } ).throwError()
+    })
+})
+
+describe("Allow additional tags from lichess and twic", function () {
+    it("should understand the variant tag", function () {
+        let res = parse_tags('[Variant "Crazyhouse"]')
+        should(res.Variant).equal("Crazyhouse")
+    })
+    it("should understand the WhiteRatingDiff tag", function () {
+        let res = parse_tags('[WhiteRatingDiff "+8"]')
+        should(res.WhiteRatingDiff).equal("+8")
+    })
+    it("should understand the BlackRatingDiff tag", function () {
+        let res = parse_tags('[BlackRatingDiff "+8"]')
+        should(res.BlackRatingDiff).equal("+8")
+    })
+    it("should understand the WhiteFideId tag", function () {
+        let res = parse_tags('[WhiteFideId "1503014"]')
+        should(res.WhiteFideId).equal("1503014")
+    })
+    it("should understand the BlackFideId tag", function () {
+        let res = parse_tags('[BlackFideId "1503014"]')
+        should(res.BlackFideId).equal("1503014")
+    })
+    it("should understand the WhiteTeam tag", function () {
+        let res = parse_tags('[WhiteTeam "Sweden"]')
+        should(res.WhiteTeam).equal("Sweden")
+    })
+    it("should understand the BlackTeam tag", function () {
+        let res = parse_tags('[BlackTeam "Sweden"]')
+        should(res.BlackTeam).equal("Sweden")
     })
 })
