@@ -2,6 +2,8 @@
     function makeInteger(o) {
         return parseInt(o.join(""), 10);
     }
+    function mi(o) {
+        return o.join("").match(/\?/) ? o.join("") : makeInteger(o); }
 
   function merge(array) {
     var ret = {}
@@ -80,9 +82,9 @@ tagKeyValue = eventKey ws value:string { return { name: 'Event', value: value };
 	/ subVariationKey ws value:string  { return { name: 'SubVariation', value: value }; }
 	/ ecoKey ws value:string  { return { name: 'ECO', value: value }; }
 	/ nicKey ws value:string  { return { name: 'NIC', value: value }; }
-	/ timeKey ws value:string  { return { name: 'Time', value: value }; }
-	/ utcTimeKey ws value:string  { return { name: 'UTCTime', value: value }; }
-	/ utcDateKey ws value:string  { return { name: 'UTCDate', value: value }; }
+	/ timeKey ws value:time  { return { name: 'Time', value: value }; }
+	/ utcTimeKey ws value:time  { return { name: 'UTCTime', value: value }; }
+	/ utcDateKey ws value:date  { return { name: 'UTCDate', value: value }; }
 	/ timeControlKey ws value:string  { return { name: 'TimeControl', value: value }; }
 	/ setUpKey ws value:string  { return { name: 'SetUp', value: value }; }
 	/ fenKey ws value:string  { return { name: 'FEN', value: value }; }
@@ -162,7 +164,12 @@ quotation_mark
 char  = [^\0-\x1F\x22\x5C]
 
 date = quotation_mark year:([0-9\?] [0-9\?] [0-9\?] [0-9\?]) '.' month:([0-9\?] [0-9\?]) '.' day:([0-9\?] [0-9\?]) quotation_mark
-	{ return "" + year.join("") + '.' + month.join("") + '.' + day.join("");}
+	{ let val = "" + year.join("") + '.' + month.join("") + '.' + day.join("");
+	    return { value: val, year: mi(year), month: mi(month), day: mi(day) }; }
+
+time = quotation_mark hour:([0-9]+) ':' minute:([0-9]+) ':' second:([0-9]+) quotation_mark
+    { let val = hour.join("") + ':' + minute.join("") + ':' + second.join("");
+        return { value: val, hour: mi(hour), minute: mi(minute), second: mi(second) }; }
 
 result = quotation_mark res:innerResult quotation_mark { return res; }
 innerResult =

@@ -20,7 +20,7 @@ describe("When working with all kind of tags", function () {
         should(res.White).equal("Me")
         should(res.Black).equal("Magnus")
         should(res.Result).equal("1-0")
-        should(res.Date).equal("2020.05.16")
+        should(res.Date.value).equal("2020.05.16")
     })
     it("should read all optional player related", function () {
         let res = parse_tags(
@@ -41,7 +41,7 @@ describe("When working with all kind of tags", function () {
     it("should read all event related information", function () {
         let res = parse_tags('[EventDate "2020.05.02"] [EventSponsor "USCF"] [Section "A"] ' +
             '[Stage "Final"] [Board "1"]')
-        should(res.EventDate).equal("2020.05.02")
+        should(res.EventDate.value).equal("2020.05.02")
         should(res.EventSponsor).equal("USCF")
         should(res.Section).equal("A")
         should(res.Stage).equal("Final")
@@ -55,12 +55,6 @@ describe("When working with all kind of tags", function () {
         should(res.SubVariation).equal("EPD Opcode v2")
         should(res.ECO).equal("XDD/DD")
         should(res.NIC).equal("NIC Variation")
-    })
-    it("should read all time and date related information", function () {
-        let res = parse_tags('[Time "HH:MM:SS"] [UTCTime "UTCTime"] [UTCDate "UTCDate"]')
-        should(res.Time).equal("HH:MM:SS")
-        should(res.UTCTime).equal("UTCTime")
-        should(res.UTCDate).equal("UTCDate")
     })
     // TODO Define the time control options in the grammar
     it("should read all kind of time control", function () {
@@ -84,20 +78,35 @@ describe("When working with all kind of tags", function () {
 
 describe("When working with different formats for dates", function () {
     it("should read the date if well formed", function () {
-        let res = parse_tags(('[Date "2020.06.16"] [EventDate "2020.05.31"]'))
-        should(res.Date).equal("2020.06.16")
-        should(res.EventDate).equal("2020.05.31")
-    })
-    //TODO this is not ok!! Check the specification ... See #46
-    it("should signal an error if not well formed", function () {
-        should(function () { parse_tags('[Date "2020"]') } ).throwError()
-        //should(res.Date).equal("2020")
+        let res = parse_tags(('[Date "2020.06.16"] [EventDate "2020.05.31"] [UTCDate "2021.02.28"]'))
+        should(res.Date.value).equal("2020.06.16")
+        should(res.Date.year).equal(2020)
+        should(res.Date.month).equal(6)
+        should(res.Date.day).equal(16)
+        should(res.EventDate.value).equal("2020.05.31")
+        should(res.UTCDate.value).equal("2021.02.28")
     })
     it("should allow question marks instead of parts of the date", function () {
-        let res = parse_tags('[Date "2020.??.??"] [EventDate "2020.12.??"]')
-        should(res.Date).equal("2020.??.??")
-        should(res.EventDate).equal("2020.12.??")
+        let res = parse_tags('[Date "2020.??.??"] [EventDate "2020.12.??"] [UTCDate "????.??.??"]')
+        should(res.Date.value).equal("2020.??.??")
+        should(res.Date.year).equal(2020)
+        should(res.Date.month).equal("??")
+        should(res.EventDate.value).equal("2020.12.??")
+        should(res.UTCDate.value).equal("????.??.??")
     })
+    it("should read all time and date related information", function () {
+        let res = parse_tags('[Time "09:20:15"] [UTCTime "23:59:59"]')
+        should(res.Time.value).equal("09:20:15")
+        should(res.Time.hour).equal(9)
+        should(res.UTCTime.value).equal("23:59:59")
+    })
+    it("should raise errors when date or time format is wrong", function (){
+        should(function () { parse_tags('[Date "2020"]') } ).throwError()
+        should(function () { parse_tags('[Date "2020.12"]') } ).throwError()
+        should(function () { parse_tags('[Date "2020.12.xx"]') } ).throwError()
+        should(function () { parse_tags('[UTCDate "?.12.??"]') } ).throwError()
+    })
+
 })
 
 describe("When trying to find different variations how to write tags", function () {
@@ -106,7 +115,7 @@ describe("When trying to find different variations how to write tags", function 
             '[Result "1-0"] [Date "2020.04.28"]')
         should(res.White).equal("Magnus")
         should(res.Site).equal("Oslo")
-        should(res.Date).equal("2020.04.28")
+        should(res.Date.value).equal("2020.04.28")
         should(res.Result).equal("1-0")
         should(res.Round).equal("3")
         should(res.Black).equal("Me")
