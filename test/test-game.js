@@ -6,6 +6,7 @@ function parse_game(string) {
     return parser.parse(string, {startRule: "game"})
 }
 
+// The following test cases test everything about a game, with the exeption of game moves, and tags.
 describe("When working with one game", function () {
     it("should read a complete game inclusive tags", function () {
         let res = parse_game('[White "Me"] [Black "Magnus"] 1. f4 e5 2. g4 Qh4#')
