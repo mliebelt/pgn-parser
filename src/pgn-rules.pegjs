@@ -85,7 +85,7 @@ tagKeyValue = eventKey ws value:string { return { name: 'Event', value: value };
 	/ timeKey ws value:time  { return { name: 'Time', value: value }; }
 	/ utcTimeKey ws value:time  { return { name: 'UTCTime', value: value }; }
 	/ utcDateKey ws value:date  { return { name: 'UTCDate', value: value }; }
-	/ timeControlKey ws value:string  { return { name: 'TimeControl', value: value }; }
+	/ timeControlKey ws value:timeControl  { return { name: 'TimeControl', value: value }; }
 	/ setUpKey ws value:string  { return { name: 'SetUp', value: value }; }
 	/ fenKey ws value:string  { return { name: 'FEN', value: value }; }
 	/ terminationKey ws value:string  { return { name: 'Termination', value: value }; }
@@ -170,6 +170,14 @@ date = quotation_mark year:([0-9\?] [0-9\?] [0-9\?] [0-9\?]) '.' month:([0-9\?] 
 time = quotation_mark hour:([0-9]+) ':' minute:([0-9]+) ':' second:([0-9]+) quotation_mark
     { let val = hour.join("") + ':' + minute.join("") + ':' + second.join("");
         return { value: val, hour: mi(hour), minute: mi(minute), second: mi(second) }; }
+
+timeControl = quotation_mark res:tcnq quotation_mark    { return res; }
+tcnq = '?' { return { kind: 'unknown', value: '?' }; }
+    / '-' { return { kind: 'unlimited', value: '-' }; }
+    / moves:integer "/" seconds:integer { return { kind: 'movesInSeconds', moves: moves, seconds: seconds }; }
+    / seconds:integer '+' incr:integer { return { kind: 'increment', seconds: seconds, increment: incr }; }
+    / seconds:integer { return { kind: 'suddenDeath', seconds: seconds }; }
+    / '*' seconds:integer { return { kind: 'hourglass', seconds: seconds }; }
 
 result = quotation_mark res:innerResult quotation_mark { return res; }
 innerResult =

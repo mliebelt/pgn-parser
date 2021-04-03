@@ -56,11 +56,6 @@ describe("When working with all kind of tags", function () {
         should(res.ECO).equal("XDD/DD")
         should(res.NIC).equal("NIC Variation")
     })
-    // TODO Define the time control options in the grammar
-    it("should read all kind of time control", function () {
-        let res = parse_tags('[TimeControl "?"]')
-        should(res.TimeControl).equal("?")
-    })
     it("should read alternative starting positions", function () {
         let res = parse_tags('[FEN "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"] [SetUp "1"]')
         should(res.SetUp).equal("1")
@@ -208,5 +203,63 @@ describe("Allow additional tags from lichess and twic", function () {
     it("should understand the BlackTeam tag", function () {
         let res = parse_tags('[BlackTeam "Sweden"]')
         should(res.BlackTeam).equal("Sweden")
+    })
+})
+
+describe("Understand all possible TimeControl tags", function () {
+    it("should read TimeControl tag at all", function () {
+        let res = parse_tags('[TimeControl "?"]')
+        should.exist(res)
+    })
+    it("should read TimeControl tag of kind unknown", function () {
+        let res = parse_tags('[TimeControl "?"]')
+        should.exist(res)
+        should.exist(res.TimeControl)
+        should(res.TimeControl.kind).equal("unknown")
+        should(res.TimeControl.value).equal("?")
+    })
+    it("should read TimeControl tag of kind unlimited", function () {
+        let res = parse_tags('[TimeControl "-"]')
+        should.exist(res)
+        should.exist(res.TimeControl)
+        should(res.TimeControl.kind).equal("unlimited")
+        should(res.TimeControl.value).equal("-")
+    })
+    it("should read TimeControl tag of kind movesInSeconds", function () {
+        let res = parse_tags('[TimeControl "40/9000"]')
+        should.exist(res)
+        should.exist(res.TimeControl)
+        should(res.TimeControl.kind).equal("movesInSeconds")
+        should(res.TimeControl.moves).equal(40)
+        should(res.TimeControl.seconds).equal(9000)
+    })
+    it("should read TimeControl tag of kind suddenDeath", function () {
+        let res = parse_tags('[TimeControl "60"]')
+        should.exist(res)
+        should.exist(res.TimeControl)
+        should(res.TimeControl.kind).equal("suddenDeath")
+        should(res.TimeControl.seconds).equal(60)
+    })
+    it("should read TimeControl tag of kind increment", function () {
+        let res = parse_tags('[TimeControl "60+1"]')
+        should.exist(res)
+        should.exist(res.TimeControl)
+        should(res.TimeControl.kind).equal("increment")
+        should(res.TimeControl.seconds).equal(60)
+        should(res.TimeControl.increment).equal(1)
+    })
+    it("should read TimeControl tag of kind hourglass", function () {
+        let res = parse_tags('[TimeControl "*60"]')
+        should.exist(res)
+        should.exist(res.TimeControl)
+        should(res.TimeControl.kind).equal("hourglass")
+        should(res.TimeControl.seconds).equal(60)
+    })
+    it("should raise an error for wrong formats", function () {
+        should(function () { parse_tags('[TimeControl ""]') } ).throwError()
+        should(function () { parse_tags('[TimeControl "+"]') } ).throwError()
+        should(function () { parse_tags('[TimeControl "400+"]') } ).throwError()
+        should(function () { parse_tags('[TimeControl "400*"]') } ).throwError()
+        should(function () { parse_tags('[TimeControl "40/600+40"]') } ).throwError()
     })
 })
