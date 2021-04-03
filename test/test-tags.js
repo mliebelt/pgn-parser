@@ -123,12 +123,23 @@ describe("When trying to find different variations how to write tags", function 
     })
     it("should allow any kind of whitespace in between, before and after", function () {
         let res = parse_tags(' \t[White \t\n"Value"] \r\t [Black "Value"] [Site "Value"]\r')
+        should(res.White).equal("Value")
+        should(res.Black).equal("Value")
+        should(res.Site).equal("Value")
     })
-    // '["Key" "Value"] ["Key" "Value"] ["Key" "Value"] ["Key" "Value"] ["Key" "Value"] ["Key" "Value"] '
-    // TODO Define the rules how much variation is allowed
-    xit("should allow some variations in upper- and lowercase", function () {
+    it("should allow some variations in upper- and lowercase", function () {
+        let res = parse_tags('[white "Me"] [Whiteelo "2400"] [Eventdate "2020.12.24"] [plyCount "23"]')
+        should(res.White).equal("Me")
+        should(res.WhiteELO).equal(2400)
+        should(res.EventDate.value).equal("2020.12.24")
+        should(res.PlyCount).equal(23)
+    })
+    it("should allow variations of SetUp and WhiteELO", function () {
+        let res = parse_tags('[Setup "1"][WhiteElo "2700"]')
+        should(res.SetUp).equal("1")
+        should(res.WhiteELO).equal(2700)
+    })
 
-    })
 })
 describe("When mixing different kinds of tags", function () {
     it("should understand if tags begin with the same word", function () {
@@ -142,14 +153,9 @@ describe("When mixing different kinds of tags", function () {
     })
 })
 
-describe("Allow many more case changes and signal error for unknown keys", function () {
+describe("Signal error for unknown keys", function () {
     it("should signal errors for any key not known", function () {
         should(function () { parse_tags('[Bar "Foo"]') } ).throwError()
-    })
-    it("should allow variations of SetUp and WhiteELO", function () {
-        let res = parse_tags('[Setup "1"][WhiteElo "2700"]')
-        should(res.SetUp).equal("1")
-        should(res.WhiteELO).equal(2700)
     })
 })
 
@@ -170,7 +176,7 @@ describe("Allow different kind of results", function () {
         let res = parse_tags('[Result "1/2-1/2"]')
         should(res.Result).equal("1/2-1/2")
     })
-    it("should read all kind of results: 1:0", function () {
+    it("should signal error on result: 1:0", function () {
         should(function () { parse_tags('[Result "1:0"]') } ).throwError()
     })
 })
