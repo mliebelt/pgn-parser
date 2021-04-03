@@ -49,17 +49,17 @@ describe("When reading more than 1 game", function () {
         should(res.length).equal(2)
     })
     // The following is wrong, and will be corrected in ticket #44.
-    xit("should understand 3 minimal games (parsed wrong, see #44)", function () {
+    it("should understand 3 minimal games (parsed wrong, see #44)", function () {
         let res = parse_games('*1. e4 e5 1-0 1. e4 *')
         should.exist(res)
         should(res.length).equal(3)
     })
-    xit ("should understand 2 normal games, with linefeeds in between (parsed wrong, see #44)", function () {
+    it ("should understand 2 normal games, with linefeeds in between (parsed wrong, see #44)", function () {
         let res = parse_games("1. e4 *\n\n1. d4")
         should.exist(res)
         should(res.length).equal(2)
     })
-    xit ("should understand 2 normal games, with variants, with linefeeds in between (parsed wrong, see #44)", function () {
+    it ("should understand 2 normal games, with variants, with linefeeds in between (parsed wrong, see #44)", function () {
         let res = parse_games("1. e4 *\n\n1. d4 d5 (1... e5)")
         should.exist(res)
         should(res.length).equal(2)
@@ -74,7 +74,7 @@ describe("When reading more than 1 game", function () {
         should.exist(res)
         should(res.length).equal(2)
     })
-    xit ("should understand 2 games with last game only comment and moves (parsed wrong, see #44)", function () {
+    it ("should understand 2 games with last game only comment and moves (parsed wrong, see #44)", function () {
         let res = parse_games("1. e4 e5 * { comment } 1. d4 d5 *")
         should.exist(res)
         should(res.length).equal(2)
@@ -88,5 +88,10 @@ describe("When reading more than 1 game", function () {
         let res = parse_games("\n\n1. e4 * \n\n[White \"Me\"] *  ")
         should.exist(res)
         should(res.length).equal(2)
+    })
+    it ("should read 4 minimal games (not obvious)", function () {
+        let res = parse_games("****")
+        should.exist(res)
+        should(res.length).equal(4)
     })
 })

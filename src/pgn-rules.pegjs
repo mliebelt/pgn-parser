@@ -34,10 +34,17 @@
 games = ws games:(
        head:game
          tail:(ws m:game { return m; })*
-         { return [head].concat(tail) }
-       )? { return games }
+         {
+            //console.log("Length tail: " + tail.length);
+            return [head].concat(tail) }
+       )? {
+            //console.log("Length: " + games.length);
+            return games }
 
-game = t:tags? c:comments? p:pgn { return { tags: t, gameComment: c, moves: p[0] }; }
+game = t:tags? c:comments? p:pgn
+    {
+      //console.log("Length pgn: " + p.length);
+      return { tags: t, gameComment: c, moves: p }; }
 
 tags = ws members:(
       head:tag
@@ -194,10 +201,10 @@ integerString =
 	quotation_mark digits:[0-9]+ quotation_mark { return makeInteger(digits); }
 
 pgn
-  = ws pw:pgnStartWhite all:pgnBlack?
-      { var arr = (all ? all : []); arr.unshift(pw);return arr; }
-  / ws pb:pgnStartBlack all:pgnWhite?
-    { var arr = (all ? all : []); arr.unshift(pb); return arr; }
+  = ws pw:pgnStartWhite
+      { return pw; }
+  / ws pb:pgnStartBlack
+    { return pb; }
 
 pgnStartWhite
   = pw:pgnWhite ws { return pw; }
