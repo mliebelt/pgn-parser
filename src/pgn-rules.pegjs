@@ -106,7 +106,11 @@ tagKeyValue = eventKey ws value:string { return { name: 'Event', value: value };
 	/ blackFideIdKey ws value:string { return { name: 'BlackFideId', value: value }; }
 	/ whiteTeamKey ws value:string { return { name: 'WhiteTeam', value: value }; }
 	/ blackTeamKey ws value:string { return { name: 'BlackTeam', value: value }; }
-/*	/ a:anyKey ws value:string { console.log('Key: ' + a); return { name: a, value: value }; }  */
+	/ ! validatedKey a:anyKey ws value:string { return { name: a, value: value }; }
+/*	/ ! validatedKey a:anyKey ws value:string { console.log('Unknown Key: ' + a); return { name: a, value: value }; } */
+
+validatedKey  = dateKey / whiteEloKey / blackEloKey / whiteUSCFKey / blackUSCFKey / resultKey / eventDateKey / boardKey /
+        timeKey / utcTimeKey / utcDateKey / timeControlKey / plyCountKey
 
 eventKey 				=  'Event' / 'event'
 siteKey 				=  'Site' / 'site'

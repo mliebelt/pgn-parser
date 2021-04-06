@@ -153,9 +153,20 @@ describe("When mixing different kinds of tags", function () {
     })
 })
 
-describe("Signal error for unknown keys", function () {
-    it("should signal errors for any key not known", function () {
-        should(function () { parse_tags('[Bar "Foo"]') } ).throwError()
+describe("Signal collect tags for unknown keys", function () {
+    it("should record tag and string value for any key not known", function () {
+        let res = parse_tags('[Bar "Foo"]')
+        should(res.Bar).equal("Foo")
+    })
+    it ("should record lichess puzzle tags", function () {
+        let res = parse_tags('[PuzzleCategory "Material"]\n' +
+            '[PuzzleEngine "Stockfish 13"]\n' +
+            '[PuzzleMakerVersion "0.5"]\n' +
+            '[PuzzleWinner "White"]')
+        should(res.PuzzleEngine).equal("Stockfish 13")
+        should(res.PuzzleMakerVersion).equal("0.5")
+        should(res.PuzzleCategory).equal("Material")
+        should(res.PuzzleWinner).equal("White")
     })
 })
 
