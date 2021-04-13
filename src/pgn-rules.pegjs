@@ -10,10 +10,11 @@
    // return array
     array.forEach(function(json) {
       for (var key in json) {
-        if ( (typeof json[key] == "string") || (typeof json[key] === "number") ) {
+        if (Array.isArray(json[key])) {
+            ret[key] = ret[key] ? ret[key].concat(json[key]) : json[key]
+        } else {
             ret[key] = ret[key] ? trimEnd(ret[key]) + " " + trimStart(json[key]) : json[key]
         }
-        if (Array.isArray(json[key])) ret[key] = ret[key] ? ret[key].concat(json[key]) : json[key]
       }
     })
     return ret
