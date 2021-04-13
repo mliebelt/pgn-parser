@@ -335,7 +335,7 @@ does this work?? } c6`
     it("should read eval command", function () {
         let my_res = parse_pgn("1. e4 { [%eval -1.02] }")
         should(my_res.length).equal(1)
-        should(my_res[0].commentDiag.eval).equal("-1.02")
+        should(my_res[0].commentDiag.eval).equal(-1.02)
     })
     it("should read comment from issue #203 (of PgnViewerJS)", function () {
         let input = "1. d4 d5 2. Nf3 { Here black & white look good }"

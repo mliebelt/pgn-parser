@@ -10,7 +10,9 @@
    // return array
     array.forEach(function(json) {
       for (var key in json) {
-        if (typeof json[key] == "string") ret[key] = ret[key] ? trimEnd(ret[key]) + " " + trimStart(json[key]) : json[key]
+        if ( (typeof json[key] == "string") || (typeof json[key] === "number") ) {
+            ret[key] = ret[key] ? trimEnd(ret[key]) + " " + trimStart(json[key]) : json[key]
+        }
         if (Array.isArray(json[key])) ret[key] = ret[key] ? ret[key].concat(json[key]) : json[key]
       }
     })
@@ -257,7 +259,7 @@ innerComment
   / ws bl "%" cc:clockCommand wsp cv:clockValue ws br ws tail:(ic:innerComment { return ic })*
       { var ret = {}; ret[cc]= cv; return merge([ret].concat(tail[0])) }
   / ws bl "%eval" wsp ev:stringNoQuot ws br ws tail:(ic:innerComment { return ic })*
-      { var ret = {};  ret["eval"]= ev; return merge([ret].concat(tail[0])) }
+      { var ret = {};  ret["eval"]= parseFloat(ev); return merge([ret].concat(tail[0])) }
   / ws bl "%" ac:stringNoQuot wsp nbr+ br ws tail:(ic:innerComment { return ic })*
       { return tail[0] }
   / c:nonCommand+ tail:(ws ic:innerComment { return ic })*

@@ -559,7 +559,7 @@ function peg$parse(input, options) {
       peg$c389 = "%eval",
       peg$c390 = peg$literalExpectation("%eval", false),
       peg$c391 = function(ev, ic) { return ic },
-      peg$c392 = function(ev, tail) { var ret = {};  ret["eval"]= ev; return merge([ret].concat(tail[0])) },
+      peg$c392 = function(ev, tail) { var ret = {};  ret["eval"]= parseFloat(ev); return merge([ret].concat(tail[0])) },
       peg$c393 = function(ac, ic) { return ic },
       peg$c394 = function(ac, tail) { return tail[0] },
       peg$c395 = function(c, ic) { return ic },
@@ -7325,7 +7325,9 @@ function peg$parse(input, options) {
      // return array
       array.forEach(function(json) {
         for (var key in json) {
-          if (typeof json[key] == "string") ret[key] = ret[key] ? trimEnd(ret[key]) + " " + trimStart(json[key]) : json[key]
+          if ( (typeof json[key] == "string") || (typeof json[key] === "number") ) {
+              ret[key] = ret[key] ? trimEnd(ret[key]) + " " + trimStart(json[key]) : json[key]
+          }
           if (Array.isArray(json[key])) ret[key] = ret[key] ? ret[key].concat(json[key]) : json[key]
         }
       })
