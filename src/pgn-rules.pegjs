@@ -63,7 +63,7 @@ tags = ws members:(
     { return members !== null ? members: {}; }
 
 
-tag = bl tag:tagKeyValue br { return tag; }
+tag = bl ws tag:tagKeyValue ws br { return tag; }
 
 tagKeyValue = eventKey ws value:string { return { name: 'Event', value: value }; }
 	/ siteKey ws value:string  { return { name: 'Site', value: value }; }

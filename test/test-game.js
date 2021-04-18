@@ -20,6 +20,13 @@ describe("When working with one game", function () {
         should(res.moves[0].notation.notation).equal("f4")
     })
 
+    it("should read unusual spacing of tags", function () {
+        let res = parse_game(' [ White    "Me"   ]  [  Black  "Magnus"   ] 1. e4')
+        should.exist(res)
+        should.exist(res.tags)
+        should.exist(res.moves)
+    })
+
     it("should read tags without notation", function () {
         let res = parse_game('[White "Me"] [Black "Magnus"] *')
         should.exist(res)

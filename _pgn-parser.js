@@ -1053,18 +1053,30 @@ function peg$parse(input, options) {
   }
 
   function peg$parsetag() {
-    var s0, s1, s2, s3;
+    var s0, s1, s2, s3, s4, s5;
 
     s0 = peg$currPos;
     s1 = peg$parsebl();
     if (s1 !== peg$FAILED) {
-      s2 = peg$parsetagKeyValue();
+      s2 = peg$parsews();
       if (s2 !== peg$FAILED) {
-        s3 = peg$parsebr();
+        s3 = peg$parsetagKeyValue();
         if (s3 !== peg$FAILED) {
-          peg$savedPos = s0;
-          s1 = peg$c6(s2);
-          s0 = s1;
+          s4 = peg$parsews();
+          if (s4 !== peg$FAILED) {
+            s5 = peg$parsebr();
+            if (s5 !== peg$FAILED) {
+              peg$savedPos = s0;
+              s1 = peg$c6(s3);
+              s0 = s1;
+            } else {
+              peg$currPos = s0;
+              s0 = peg$FAILED;
+            }
+          } else {
+            peg$currPos = s0;
+            s0 = peg$FAILED;
+          }
         } else {
           peg$currPos = s0;
           s0 = peg$FAILED;
