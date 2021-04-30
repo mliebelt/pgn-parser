@@ -7,7 +7,6 @@ function parse_pgn(string) {
 }
 
 describe("When working with PGN as string", function() {
-    let my_result;
     describe("When having read the moves", function() {
         it("should have 16 half-moves read", function() {
             let moves =  parse_pgn("1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6 5. Nc3 a6 6. Be3 e6 7. f3 Be7 8. Qd2 Qc7 ");
@@ -479,6 +478,7 @@ describe("Parsing PGN game with all kinds of discriminators", function () {
 describe("Just examples of complex notations or errors of the past", function () {
     it("should be useful in the documentation", function () {
         let my_res = parse_pgn("1. e4! {my favorite} e5 (1... c5!?)")
+        should.exist(my_res)
     })
     it("should check error #25", function () {
         let my_res = parse_pgn("1. e4 (1. d4) 1-0")
@@ -495,5 +495,20 @@ describe("Just examples of complex notations or errors of the past", function ()
     })
     it("should understand error #195 (PgnViewerJS): last comment direct before ending", function () {
         let my_res = parse_pgn("1. e4 { [%clk 0:03:00] } 1... Nf6 { [%clk 0:03:00] } 2. e5 { [%clk 0:02:59] } 2... Nd5 { [%clk 0:03:00] } 3. d4 { [%clk 0:02:58] } 3... d6 { [%clk 0:02:59] } { B03 Alekhine Defense } 4. f4 { [%clk 0:02:56] } 4... dxe5 { [%clk 0:02:59] } 5. fxe5 { [%clk 0:02:55] } 5... Bf5 { [%clk 0:02:58] } 6. Nf3 { [%clk 0:02:54] } 6... Nc6 { [%clk 0:02:58] } 7. Bc4 { [%clk 0:02:52] } 7... e6 { [%clk 0:02:57] } 8. O-O { [%clk 0:02:49] } 8... Ncb4 { [%clk 0:02:54] } 9. Bg5 { [%clk 0:02:45] } 9... f6 { [%clk 0:02:52] } 10. exf6 { [%clk 0:02:44] } 10... gxf6 { [%clk 0:02:52] } 11. Bh4 { [%clk 0:02:37] } 11... Nxc2 { [%clk 0:02:50] } 12. Re1 { [%clk 0:02:24] } 12... Nxa1 { [%clk 0:02:48] } 13. Nc3 { [%clk 0:02:20] } 13... Nxc3 { [%clk 0:02:26] } 14. Qxa1 { [%clk 0:02:12] } 14... Nd5 { [%clk 0:02:24] } 15. Qd1 { [%clk 0:01:52] } 15... Be7 { [%clk 0:02:12] } 16. Nd2 { [%clk 0:01:39] } 16... Qd7 { [%clk 0:01:56] } 17. Qh5+ { [%clk 0:01:37] } 17... Bg6 { [%clk 0:01:53] } 18. Qg4 { [%clk 0:01:28] } 18... Bf5 { [%clk 0:01:45] } 19. Qh5+ { [%clk 0:01:26] } 19... Bg6 { [%clk 0:01:42] } 20. Qg4 { [%clk 0:01:25] } 20... Bf7 { [%clk 0:01:34] } 21. Qg7 { [%clk 0:00:45] } 21... Rg8 { [%clk 0:01:26] } 22. Qxh7 { [%clk 0:00:44] } 22... O-O-O { [%clk 0:01:25] } 23. Ne4 { [%clk 0:00:31] } 23... Bg6 { [%clk 0:01:21] } 24. Qh6 { [%clk 0:00:22] } 24... Bxe4 { [%clk 0:01:16] } 25. Rxe4 { [%clk 0:00:19] } 25... Bd6 { [%clk 0:01:06] } 26. Qxf6 { [%clk 0:00:17] } 26... Rde8 { [%clk 0:01:00] } 27. Qf3 { [%clk 0:00:13] } 27... Nb6 { [%clk 0:00:56] } 28. Bb3 { [%clk 0:00:11] } 28... Qb5 { [%clk 0:00:49] } 29. Rxe6 { [%clk 0:00:06] } 29... Ref8 { [%clk 0:00:42] } 30. Qh3 { [%clk 0:00:04] } 30... Rf1# { [%clk 0:00:41] } { Black wins by checkmate. } 0-1")
+        should.exist(my_res)
+    })
+})
+
+describe("Parsing Crazyhouse notation", function () {
+    it("should understand drop notation", function () {
+        let my_res = parse_pgn("12... B@e7 {[%clk 0:00:45]}")
+        should.exist(my_res)
+        should.exist(my_res[0].notation)
+        let move = my_res[0].notation
+        should(move.fig).equal('B')
+        should(move.col).equal('e')
+        should(move.row).equal('7')
+        should(move.drop).equal(true)
+        should(move.notation).equal('B@e7')
     })
 })
