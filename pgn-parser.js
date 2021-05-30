@@ -37,10 +37,11 @@ const parse = function(input, options) {
                     _move.turn = _currentTurn
                     if (_move.variations) {
                         _move.variations.forEach(function(variation) {
-                            variation.forEach(varMove => currentTurn = setTurn(varMove, currentTurn))
+                            let varTurn = _currentTurn
+                            variation.forEach(varMove => varTurn = setTurn(varMove, varTurn))
                         })
                     }
-                    return switchTurn(currentTurn)
+                    return switchTurn(_currentTurn)
                 }
                 const START = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
                 let fen = _options.fen || (_game.tags && _game.tags['FEN']) || START

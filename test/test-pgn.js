@@ -531,5 +531,14 @@ describe("When doing post processing of one game (only pgn)", function () {
         should(my_res[0].turn).equal('w')
         should(my_res[1].turn).equal('b')
     })
-
+    it("should understand all variations well", function () {
+        let my_res = parse_pgn("1. e4 e5 ( 1... d5 2. exd5 Qxd5 ) ( 1... c5 2. Nf3 d6 ) 2. Nf3")
+        should.exist(my_res)
+        should(my_res[1].variations[0][0].turn).equal('b')
+        should(my_res[1].variations[0][1].turn).equal('w')
+        should(my_res[1].variations[0][2].turn).equal('b')
+        should(my_res[1].variations[1][0].turn).equal('b')
+        should(my_res[1].variations[1][1].turn).equal('w')
+        should(my_res[1].variations[1][2].turn).equal('b')
+    })
 })
