@@ -9,7 +9,8 @@ function parse_tags(string) {
 describe("When working with all kind of tags", function () {
     it("should read one tag", function () {
         let res = parse_tags('[White "Me"]')
-        should(Object.keys(res).length).equal(1)
+        should(Object.keys(res).length).equal(2)
+        should(res.White).equal("Me")
     })
     it("should read all 7 rooster tags", function () {
         let res = parse_tags('[Event "What a tournament"] [Site "My home town"] [Date "2020.05.16"] ' +
@@ -95,11 +96,19 @@ describe("When working with different formats for dates", function () {
         should(res.Time.hour).equal(9)
         should(res.UTCTime.value).equal("23:59:59")
     })
-    it("should raise errors when date or time format is wrong", function (){
-        should(function () { parse_tags('[Date "2020"]') } ).throwError()
-        should(function () { parse_tags('[Date "2020.12"]') } ).throwError()
-        should(function () { parse_tags('[Date "2020.12.xx"]') } ).throwError()
-        should(function () { parse_tags('[UTCDate "?.12.??"]') } ).throwError()
+    it("should collect messages for wrong date or time format", function (){
+        let res = parse_tags('[Date "2020"]')
+        should(res.messages.length).equal(1)
+        should(res.messages[0].message).equal("Format of tag: Date not correct: 2020")
+        res = parse_tags('[Date "2020.12"]')
+        should(res.messages.length).equal(1)
+        should(res.messages[0].message).equal("Format of tag: Date not correct: 2020.12")
+        res = parse_tags('[Date "2020.12.xx"]')
+        should(res.messages.length).equal(1)
+        should(res.messages[0].message).equal("Format of tag: Date not correct: 2020.12.xx")
+        res = parse_tags('[UTCDate "?.12.??"]')
+        should(res.messages.length).equal(1)
+        should(res.messages[0].message).equal("Format of tag: UTCDate not correct: ?.12.??")
     })
 
 })
@@ -188,7 +197,9 @@ describe("Allow different kind of results", function () {
         should(res.Result).equal("1/2-1/2")
     })
     it("should signal error on result: 1:0", function () {
-        should(function () { parse_tags('[Result "1:0"]') } ).throwError()
+        let res = parse_tags('[Result "1:0"]')
+        should(res.Result).equal("1:0")
+        should(res.messages.length).equal(1)
     })
 })
 
@@ -273,10 +284,20 @@ describe("Understand all possible TimeControl tags", function () {
         should(res.TimeControl.seconds).equal(60)
     })
     it("should raise an error for wrong formats", function () {
-        should(function () { parse_tags('[TimeControl ""]') } ).throwError()
-        should(function () { parse_tags('[TimeControl "+"]') } ).throwError()
-        should(function () { parse_tags('[TimeControl "400+"]') } ).throwError()
-        should(function () { parse_tags('[TimeControl "400*"]') } ).throwError()
-        should(function () { parse_tags('[TimeControl "40/600+40"]') } ).throwError()
+        let res = parse_tags('[TimeControl ""]')
+        should(res.messages.length).equal(1)
+        should(res.messages[0].message).equal("Format of tag: TimeControl not correct: ")
+        res = parse_tags('[TimeControl "+"]')
+        should(res.messages.length).equal(1)
+        should(res.messages[0].message).equal("Format of tag: TimeControl not correct: +")
+        res = parse_tags('[TimeControl "400+"]')
+        should(res.messages.length).equal(1)
+        should(res.messages[0].message).equal("Format of tag: TimeControl not correct: 400+")
+        res = parse_tags('[TimeControl "400*"]')
+        should(res.messages.length).equal(1)
+        should(res.messages[0].message).equal("Format of tag: TimeControl not correct: 400*")
+        res = parse_tags('[TimeControl "40/600+40"]')
+        should(res.messages.length).equal(1)
+        should(res.messages[0].message).equal("Format of tag: TimeControl not correct: 40/600+40")
     })
 })

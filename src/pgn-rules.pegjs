@@ -1,4 +1,6 @@
 {
+    var messages = [];
+
     function makeInteger(o) {
         return parseInt(o.join(""), 10);
     }
@@ -42,12 +44,13 @@ games = ws games:(
             return [head].concat(tail) }
        )? {
             //console.log("Length: " + games.length);
-            return games }
+            return games; }
 
 game = t:tags? c:comments? p:pgn
     {
       //console.log("Length pgn: " + p.length);
-      return { tags: t, gameComment: c, moves: p }; }
+      var mess = messages; messages = {};
+      return { tags: t, gameComment: c, moves: p, messages: mess }; }
 
 tags = ws members:(
       head:tag
@@ -60,7 +63,8 @@ tags = ws members:(
         return result;
       }
     )? ws
-    { return members !== null ? members: {}; }
+    { if (members === null) return {};
+      members.messages = messages; return members;}
 
 
 tag = bl ws tag:tagKeyValue ws br { return tag; }
@@ -109,6 +113,9 @@ tagKeyValue = eventKey ws value:string { return { name: 'Event', value: value };
 	/ blackFideIdKey ws value:string { return { name: 'BlackFideId', value: value }; }
 	/ whiteTeamKey ws value:string { return { name: 'WhiteTeam', value: value }; }
 	/ blackTeamKey ws value:string { return { name: 'BlackTeam', value: value }; }
+	/ & validatedKey a:anyKey ws value:string
+	      { var res = location(); res.key = a; res.value = value; res.message = "Format of tag: " + a + " not correct: " + value;
+	        messages.push(res); return { name: a, value: value }; }
 	/ ! validatedKey a:anyKey ws value:string { return { name: a, value: value }; }
 /*	/ ! validatedKey a:anyKey ws value:string { console.log('Unknown Key: ' + a); return { name: a, value: value }; } */
 
@@ -181,9 +188,12 @@ date = quotation_mark year:([0-9\?] [0-9\?] [0-9\?] [0-9\?]) '.' month:([0-9\?] 
 	{ let val = "" + year.join("") + '.' + month.join("") + '.' + day.join("");
 	    return { value: val, year: mi(year), month: mi(month), day: mi(day) }; }
 
-time = quotation_mark hour:([0-9]+) ':' minute:([0-9]+) ':' second:([0-9]+) quotation_mark
+time = quotation_mark hour:([0-9]+) ':' minute:([0-9]+) ':' second:([0-9]+) millis:millis? quotation_mark
     { let val = hour.join("") + ':' + minute.join("") + ':' + second.join("");
-        return { value: val, hour: mi(hour), minute: mi(minute), second: mi(second) }; }
+      millis ? val = val + '.' + millis : val;
+      let ms = millis ? mi(millis) : 0;
+      return { value: val, hour: mi(hour), minute: mi(minute), second: mi(second), millis: ms }; }
+millis = '.' millis:([0-9]+) { return millis.join(""); }
 
 timeControl = quotation_mark res:tcnq quotation_mark    { return res; }
 tcnq = '?' { return { kind: 'unknown', value: '?' }; }
@@ -208,38 +218,15 @@ integerString =
 	quotation_mark digits:[0-9]+ quotation_mark { return makeInteger(digits); }
 
 pgn
-  = ws pw:pgnStartWhite
-      { return pw; }
-  / ws pb:pgnStartBlack
-    { return pb; }
-
-pgnStartWhite
-  = pw:pgnWhite ws { return pw; }
-
-pgnStartBlack
-  = pb:pgnBlack ws { return pb; }
-
-pgnWhite
-  = ws cm:comments? ws mn:moveNumber? ws hm:halfMove  ws nag:nags?  ws ca:comments? ws vari:variationWhite? all:pgnBlack?
+  = ws cm:comments? ws mn:moveNumber? ws hm:halfMove  ws nag:nags?  ws ca:comments? ws vari:variation? all:pgn?
     { var arr = (all ? all : []);
-      var move = {}; move.turn = 'w'; move.moveNumber = mn; move.notation = hm;
+      var move = {}; move.moveNumber = mn; move.notation = hm;
       if (ca) { move.commentAfter = ca.comment };
       if (cm) { move.commentMove = cm.comment };
       move.variations = (vari ? vari : []); move.nag = (nag ? nag : null); arr.unshift(move); 
       move.commentDiag = ca;
       return arr; }
   / ws e:endGame ws {return e; }
-
-pgnBlack
-  = ws cm:comments? ws me:moveNumber? ws hm:halfMove ws nag:nags? ws ca:comments? ws ws vari:variationBlack? all:pgnWhite?
-    { var arr = (all ? all : []);
-      var move = {}; move.turn = 'b'; move.moveNumber = me; move.notation = hm;
-      if (ca) { move.commentAfter = ca.comment };
-      if (cm) { move.commentMove = cm.comment };
-      move.variations = (vari ? vari : []); arr.unshift(move); move.nag = (nag ? nag : null);
-      move.commentDiag = ca;
-      return arr; }
-  / ws e:endGame ws { return e; }
 
 endGame
   = eg:innerResult { return [eg]; }
@@ -322,12 +309,8 @@ clockValue
 digit
   = d:[0-9] { return d; }
 
-variationWhite
-  = pl vari:pgnWhite pr ws all:variationWhite?
-    { var arr = (all ? all : []); arr.unshift(vari); return arr; }
-
-variationBlack
-  = pl vari:pgnStartBlack pr ws all:variationBlack?
+variation
+  = pl vari:pgn pr ws all:variation?
     { var arr = (all ? all : []); arr.unshift(vari); return arr; }
 
 pl = '('

@@ -139,3 +139,15 @@ describe("When reading a game with gameComment", function () {
         should(res.gameComment.comment).equal("comment1 comment2")
     })
 })
+
+describe("When reading games with incorrect format", function () {
+    it("should emmit warnings in games", function () {
+        let res = parse_game('[Date "xx"] *')
+        should.exist(res)
+        should(res.moves.length).equal(1)
+        should(res.messages.length).equal(1)
+        should(res.messages[0].key).equal("Date")
+        should(res.messages[0].value).equal("xx")
+        should(res.messages[0].message).equal("Format of tag: Date not correct: xx")
+    })
+})

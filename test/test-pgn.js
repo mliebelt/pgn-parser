@@ -15,18 +15,16 @@ describe("When working with PGN as string", function() {
             const sec = moves[1];
             const seventh = moves[6];
             should(first.notation.notation).equal("e4");
-            should(first.turn).equal('w');
-            should(sec.turn).equal('b');
-            //should(sec.moveNumber).toBeUndefined();
             should(seventh.moveNumber).equal(4);
-            should(seventh.turn).equal('w');
             should(seventh.notation.notation).equal('Nxd4');
         })
     });
 });
 
+// TODO There is no way to have `turn` set after parsing, no differentiation possible. Only when interpreting tags (FEN),
+// TODO this can be done correctly.
 describe("When reading complete game starting with the first move", function () {
-    it("should notice white starting and color switching each move", function () {
+    xit("should notice white starting and color switching each move", function () {
         let my_res = parse_pgn("1. e4 e5 2. Nf3");
         should(my_res.length).equal(3);
         should(my_res[0].turn).equal("w");
@@ -44,7 +42,6 @@ describe("When reading complete game starting with the first move", function () 
     it("should read all kind of move numbers without problems", function () {
         let my_res = parse_pgn("1... e4 1... e5 2.. d4 2 . d5 f4 3. f5")
         should(my_res.length).equal(6)
-        should(my_res[0].turn).equal("w")
         should(my_res[0].notation.notation).equal("e4")
         should(my_res[0].moveNumber).equal(1)
         should(my_res[1].moveNumber).equal(1)
