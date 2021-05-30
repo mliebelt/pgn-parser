@@ -151,3 +151,44 @@ describe("When reading games with incorrect format", function () {
         should(res.messages[0].message).equal("Format of tag: Date not correct: xx")
     })
 })
+
+describe("When doing post processing of one game", function () {
+    it("should handle turn correct", function () {
+        let res = parse_game('1. e4 e5')
+        should.exist(res)
+        should(res.moves.length).equal(2)
+        should(res.moves[0].turn).equal('w')
+        should(res.moves[1].turn).equal('b')
+    })
+    it("should handle turn correct for variations", function () {
+        let res = parse_game('1. e4 e5 (1... d5 2. Nc3)')
+        should.exist(res)
+        should(res.moves.length).equal(2)
+        should(res.moves[0].turn).equal('w')
+        should(res.moves[1].turn).equal('b')
+        should(res.moves[1].variations[0][0].turn).equal('b')
+        should(res.moves[1].variations[0][1].turn).equal('w')
+    })
+    it("should handle correct turn for black with FEN given", function () {
+        let res = parse_game('[FEN "rnbqkbnr/pppp1ppp/8/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2"] Nc6 3. d4')
+        should.exist(res)
+        should(res.moves.length).equal(2)
+        should(res.moves[0].turn).equal('b')
+        should(res.moves[1].turn).equal('w')
+    })
+    it("should handle correct turn for white with FEN given", function () {
+        let res = parse_game('[FEN "r1bqkbnr/pppp1ppp/2n5/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3"] 3. d4 exd4')
+        should.exist(res)
+        should(res.moves.length).equal(2)
+        should(res.moves[0].turn).equal('w')
+        should(res.moves[1].turn).equal('b')
+    })
+    it("should handle correct turn for white with FEN given by option", function () {
+        let res = parser.parse('3. d4 exd4',
+            { startRule: 'game', fen: 'r1bqkbnr/pppp1ppp/2n5/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3'})
+        should.exist(res)
+        should(res.moves.length).equal(2)
+        should(res.moves[0].turn).equal('w')
+        should(res.moves[1].turn).equal('b')
+    })
+})

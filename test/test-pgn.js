@@ -509,3 +509,27 @@ describe("Parsing Crazyhouse notation", function () {
         should(move.notation).equal('B@e7')
     })
 })
+
+describe("When doing post processing of one game (only pgn)", function () {
+    it("should handle turn correct", function () {
+        let my_res = parse_pgn("1. e4 e5")
+        should.exist(my_res)
+        should(my_res[0].turn).equal('w')
+        should(my_res[1].turn).equal('b')
+    })
+    it("should handle turn correct for black with fen", function () {
+        let my_res = parser.parse("2... Nc6 3. d4",
+            { startRule: 'pgn', fen: 'rnbqkbnr/pppp1ppp/8/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2'})
+        should.exist(my_res)
+        should(my_res[0].turn).equal('b')
+        should(my_res[1].turn).equal('w')
+    })
+    it("should handle turn correct for white with fen", function () {
+        let my_res = parser.parse("3. d4 exd4",
+            { startRule: 'pgn', fen: 'r1bqkbnr/pppp1ppp/2n5/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3'})
+        should.exist(my_res)
+        should(my_res[0].turn).equal('w')
+        should(my_res[1].turn).equal('b')
+    })
+
+})

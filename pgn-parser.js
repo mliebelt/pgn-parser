@@ -11,17 +11,58 @@ const parse = function(input, options) {
         input = input.trim()
     }
     let result = parser.parse(input, options)
-    if (options && (options.startRule === 'games')) {
-        // result should be an array of games. Check the last game, if it is empty, and remove it then
-        if (! Array.isArray(result)) return []
-        if (result.length === 0) return result
-        let last = result.pop()
-        if ( (Object.keys(last.tags).length > 0) || (last.moves.length > 0) ) {
-            result.push(last)
+
+    function postParse(_parseTree, _input, _options) {
+        function handleGamesAnomaly(parseTree) {
+            if (options && (options.startRule === 'games')) {
+                // result should be an array of games. Check the last game, if it is empty, and remove it then
+                if (!Array.isArray(parseTree)) return []
+                if (parseTree.length === 0) return parseTree
+                let last = parseTree.pop()
+                if ((Object.keys(last.tags).length > 0) || (last.moves.length > 0)) {
+                    parseTree.push(last)
+                }
+            }
+            return parseTree
         }
-        return result
+        function handleTurn(parseResult) {
+            function handleTurnGame(_game) {
+                function getTurnFromFEN(fen) {
+                    return fen.split(/\s+/)[1];
+                }
+                function setTurn(_move, _currentTurn) {
+                    function switchTurn(currentTurn) {
+                        return currentTurn === 'w' ? 'b' : 'w';
+                    }
+                    _move.turn = _currentTurn
+                    if (_move.variations) {
+                        _move.variations.forEach(function(variation) {
+                            variation.forEach(varMove => currentTurn = setTurn(varMove, currentTurn))
+                        })
+                    }
+                    return switchTurn(currentTurn)
+                }
+                const START = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
+                let fen = _options.fen || (_game.tags && _game.tags['FEN']) || START
+                let currentTurn = getTurnFromFEN(fen)
+                _game.moves.forEach(move => currentTurn = setTurn(move, currentTurn))
+                return _game
+            }
+            if (options.startRule === 'game') {
+                return handleTurnGame(parseResult)
+            } else if (options.startRule === 'pgn') {
+                return handleTurnGame( { moves: parseResult} ).moves
+            }
+            if (options.startRule === 'games') {
+                parseResult.forEach(game => handleTurnGame(game))
+
+            }
+            return parseResult
+        }
+        return handleTurn(handleGamesAnomaly(_parseTree))
     }
-    return result
+
+    return postParse(result, input, options);
 }
 
 module.exports = {

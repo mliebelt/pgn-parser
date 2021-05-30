@@ -95,3 +95,15 @@ describe("When reading more than 1 game", function () {
         should(res.length).equal(4)
     })
 })
+
+describe("When doing post processing of many games", function () {
+    it("should handle turn correct", function () {
+        let res = parse_games('1. e4 e5 * [FEN "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1"] d4 exd5 *')
+        should.exist(res)
+        should(res.length).equal(2)
+        should(res[0].moves[0].turn).equal('w')
+        should(res[0].moves[1].turn).equal('b')
+        should(res[1].moves[0].turn).equal('b')
+        should(res[1].moves[1].turn).equal('w')
+    })
+})
