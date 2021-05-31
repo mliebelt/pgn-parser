@@ -23,11 +23,11 @@
   },
   "devDependencies": {
     "mocha": "^8.0.1",
-    "pegjs": "^0.10.0",
+    "peggy": "^1.1.0",
     "should": "^13.2.3"
   },
   "scripts": {
-    "build": "node_modules/pegjs/bin/pegjs --allowed-start-rules pgn,tags,game,games -o _pgn-parser.js src/pgn-rules.pegjs",
+    "build": "node_modules/peggy/bin/peggy --allowed-start-rules pgn,tags,game,games -o _pgn-parser.js src/pgn-rules.pegjs",
     "test": "mocha",
     "test-interactive": "mocha -w",
     "prepublish": "npm build && npm test"
