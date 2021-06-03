@@ -107,7 +107,7 @@ tagKeyValue = eventKey ws value:string { return { name: 'Event', value: value };
 	/ setUpKey ws value:string  { return { name: 'SetUp', value: value }; }
 	/ fenKey ws value:string  { return { name: 'FEN', value: value }; }
 	/ terminationKey ws value:string  { return { name: 'Termination', value: value }; }
-	/ anotatorKey ws value:string  { return { name: 'Annotator', value: value }; }
+	/ annotatorKey ws value:string  { return { name: 'Annotator', value: value }; }
 	/ modeKey ws value:string  { return { name: 'Mode', value: value }; }
 	/ plyCountKey ws value:integerString  { return { name: 'PlyCount', value: value }; }
 	/ variantKey ws value:string { return { name: 'Variant', value: value }; }
@@ -117,6 +117,9 @@ tagKeyValue = eventKey ws value:string { return { name: 'Event', value: value };
 	/ blackFideIdKey ws value:string { return { name: 'BlackFideId', value: value }; }
 	/ whiteTeamKey ws value:string { return { name: 'WhiteTeam', value: value }; }
 	/ blackTeamKey ws value:string { return { name: 'BlackTeam', value: value }; }
+	/ clockKey ws value:colorClockTimeQ { return { name: 'Clock', value: value }; }
+	/ whiteClockKey ws value:clockTimeQ { return { name: 'WhiteClock', value: value }; }
+	/ blackClockKey ws value:clockTimeQ { return { name: 'BlackClock', value: value }; }
 	/ & validatedKey a:anyKey ws value:string
 	      { addMessage( {key: a, value: value, message: `Format of tag: "${a}" not correct: "${value}"`} );
 	        return { name: a, value: value }; }
@@ -126,7 +129,7 @@ tagKeyValue = eventKey ws value:string { return { name: 'Event', value: value };
 /*	/ ! validatedKey a:a ws value:string { console.log('Unknown Key: ' + a); return { name: a, value: value }; } */
 
 validatedKey  = dateKey / whiteEloKey / blackEloKey / whiteUSCFKey / blackUSCFKey / resultKey / eventDateKey / boardKey /
-        timeKey / utcTimeKey / utcDateKey / timeControlKey / plyCountKey
+        timeKey / utcTimeKey / utcDateKey / timeControlKey / plyCountKey / clockKey / whiteClockKey / blackClockKey
 
 eventKey 				=  'Event' / 'event'
 siteKey 				=  'Site' / 'site'
@@ -162,7 +165,7 @@ timeControlKey          =  'TimeControl' / 'Timecontrol' / 'timecontrol' / 'time
 setUpKey                =  'SetUp' / 'Setup' / 'setup' / 'setUp'
 fenKey                  =  'FEN' / 'Fen' / 'fen'
 terminationKey          =  'Termination'  / 'termination'
-anotatorKey             =  'Annotator'  / 'annotator'
+annotatorKey             =  'Annotator'  / 'annotator'
 modeKey                 =  'Mode' / 'mode'
 plyCountKey             =  'PlyCount'  / 'Plycount' / 'plycount' / 'plyCount'
 variantKey              =  'Variant' / 'variant'
@@ -172,6 +175,9 @@ whiteFideIdKey          =  'WhiteFideId'
 blackFideIdKey          =  'BlackFideId'
 whiteTeamKey            =  'WhiteTeam'
 blackTeamKey            =  'BlackTeam'
+clockKey                =  'Clock'
+whiteClockKey           =  'WhiteClock'
+blackClockKey           =  'BlackClock'
 anyKey                  =  stringNoQuot
 
 
@@ -204,7 +210,15 @@ time = quotation_mark hour:([0-9]+) ':' minute:([0-9]+) ':' second:([0-9]+) mill
       return { value: val, hour: mi(hour), minute: mi(minute), second: mi(second), millis: ms }; }
 millis = '.' millis:([0-9]+) { return millis.join(""); }
 
+colorClockTimeQ = quotation_mark value:colorClockTime quotation_mark { return value; }
+colorClockTime = c:clockColor '/' t:clockTime { return c + '/' + t; }
+clockColor = 'B' / 'W' / 'N'
+
+clockTimeQ = quotation_mark value:clockTime quotation_mark { return value; }
+clockTime = value:clockValue1D { return value; }
+
 timeControl = quotation_mark res:tcnq quotation_mark    { return res; }
+
 tcnq = '?' { return { kind: 'unknown', value: '?' }; }
     / '-' { return { kind: 'unlimited', value: '-' }; }
     / moves:integer "/" seconds:integer { return { kind: 'movesInSeconds', moves: moves, seconds: seconds }; }

@@ -301,3 +301,30 @@ describe("Understand all possible TimeControl tags", function () {
         should(res.messages[0].message).equal('Format of tag: "TimeControl" not correct: "40/600+40"')
     })
 })
+
+describe("When reading tags with clock context", function () {
+    it("should understand the normal Clock format, color White", function (){
+        let res = parse_tags('[Clock "W/0:45:56"]')
+        should.exist(res)
+        should(res.Clock).equal("W/0:45:56")
+        should(res.messages.length).equal(0)
+    })
+    it("should understand the normal Clock format, clock stopped", function (){
+        let res = parse_tags('[Clock "N/0:45:56"]')
+        should.exist(res)
+        should(res.Clock).equal("N/0:45:56")
+        should(res.messages.length).equal(0)
+    })
+    it("should understand the normal WhiteClock format", function (){
+        let res = parse_tags('[WhiteClock "1:25:50"]')
+        should.exist(res)
+        should(res.WhiteClock).equal("1:25:50")
+        should(res.messages.length).equal(0)
+    })
+    it("should understand the normal BlackClock format", function (){
+        let res = parse_tags('[BlackClock "0:05:15"]')
+        should.exist(res)
+        should(res.BlackClock).equal("0:05:15")
+        should(res.messages.length).equal(0)
+    })
+})
