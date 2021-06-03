@@ -148,7 +148,7 @@ describe("When reading games with incorrect format", function () {
         should(res.messages.length).equal(1)
         should(res.messages[0].key).equal("Date")
         should(res.messages[0].value).equal("xx")
-        should(res.messages[0].message).equal("Format of tag: Date not correct: xx")
+        should(res.messages[0].message).equal('Format of tag: "Date" not correct: "xx"')
     })
 })
 

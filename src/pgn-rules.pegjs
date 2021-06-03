@@ -1,6 +1,10 @@
 {
     var messages = [];
 
+    function addMessage(json) {
+        var o = Object.assign(json, location()); messages.push(o); return o;
+    }
+
     function makeInteger(o) {
         return parseInt(o.join(""), 10);
     }
@@ -114,10 +118,12 @@ tagKeyValue = eventKey ws value:string { return { name: 'Event', value: value };
 	/ whiteTeamKey ws value:string { return { name: 'WhiteTeam', value: value }; }
 	/ blackTeamKey ws value:string { return { name: 'BlackTeam', value: value }; }
 	/ & validatedKey a:anyKey ws value:string
-	      { var res = location(); res.key = a; res.value = value; res.message = "Format of tag: " + a + " not correct: " + value;
-	        messages.push(res); return { name: a, value: value }; }
-	/ ! validatedKey a:anyKey ws value:string { return { name: a, value: value }; }
-/*	/ ! validatedKey a:anyKey ws value:string { console.log('Unknown Key: ' + a); return { name: a, value: value }; } */
+	      { addMessage( {key: a, value: value, message: `Format of tag: "${a}" not correct: "${value}"`} );
+	        return { name: a, value: value }; }
+	/ ! validatedKey a:anyKey ws value:string
+	    { addMessage( {key: a, value: value, message: `Tag: "${a}" not known: "${value}"`} );
+	      return { name: a, value: value }; }
+/*	/ ! validatedKey a:a ws value:string { console.log('Unknown Key: ' + a); return { name: a, value: value }; } */
 
 validatedKey  = dateKey / whiteEloKey / blackEloKey / whiteUSCFKey / blackUSCFKey / resultKey / eventDateKey / boardKey /
         timeKey / utcTimeKey / utcDateKey / timeControlKey / plyCountKey
@@ -189,9 +195,12 @@ date = quotation_mark year:([0-9\?] [0-9\?] [0-9\?] [0-9\?]) '.' month:([0-9\?] 
 	    return { value: val, year: mi(year), month: mi(month), day: mi(day) }; }
 
 time = quotation_mark hour:([0-9]+) ':' minute:([0-9]+) ':' second:([0-9]+) millis:millis? quotation_mark
-    { let val = hour.join("") + ':' + minute.join("") + ':' + second.join("");
-      millis ? val = val + '.' + millis : val;
-      let ms = millis ? mi(millis) : 0;
+    { let val = hour.join("") + ':' + minute.join("") + ':' + second.join(""); let ms = 0;
+      if (millis) {
+         val = val + '.' + millis;
+         addMessage({ message: `Unusual use of millis in time: ${val}` });
+         mi(millis);
+      }
       return { value: val, hour: mi(hour), minute: mi(minute), second: mi(second), millis: ms }; }
 millis = '.' millis:([0-9]+) { return millis.join(""); }
 
@@ -244,7 +253,9 @@ innerComment
       { return merge([{ colorFields: cf }].concat(tail[0])) }
   / ws bl "%cal" wsp ca:colorArrows ws br ws tail:(ic:innerComment { return ic })*
       { return merge([{ colorArrows: ca }].concat(tail[0])) }
-  / ws bl "%" cc:clockCommand wsp cv:clockValue ws br ws tail:(ic:innerComment { return ic })*
+  / ws bl "%" cc:clockCommand1D wsp cv:clockValue1D ws br ws tail:(ic:innerComment { return ic })*
+      { var ret = {}; ret[cc]= cv; return merge([ret].concat(tail[0])) }
+  / ws bl "%" cc:clockCommand2D wsp cv:clockValue2D ws br ws tail:(ic:innerComment { return ic })*
       { var ret = {}; ret[cc]= cv; return merge([ret].concat(tail[0])) }
   / ws bl "%eval" wsp ev:stringNoQuot ws br ws tail:(ic:innerComment { return ic })*
       { var ret = {};  ret["eval"]= parseFloat(ev); return merge([ret].concat(tail[0])) }
@@ -302,9 +313,55 @@ clockCommand
   / "emt" { return "emt"; }
   / "mct" { return "mct"; }
 
-clockValue
-  = h1:digit h2:digit? ":" m1:digit m2:digit ":" s1:digit s2:digit
-  { var ret = h1; if (h2) { ret += h2 }; ret += ":" + m1 + m2 + ":" + s1 + s2; return ret; }
+clockCommand1D
+  = "clk" { return "clk"; }
+  / "egt" { return "egt"; }
+  / "emt" { return "emt"; }
+
+clockCommand2D
+  = "mct" { return "mct"; }
+
+clockValue1D
+  = hm:hoursMinutes? s1:digit s2:digit? millis:millis?
+  { let ret = s1;
+    if (!hm) { addMessage({ message: `Hours and minutes missing`}) } else { ret = hm + ret }
+    if (hm && ((hm.match(/:/g) || []).length == 2)) {
+          if (hm.search(':') == 2) { addMessage({ message: `Only 1 digit for hours normally used`}) }
+        }
+    if (!s2) { addMessage({ message: `Only 2 digit for seconds normally used`}) } else { ret += s2 }
+    if (millis) { addMessage({ message: `Unusual use of millis in clock value`}); ret += '.' + millis }
+    return ret; }
+
+clockValue2D
+  = hm:hoursMinutes? s1:digit s2:digit?
+  { let ret = s1;
+    if (!hm) { addMessage({ message: `Hours and minutes missing`}) } else { ret = hm + ret }
+    if (hm && ((hm.match(/:/g) || []).length == 2)) {
+      if (hm.search(':') == 1) { addMessage({ message: `Only 2 digits for hours normally used`}) }
+    }
+    if (!s2) { addMessage({ message: `Only 2 digit for seconds normally used`}) } else { ret += s2 }
+    return ret; }
+
+hoursMinutes
+  = hours:hoursClock minutes:minutesClock?
+    { if (!minutes) {
+          addMessage({ message: `No hours found`}); return hours }
+      return hours + minutes; }
+
+hoursClock
+  = h1:digit h2:digit? ":"
+  { let ret = h1;
+    if (h2) {
+      ret += h2 + ":";
+    } else { ret += ":" }
+    return ret; }
+
+minutesClock
+  = m1:digit m2:digit? ":"
+  { let ret = m1;
+    if (m2) { ret += m2 + ":"; }
+    else { ret += ":"; addMessage({ message: `Only 2 digits for minutes normally used`}) }
+    return ret; }
 
 digit
   = d:[0-9] { return d; }

@@ -7,7 +7,7 @@
     "peg",
     "parser"
   ],
-  "version": "1.3.1",
+  "version": "1.3.2",
   "homepage": "https://github.com/mliebelt/pgn-parser/blob/master/README.md",
   "bugs": "https://github.com/mliebelt/pgn-parser/issues",
   "main": "pgn-parser.js",
@@ -23,13 +23,13 @@
   },
   "devDependencies": {
     "mocha": "^8.0.1",
-    "peggy": "^1.1.0",
+    "peggy": "^1.2.0",
     "should": "^13.2.3"
   },
   "scripts": {
     "build": "node_modules/peggy/bin/peggy --allowed-start-rules pgn,tags,game,games -o _pgn-parser.js src/pgn-rules.pegjs",
     "test": "mocha",
     "test-interactive": "mocha -w",
-    "prepublish": "npm build && npm test"
+    "prepare": "npm run build && npm test"
   }
 }

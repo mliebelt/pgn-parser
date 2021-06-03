@@ -347,6 +347,54 @@ does this work?? } c6`
     })
 })
 
+describe("Parsing PGN with clockCommands with unusual format", function () {
+    it("should emmit messages for mct with 1 hour digit", function () {
+        let my_res = parser.parse("e5 { [%mct 1:10:42] }", {startRule: "game"})
+        should.exist(my_res)
+        should(my_res.moves[0].commentDiag["mct"]).equal("1:10:42")
+        should(my_res.messages[0].message).equal("Only 2 digits for hours normally used")
+    })
+    it("should emmit messages for egt, emt, clk with 2 hour digit", function () {
+        let my_res = parser.parse("e5 { [%egt 01:10:42] }", {startRule: "game"})
+        should.exist(my_res)
+        should(my_res.moves[0].commentDiag["egt"]).equal("01:10:42")
+        should(my_res.messages[0].message).equal("Only 1 digit for hours normally used")
+        my_res = parser.parse("e5 { [%emt 01:10:42] }", {startRule: "game"})
+        should.exist(my_res)
+        should(my_res.moves[0].commentDiag["emt"]).equal("01:10:42")
+        should(my_res.messages[0].message).equal("Only 1 digit for hours normally used")
+        my_res = parser.parse("e5 { [%clk 01:10:42] }", {startRule: "game"})
+        should.exist(my_res)
+        should(my_res.moves[0].commentDiag["clk"]).equal("01:10:42")
+        should(my_res.messages[0].message).equal("Only 1 digit for hours normally used")
+    })
+    it("should emmit a message for incomplete 1 hour digit commands: only seconds", function () {
+        let my_res = parser.parse("e5 { [%emt 42] }", {startRule: "game"})
+        should.exist(my_res)
+        should(my_res.moves[0].commentDiag["emt"]).equal("42")
+        should(my_res.messages[0].message).equal("Hours and minutes missing")
+    })
+    it("should emmit a message for incomplete 1 hour digit commands: hours missing", function () {
+        let my_res = parser.parse("e5 { [%emt 12:42] }", {startRule: "game"})
+        should.exist(my_res)
+        should(my_res.moves[0].commentDiag["emt"]).equal("12:42")
+        should(my_res.messages[0].message).equal("No hours found")
+    })
+    it("should emmit a message for incomplete 1 hour digit commands: 1 digit minutes", function () {
+        let my_res = parser.parse("e5 { [%emt 2:42] }", {startRule: "game"})
+        should.exist(my_res)
+        should(my_res.moves[0].commentDiag["emt"]).equal("2:42")
+        should(my_res.messages[0].message).equal("No hours found")
+    })
+    it("should emmit a message for use of millis", function () {
+        let my_res = parser.parse("e5 {[%clk 0:00:59.8]}", {startRule: "game"})
+        should.exist(my_res)
+        should(my_res.moves[0].commentDiag["clk"]).equal("0:00:59.8")
+        should(my_res.messages[0].message).equal("Unusual use of millis in clock value")
+    })
+
+})
+
 describe("Parsing PGN game with all kinds of variation", function () {
     it("should read 1 variation", function () {
         let my_res = parse_pgn("1. e4 e5 (1... c5 2. Nf3) 2. Nf3 Nc6")

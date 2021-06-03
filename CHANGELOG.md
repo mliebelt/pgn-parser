@@ -16,7 +16,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 * [#40](https://github.com/mliebelt/pgn-parser/issues/40) Ignore unknown actions in comments like `1. e4 {[%foo 1.01]}`.
-* [#41](https://github.com/mliebelt/pgn-parser/issues/41) Read eval comments and store in `commentDiags`.
+* [#41](https://github.com/mliebelt/pgn-parser/issues/41) Read eval comments and store in `commentDiags`lock.
 
 ## [1.2.0](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.2.0) 21-03-14
 
