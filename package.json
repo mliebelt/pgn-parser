@@ -22,7 +22,7 @@
     "url": "https://github.com/mliebelt/pgn-parser.git"
   },
   "devDependencies": {
-    "mocha": "^8.0.1",
+    "mocha": "^9.0.0",
     "peggy": "^1.2.0",
     "should": "^13.2.3"
   },
