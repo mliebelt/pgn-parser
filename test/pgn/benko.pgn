@@ -1,0 +1,35 @@
+[Event "Vienna"]
+[Site "Vienna"]
+[Date "1898.??.??"]
+[Round "?"]
+[White "Burn, Amos"]
+[Black "Chigorin, Mikhail"]
+[Result "1-0"]
+[WhiteElo ""]
+[BlackElo ""]
+[ECO "E76"]
+
+1.d4 Nf6 2.c4 c5 3.d5 d6 4.Nc3 g6 5.e4 Bg7 6.f4 O-O 7.Nf3 Bg4 8.h3 Bxf3 9.Qxf3 Nbd7
+10.g4 e6 11.dxe6 fxe6 12.Bd2 Ne8 13.O-O-O Qf6 14.h4 Qf7 15.Qd3 Bh6 16.g5 Bg7
+17.h5 gxh5 18.Be2 Bxc3 19.Qxc3 Ng7 20.Rh4 d5 21.cxd5 exd5 22.exd5 Rfe8 23.Bf3 b5
+24.Rdh1 Nf8 25.Bxh5 Nxh5 26.Rxh5 Re4 27.Qh3 Rc4+ 28.Kb1 Qxd5 29.Bc3 Re8 30.g6 Qe4+
+31.Ka1 hxg6 32.Re5 Qxh1+ 33.Qxh1 b4 34.Qd5+  1-0
+
+[Event "Hastings"]
+[Site "Hastings"]
+[Date "1895.??.??"]
+[Round "?"]
+[White "Steinitz, William"]
+[Black "Tinsley, Samuel"]
+[Result "1-0"]
+[WhiteElo ""]
+[BlackElo ""]
+[ECO "E70"]
+
+1.d4 Nf6 2.c4 c5 3.d5 d6 4.Nc3 g6 5.e4 Bg7 6.Bd3 O-O 7.Nge2 Nbd7 8.Nf4 Ne5
+9.Be2 b6 10.h4 h5 11.f3 Rb8 12.Nh3 a6 13.a4 Re8 14.Nf2 e6 15.Bg5 exd5 16.Nxd5 Be6
+17.Ne3 Qd7 18.Nh3 Nc6 19.Bf4 Bxh3 20.Rxh3 Nd4 21.Bd3 Rb7 22.Kf2 Ne6 23.Bg3 Bh6
+24.Nd5 Nxd5 25.cxd5 Nf4 26.Bxf4 Bxf4 27.Bxa6 Be5 28.Bxb7 Bd4+ 29.Kf1 Qxb7
+30.Qb3 Ra8 31.Rb1 Qa6+ 32.Qb5 Qxa4 33.Qxa4 Rxa4 34.f4 Rb4 35.b3 c4 36.Ke2 Kf8
+37.Kd2 Bf6 38.Re3 c3+ 39.Kc2 Bd4 40.Re2 Rb5 41.b4 f5 42.Kd3  1-0
+

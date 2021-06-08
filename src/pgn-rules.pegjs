@@ -53,7 +53,7 @@ games = ws games:(
 game = t:tags? c:comments? p:pgn
     {
       //console.log("Length pgn: " + p.length);
-      var mess = messages; messages = {};
+      var mess = messages; messages = [];
       return { tags: t, gameComment: c, moves: p, messages: mess }; }
 
 tags = ws members:(

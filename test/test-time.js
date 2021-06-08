@@ -36,6 +36,14 @@ describe("When reading many games", function () {
             done()
         })
     })
+    it("should read the correct number: 1", function (done) {
+        fs.readFile(process.cwd() + '/test/pgn/benko.pgn', 'utf8', function (err, data) {
+            if (err) { throw err }
+            let res = parser.parse(data, { startRule: "games" } )
+            should(res.length).equal(2)
+            done()
+        })
+    })
     // I have kept that bigger file only locally so the test will not run in Github actions
     xit("should read the correct number of games: 2885", function (done) {
         fs.readFile(process.cwd() + '/test/pgn/twic-02-2885games.pgn', 'utf8', function (err, data) {
@@ -52,6 +60,15 @@ describe("When reading many games", function () {
             if (err) { throw err }
             let res = parser.parse(data, { startRule: "games" } )
             should(res.length).equal(9072)
+            done()
+        })
+    })
+    xit("should read the correct number of games: 9072", function (done) {
+        this.timeout(15000);
+        fs.readFile(process.cwd() + '/test/pgn/BenkoGambit-corr.pgn', 'utf8', function (err, data) {
+            if (err) { throw err }
+            let res = parser.parse(data, { startRule: "games" } )
+            should(res.length).equal(52966)
             done()
         })
     })

@@ -613,7 +613,7 @@ function peg$parse(input, options) {
               return games; };
   var peg$f3 = function(t, c, p) {
         //console.log("Length pgn: " + p.length);
-        var mess = messages; messages = {};
+        var mess = messages; messages = [];
         return { tags: t, gameComment: c, moves: p, messages: mess }; };
   var peg$f4 = function(head, tail) {
           var result = {};
