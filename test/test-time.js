@@ -63,9 +63,9 @@ describe("When reading many games", function () {
             done()
         })
     })
-    xit("should read the correct number of games: 9072", function (done) {
+    xit("should read the correct number of games: 52966", function (done) {
         this.timeout(15000);
-        fs.readFile(process.cwd() + '/test/pgn/BenkoGambit-corr.pgn', 'utf8', function (err, data) {
+        fs.readFile(process.cwd() + '/test/pgn/BenkoGambit.pgn', 'utf8', function (err, data) {
             if (err) { throw err }
             let res = parser.parse(data, { startRule: "games" } )
             should(res.length).equal(52966)
