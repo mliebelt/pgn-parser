@@ -24,10 +24,11 @@
   "devDependencies": {
     "mocha": "^9.0.0",
     "peggy": "^1.2.0",
+    "shelljs": "^0.8.4",
     "should": "^13.2.3"
   },
   "scripts": {
-    "build": "node_modules/peggy/bin/peggy --allowed-start-rules pgn,tags,game,games -o _pgn-parser.js src/pgn-rules.pegjs",
+    "build": "node build.js",
     "test": "mocha",
     "test-interactive": "mocha -w",
     "prepare": "npm run build && npm test"
