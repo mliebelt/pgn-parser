@@ -24,7 +24,6 @@
   "devDependencies": {
     "mocha": "^9.0.0",
     "peggy": "^1.2.0",
-    "shelljs": "^0.8.4",
     "should": "^13.2.3"
   },
   "scripts": {
