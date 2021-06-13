@@ -13,7 +13,8 @@
   "main": "pgn-parser.js",
   "files": [
     "_pgn-parser.js",
-    "README.md"
+    "README.md",
+    "pngCleaner.js"
   ],
   "author": "mliebelt",
   "license": "Apache-2.0",
