@@ -68,5 +68,6 @@ const parse = function(input, options) {
 
 module.exports = {
   SyntaxError: parser.SyntaxError,
-  parse:       parse
+  parse:       parse,
+  clean:       require('./src/pngCleaner')
 };
