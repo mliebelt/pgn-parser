@@ -194,7 +194,8 @@ stringNoQuot
 quotation_mark
   = '"'
 
-char  = [^\0-\x1F\x22\x5C]
+char
+  = !quotation_mark char:. { return char; }
 
 dateString = quotation_mark year:([0-9\?] [0-9\?] [0-9\?] [0-9\?]) '.' month:([0-9\?] [0-9\?]) '.' day:([0-9\?] [0-9\?]) quotation_mark
 	{ let val = "" + year.join("") + '.' + month.join("") + '.' + day.join("");

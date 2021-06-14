@@ -328,3 +328,10 @@ describe("When reading tags with clock context", function () {
         should(res.messages.length).equal(0)
     })
 })
+
+describe("When reading strange formats", function () {
+    it("should understand even tags with special characters", function () {
+        let res = parse_tags("[Event \"Let\\'s Play!\"]")
+        should.exist(res)
+    })
+})
