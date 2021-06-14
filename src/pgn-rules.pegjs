@@ -75,12 +75,12 @@ tag = bl ws tag:tagKeyValue ws br { return tag; }
 
 tagKeyValue = eventKey ws value:string { return { name: 'Event', value: value }; }
 	/ siteKey ws value:string  { return { name: 'Site', value: value }; }
-	/ dateKey ws value:date  { return { name: 'Date', value: value }; }
+	/ dateKey ws value:dateString  { return { name: 'Date', value: value }; }
 	/ roundKey ws value:string  { return { name: 'Round', value: value }; }
 	/ whiteTitleKey ws value:string  { return { name: 'WhiteTitle', value: value }; }
 	/ blackTitleKey ws value:string  { return { name: 'BlackTitle', value: value }; }
-	/ whiteEloKey ws value:integerOrDash  { return { name: 'WhiteELO', value: value }; }
-	/ blackEloKey ws value:integerOrDash  { return { name: 'BlackELO', value: value }; }
+	/ whiteEloKey ws value:integerOrDashString  { return { name: 'WhiteELO', value: value }; }
+	/ blackEloKey ws value:integerOrDashString  { return { name: 'BlackELO', value: value }; }
 	/ whiteUSCFKey ws value:integerString  { return { name: 'WhiteUSCF', value: value }; }
 	/ blackUSCFKey ws value:integerString  { return { name: 'BlackUSCF', value: value }; }
 	/ whiteNAKey ws value:string  { return { name: 'WhiteNA', value: value }; }
@@ -90,7 +90,7 @@ tagKeyValue = eventKey ws value:string { return { name: 'Event', value: value };
 	/ whiteKey ws value:string  { return { name: 'White', value: value }; }
 	/ blackKey ws value:string  { return { name: 'Black', value: value }; }
 	/ resultKey ws value:result  { return { name: 'Result', value: value }; }
-	/ eventDateKey ws value:date  { return { name: 'EventDate', value: value }; }
+	/ eventDateKey ws value:dateString  { return { name: 'EventDate', value: value }; }
 	/ eventSponsorKey ws value:string  { return { name: 'EventSponsor', value: value }; }
 	/ sectionKey ws value:string  { return { name: 'Section', value: value }; }
 	/ stageKey ws value:string  { return { name: 'Stage', value: value }; }
@@ -100,9 +100,9 @@ tagKeyValue = eventKey ws value:string { return { name: 'Event', value: value };
 	/ subVariationKey ws value:string  { return { name: 'SubVariation', value: value }; }
 	/ ecoKey ws value:string  { return { name: 'ECO', value: value }; }
 	/ nicKey ws value:string  { return { name: 'NIC', value: value }; }
-	/ timeKey ws value:time  { return { name: 'Time', value: value }; }
-	/ utcTimeKey ws value:time  { return { name: 'UTCTime', value: value }; }
-	/ utcDateKey ws value:date  { return { name: 'UTCDate', value: value }; }
+	/ timeKey ws value:timeString  { return { name: 'Time', value: value }; }
+	/ utcTimeKey ws value:timeString  { return { name: 'UTCTime', value: value }; }
+	/ utcDateKey ws value:dateString  { return { name: 'UTCDate', value: value }; }
 	/ timeControlKey ws value:timeControl  { return { name: 'TimeControl', value: value }; }
 	/ setUpKey ws value:string  { return { name: 'SetUp', value: value }; }
 	/ fenKey ws value:string  { return { name: 'FEN', value: value }; }
@@ -196,11 +196,11 @@ quotation_mark
 
 char  = [^\0-\x1F\x22\x5C]
 
-date = quotation_mark year:([0-9\?] [0-9\?] [0-9\?] [0-9\?]) '.' month:([0-9\?] [0-9\?]) '.' day:([0-9\?] [0-9\?]) quotation_mark
+dateString = quotation_mark year:([0-9\?] [0-9\?] [0-9\?] [0-9\?]) '.' month:([0-9\?] [0-9\?]) '.' day:([0-9\?] [0-9\?]) quotation_mark
 	{ let val = "" + year.join("") + '.' + month.join("") + '.' + day.join("");
 	    return { value: val, year: mi(year), month: mi(month), day: mi(day) }; }
 
-time = quotation_mark hour:([0-9]+) ':' minute:([0-9]+) ':' second:([0-9]+) millis:millis? quotation_mark
+timeString = quotation_mark hour:([0-9]+) ':' minute:([0-9]+) ':' second:([0-9]+) millis:millis? quotation_mark
     { let val = hour.join("") + ':' + minute.join("") + ':' + second.join(""); let ms = 0;
       if (millis) {
          val = val + '.' + millis;
@@ -233,7 +233,7 @@ innerResult =
     / res:"1/2-1/2" { return res; }
     / res:"*" { return res; }
 
-integerOrDash =
+integerOrDashString =
  	integerString
     / quotation_mark '-' quotation_mark
 
