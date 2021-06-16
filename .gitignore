@@ -2,3 +2,5 @@
 node_modules
 /test/pgn/twic1333-9072games.pgn
 /test/pgn/twic-02-2885games.pgn
+test/pgn/BenkoGambit.pgn
+TODOs.md

@@ -29,6 +29,7 @@
   },
   "scripts": {
     "build": "node build.js",
+    "build-split": "node build-split.js",
     "test": "mocha",
     "test-interactive": "mocha -w",
     "prepare": "npm run build && npm test"
