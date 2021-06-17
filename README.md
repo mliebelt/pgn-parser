@@ -36,11 +36,18 @@ const {splitter, parser} = require('@mliebelt/pgn-parser')
 const parseGames = (string) => parser.parse(string, {startRule: 'games'})
 const splitGames = (string) => splitter.split(string, {startRule: "games"})
 
-const moves = parseGames("1. {first move} e4! {my favorite} e5 (1... c5!?)")
-console.log('moves[0] = ', moves[0].moveNumber)
-
-const gameFilePath = path.resolve(__filename, 'node_modules/@mliebelt/pgn-parser/sample.pgn')
+// assuming source directory is sibling of node_modules
+const gameFilePath = path.resolve(__dirname, '../node_modules/@mliebelt/pgn-parser/sampleGame.pgn')
 fs.readFile(gameFilePath, 'utf-8')
+        .then(pgnFile=> {
+           const game = parseGames(pgnFile).pop()
+           console.log('game.moves[0] = ', game.moves[0])
+        })
+        .catch(console.error)
+
+// assuming source directory is sibling of node_modules
+const gamesFilePath = path.resolve(__dirname, '../node_modules/@mliebelt/pgn-parser/sampleGames.pgn')
+fs.readFile(gamesFilePath, 'utf-8')
         .then(pgnFile=> {
            const games = splitGames(pgnFile)
            const players = []
@@ -50,6 +57,7 @@ fs.readFile(gameFilePath, 'utf-8')
               players.push(tags.Black)
            })
            console.log('Games: ', JSON.stringify(games, null, 2))
+           console.log('Players: ', JSON.stringify(players, null, 2))
         })
         .catch(console.error)
 ```

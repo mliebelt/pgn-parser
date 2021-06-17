@@ -16,7 +16,8 @@
     "pgn-parser.js",
     "_split-parser.js",
     "split-games.js",
-    "sample.pgn",
+    "sampleGames.pgn",
+    "sampleGame.pgn",
     "README.md"
   ],
   "author": "mliebelt",
