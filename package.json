@@ -15,7 +15,7 @@
     "_pgn-parser.js",
     "pgn-parser.js",
     "_split-parser.js",
-    "split-parser.js",
+    "split-games.js",
     "sample.pgn",
     "README.md"
   ],
