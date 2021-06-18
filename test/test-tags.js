@@ -30,8 +30,8 @@ describe("When working with all kind of tags", function () {
             '[BlackNA "me@world.org"] [WhiteType "Human"] [BlackType "Computer"]')
         should(res.WhiteTitle).equal("GM")
         should(res.BlackTitle).equal("IM")
-        should(res.WhiteELO).equal(2899)
-        should(res.BlackELO).equal(700)
+        should(res.WhiteElo).equal(2899)
+        should(res.BlackElo).equal(700)
         should(res.WhiteUSCF).equal(1234)
         should(res.BlackUSCF).equal(1234)
         should(res.WhiteNA).equal("m.c@norway.com")
@@ -139,14 +139,14 @@ describe("When trying to find different variations how to write tags", function 
     it("should allow some variations in upper- and lowercase", function () {
         let res = parse_tags('[white "Me"] [Whiteelo "2400"] [Eventdate "2020.12.24"] [plyCount "23"]')
         should(res.White).equal("Me")
-        should(res.WhiteELO).equal(2400)
+        should(res.WhiteElo).equal(2400)
         should(res.EventDate.value).equal("2020.12.24")
         should(res.PlyCount).equal(23)
     })
     it("should allow variations of SetUp and WhiteELO", function () {
         let res = parse_tags('[Setup "1"][WhiteElo "2700"]')
         should(res.SetUp).equal("1")
-        should(res.WhiteELO).equal(2700)
+        should(res.WhiteElo).equal(2700)
     })
 
 })

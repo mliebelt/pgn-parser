@@ -79,8 +79,8 @@ tagKeyValue = eventKey ws value:string { return { name: 'Event', value: value };
 	/ roundKey ws value:string  { return { name: 'Round', value: value }; }
 	/ whiteTitleKey ws value:string  { return { name: 'WhiteTitle', value: value }; }
 	/ blackTitleKey ws value:string  { return { name: 'BlackTitle', value: value }; }
-	/ whiteEloKey ws value:integerOrDashString  { return { name: 'WhiteELO', value: value }; }
-	/ blackEloKey ws value:integerOrDashString  { return { name: 'BlackELO', value: value }; }
+	/ whiteEloKey ws value:integerOrDashString  { return { name: 'WhiteElo', value: value }; }
+	/ blackEloKey ws value:integerOrDashString  { return { name: 'BlackElo', value: value }; }
 	/ whiteUSCFKey ws value:integerString  { return { name: 'WhiteUSCF', value: value }; }
 	/ blackUSCFKey ws value:integerString  { return { name: 'BlackUSCF', value: value }; }
 	/ whiteNAKey ws value:string  { return { name: 'WhiteNA', value: value }; }

@@ -635,8 +635,8 @@
     var peg$f10 = function(value) { return { name: 'Round', value: value }; };
     var peg$f11 = function(value) { return { name: 'WhiteTitle', value: value }; };
     var peg$f12 = function(value) { return { name: 'BlackTitle', value: value }; };
-    var peg$f13 = function(value) { return { name: 'WhiteELO', value: value }; };
-    var peg$f14 = function(value) { return { name: 'BlackELO', value: value }; };
+    var peg$f13 = function(value) { return { name: 'WhiteElo', value: value }; };
+    var peg$f14 = function(value) { return { name: 'BlackElo', value: value }; };
     var peg$f15 = function(value) { return { name: 'WhiteUSCF', value: value }; };
     var peg$f16 = function(value) { return { name: 'BlackUSCF', value: value }; };
     var peg$f17 = function(value) { return { name: 'WhiteNA', value: value }; };
