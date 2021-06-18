@@ -10,9 +10,14 @@
   "version": "1.3.4",
   "homepage": "https://github.com/mliebelt/pgn-parser/blob/master/README.md",
   "bugs": "https://github.com/mliebelt/pgn-parser/issues",
-  "main": "pgn-parser.js",
+  "main": "index.js",
   "files": [
     "_pgn-parser.js",
+    "pgn-parser.js",
+    "_split-parser.js",
+    "split-games.js",
+    "sampleGames.pgn",
+    "sampleGame.pgn",
     "README.md"
   ],
   "author": "mliebelt",
