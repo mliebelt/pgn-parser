@@ -1,15 +1,23 @@
 const parser =  require('./_split-parser.js')
 
+const normalizeLineEndings = (str, normalized = '\n') =>
+    str.replace(/\r?\n/g, normalized);
+
 const split = function(input, options) {
-    let result = parser.parse(input, options)
+    // let result = parser.parse(input, options)
+    let result = normalizeLineEndings(input).split("\n\n")
     let res = []
-    result.forEach(function (game) {
-        let g = {}
-        let ts = input.substring(game.tags.start.offset, game.tags.end.offset)
-        let ps = input.substring(game.pgn.start.offset, game.pgn.end.offset)
-        let all = ts + ps
-        g.tags = ts; g.pgn = ps; g.all = all
-        res.push(g)
+    let g = {}
+    result.forEach(function (part) {
+        if (part.startsWith('[')) {
+            g.tags = part
+        } else if (part) {
+            g.pgn = part
+            let game = g.tags ? g.tags + "\n\n" + g.pgn : g.pgn
+            g.all = game
+            res.push(g)
+            g = {}
+        }
     })
     return res
 }

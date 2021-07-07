@@ -1,6 +1,6 @@
 games = ws games:(
        head:game
-         tail:(ws m:game { return m; })*
+         tail:(eol eol+ m:game { return m; })*
          {
             //console.log("Length tail: " + tail.length);
             return [head].concat(tail) }
@@ -14,32 +14,26 @@ game = t:tags? p:pgn
 
 tags = ws members:(
       head:tag
-      tail:(ws m:tag { return m; })*
-      {
-        var result = {};
-        [head].concat(tail).forEach(function(element) {
-          result[element.name] = element.value;
-        });
-        return result;
-      }
+      tail:(ws m:tag)*
     )? ws
     { return location(); }
 
 
-tag = bl ws tag:any_no_br ws br { return tag; }
+tag = bl ws tag:any_no_br ws br
 
 ws "whitespace" = [ \t\n\r]*
 wsp = [ \t\n\r]+
 eol = [\n\r]+
+eol2 = eol eol
+no_eol2 = !eol2 c:. { return c }
+no_eol = !eol .
 
-any_no_br = chars:no_br+ { return chars.join(""); }
-any_no_bl = chars:no_bl+ { return chars.join(""); }
+pgn = pgn_line (eol pgn)* { return location();  }
+pgn_line = [^\n\r]+
 
-no_br = !br char:. { return char; }
-no_bl = !bl char:. { return char; }
+any_no_br = chars:no_br+
 
-pgn = pgn:any_no_bl
-    { return location(); }
+no_br = !br char:.
 
 bl = '['
 
