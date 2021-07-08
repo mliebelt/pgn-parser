@@ -21,6 +21,5 @@ const split = function(input, options) {
 }
 
 module.exports = {
-    SyntaxError: parser.SyntaxError,
     split:       split
 };
