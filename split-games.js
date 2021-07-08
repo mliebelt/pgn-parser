@@ -1,5 +1,3 @@
-const parser =  require('./_split-parser.js')
-
 const normalizeLineEndings = (str, normalized = '\n') =>
     str.replace(/\r?\n/g, normalized);
 

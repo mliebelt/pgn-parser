@@ -14,7 +14,6 @@
   "files": [
     "_pgn-parser.js",
     "pgn-parser.js",
-    "_split-parser.js",
     "split-games.js",
     "sampleGames.pgn",
     "sampleGame.pgn",
@@ -33,7 +32,6 @@
   },
   "scripts": {
     "build": "node build.js",
-    "build-split": "node build-split.js",
     "test": "mocha",
     "test-interactive": "mocha -w",
     "prepare": "npm run build && npm test"
