@@ -31,6 +31,13 @@ describe("When reading many games and split them", function () {
             done()
         })
     })
+    xit("should split all games: 2885", function () {
+        fs.readFile(process.cwd() + '/test/pgn/twic-02-2885games.pgn', 'utf8', function (err, data) {
+            if (err) { throw err}
+            let res = split_games(data)
+            should(res.length).equal(2885)
+        })
+    })
     it("should split all games: 32", function () {
         fs.readFile(process.cwd() + '/test/pgn/32games.pgn', 'utf8', function (err, data) {
             if (err) { throw err}
@@ -43,13 +50,6 @@ describe("When reading many games and split them", function () {
             if (err) { throw err}
             let res = split_games(data)
             should(res.length).equal(232)
-        })
-    })
-    it("should split all games: 2885", function () {
-        fs.readFile(process.cwd() + '/test/pgn/twic-02-2885games.pgn', 'utf8', function (err, data) {
-            if (err) { throw err}
-            let res = split_games(data)
-            should(res.length).equal(2885)
         })
     })
     it("be able to filter games depending on tags", function (done) {
