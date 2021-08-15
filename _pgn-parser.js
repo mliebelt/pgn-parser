@@ -724,8 +724,8 @@
     var peg$f84 = function(cc, cv, tail) { var ret = {}; ret[cc]= cv; return merge([ret].concat(tail[0])) };
     var peg$f85 = function(ev, ic) { return ic };
     var peg$f86 = function(ev, tail) { var ret = {};  ret["eval"]= parseFloat(ev); return merge([ret].concat(tail[0])) };
-    var peg$f87 = function(ac, ic) { return ic };
-    var peg$f88 = function(ac, tail) { return tail[0] };
+    var peg$f87 = function(ac, val, ic) { return ic };
+    var peg$f88 = function(ac, val, tail) { var ret = {}; ret[ac]= val.join(""); return merge([ret].concat(tail[0])) };
     var peg$f89 = function(c, ic) { return ic };
     var peg$f90 = function(c, tail) { if (tail.length > 0) { return merge([{ comment: trimEnd(c.join("")) }].concat(trimStart(tail[0]))) }
             else { return { comment: c.join("") } } };
@@ -5046,7 +5046,7 @@
                           s11 = peg$parseinnerComment();
                           if (s11 !== peg$FAILED) {
                             peg$savedPos = s10;
-                            s11 = peg$f87(s4, s11);
+                            s11 = peg$f87(s4, s6, s11);
                           }
                           s10 = s11;
                           while (s10 !== peg$FAILED) {
@@ -5055,12 +5055,12 @@
                             s11 = peg$parseinnerComment();
                             if (s11 !== peg$FAILED) {
                               peg$savedPos = s10;
-                              s11 = peg$f87(s4, s11);
+                              s11 = peg$f87(s4, s6, s11);
                             }
                             s10 = s11;
                           }
                           peg$savedPos = s0;
-                          s0 = peg$f88(s4, s9);
+                          s0 = peg$f88(s4, s6, s9);
                         } else {
                           peg$currPos = s0;
                           s0 = peg$FAILED;

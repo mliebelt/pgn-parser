@@ -345,6 +345,12 @@ does this work?? } c6`
         should(my_res[0].commentDiag.colorFields[0]).equal("Gf6")
         should(my_res[0].commentAfter).undefined()
     })
+    it("should read unknown action comments", function () {
+        let my_res = parse_pgn("1. d4 {[%depth20 +0.35] [%depth1 +0.34]} Nf6 {[%depth20 +0.24] [%depth1 +0.13]}")
+        should.exist(my_res)
+        should(my_res[0].commentDiag["depth20"]).equal("+0.35")
+        should(my_res[1].commentDiag["depth1"]).equal("+0.13")
+    })
 })
 
 describe("Parsing PGN with clockCommands with unusual format", function () {

@@ -274,8 +274,8 @@ innerComment
       { var ret = {}; ret[cc]= cv; return merge([ret].concat(tail[0])) }
   / ws bl "%eval" wsp ev:stringNoQuot ws br ws tail:(ic:innerComment { return ic })*
       { var ret = {};  ret["eval"]= parseFloat(ev); return merge([ret].concat(tail[0])) }
-  / ws bl "%" ac:stringNoQuot wsp nbr+ br ws tail:(ic:innerComment { return ic })*
-      { return tail[0] }
+  / ws bl "%" ac:stringNoQuot wsp val:nbr+ br ws tail:(ic:innerComment { return ic })*
+      { var ret = {}; ret[ac]= val.join(""); return merge([ret].concat(tail[0])) }
   / c:nonCommand+ tail:(ws ic:innerComment { return ic })*
       { if (tail.length > 0) { return merge([{ comment: trimEnd(c.join("")) }].concat(trimStart(tail[0]))) }
         else { return { comment: c.join("") } } }
