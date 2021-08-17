@@ -18,7 +18,11 @@ notated, so that computer programs like the [PgnViewerJS](https://github.com/mli
 
 Everyone that wants to implement chess software and has to read PGN notation. The library is a runtime component to be included in the usual way.
 
-    import parser from '@mliebelt/pgn-parser'
+    import { parser } from '@mliebelt/pgn-parser'
+
+or
+
+    let parser = require("@mliebelt/pgn-parser").parser
 
 ## How to install it?
 
