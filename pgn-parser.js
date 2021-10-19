@@ -34,7 +34,9 @@ const parse = function(input, options) {
                     function switchTurn(currentTurn) {
                         return currentTurn === 'w' ? 'b' : 'w';
                     }
-                    _move.turn = _currentTurn
+                    if (typeof _move !== 'string') {
+                        _move.turn = _currentTurn
+                    }
                     if (_move.variations) {
                         _move.variations.forEach(function(variation) {
                             let varTurn = _currentTurn
