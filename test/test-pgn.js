@@ -1,3 +1,5 @@
+'use strict';
+
 let parser = require("../pgn-parser.js");
 
 let should = require('should');
