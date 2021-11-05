@@ -1,1 +1,1 @@
-{"version":3,"file":"pgn-parser.d.ts","sourceRoot":"","sources":["../src/pgn-parser.ts"],"names":[],"mappings":"AAIA;;;GAGG;AACH,wBAAgB,KAAK,CAAC,KAAK,KAAA,EAAE,OAAO,KAAA,OA2EnC"}
+{"version":3,"file":"pgn-parser.d.ts","sourceRoot":"","sources":["../src/pgn-parser.ts"],"names":[],"mappings":"AAIA,aAAK,SAAS,GAAG,KAAK,GAAG,MAAM,GAAG,MAAM,GAAG,OAAO,CAAA;AAClD,aAAK,UAAU,GAAG;IAAE,SAAS,EAAE,SAAS,CAAA;CAAE,CAAA;AAW1C;;;GAGG;AACH,wBAAgB,KAAK,CAAC,KAAK,EAAE,MAAM,EAAE,OAAO,EAAE,UAAU,OAsFvD"}

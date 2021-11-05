@@ -5,13 +5,15 @@ import parser = require("./_pgn-parser.js")
 type StartRule = 'pgn' | 'game' | 'tags' | 'games'
 type PgnOptions = { startRule: StartRule }
 type ParseTree = { tags?: object, gameComment?: string, moves: PgnMove[], messages: string[]}
+type ParseTreeOrArray = ParseTree | ParseTree[]
 type PgnMove = { moveNumber: number,
                 notation: { fig?: string | null, strike: 'x' | null, col: string, row: string, check: boolean, promotion: string | null, notation: string},
                 variations: PgnMove[],
                 nag: string | null,
                 commentDiag: object,
                 turn: 'w' | 'b'
-}
+} | string
+
 /**
  * Patches the original function, to avoid empty games. May include additional functionality
  * for understanding parse errors later.
@@ -23,6 +25,9 @@ export function parse(input: string, options: PgnOptions) {
         input = input.trim()
     }
     let result = parser.parse(input, options)
+    if (options.startRule === "pgn") {
+        result = { moves: result }
+    }
 
     function postParse(_parseTree: ParseTree, _input, _options) {
         /** Special cases are (resulting from the grammar)
@@ -32,7 +37,7 @@ export function parse(input: string, options: PgnOptions) {
          * @param parseTree the result when parsing input
          * @returns {*[]|*}
          */
-        function handleGamesAnomaly(parseTree:ParseTree | ParseTree[]) {
+        function handleGamesAnomaly(parseTree:ParseTreeOrArray): ParseTreeOrArray {
             if (_options && (_options.startRule === 'games')) {
                 // result should be an array of games. Check the last game, if it is empty, and remove it then
                 if (!Array.isArray(parseTree)) return []
@@ -45,7 +50,18 @@ export function parse(input: string, options: PgnOptions) {
             return parseTree
         }
         /** Ensure that the result is kept as tag only, so no check of last move is necessary any more. */
-        function handleGameResult(parseTree) {
+        function handleGameResult(parseTree: ParseTreeOrArray) {
+            if ( Array.isArray(parseTree) ) {
+                parseTree.forEach(pt => handleGameResult(pt))
+            } else {
+                if (options.startRule !== 'tags') {
+                    let move: PgnMove = parseTree.moves[parseTree.moves.length - 1];
+                    if (typeof move == 'string') {
+                        parseTree.moves.pop()
+                        if (parseTree.tags) {parseTree.tags["Result"]= move}
+                    }
+                }
+            }
             return parseTree
         }
         function handleTurn(parseResult) {
@@ -76,12 +92,9 @@ export function parse(input: string, options: PgnOptions) {
                 _game.moves.forEach(move => currentTurn = setTurn(move, currentTurn))
                 return _game
             }
-            if (options.startRule === 'game') {
+            if (options.startRule === 'game' || options.startRule === "pgn") {
                 return handleTurnGame(parseResult)
-            } else if (options.startRule === 'pgn') {
-                return handleTurnGame( { moves: parseResult} ).moves
-            }
-            if (options.startRule === 'games') {
+            } else if (options.startRule === 'games') {
                 parseResult.forEach(game => handleTurnGame(game))
 
             }

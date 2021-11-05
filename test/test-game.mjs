@@ -33,7 +33,7 @@ describe("When working with one game", function () {
         should.exist(res)
         should.exist(res.tags)
         should.exist(res.moves)
-        should(res.moves.length).equal(1)   // end game
+        should(res.moves.length).equal(0)   // end game
         should(res.tags["White"]).equal("Me")
         should(res.tags["Black"]).equal("Magnus")
     })
@@ -48,16 +48,18 @@ describe("When working with one game", function () {
         should.exist(res.moves[0])
         should(res.moves[0].notation.notation).equal("f4")
     })
-    it("should read moves without tags with game termination marker", function () {
+    it("should read moves without tags with game termination marker ignored", function () {
         let res = parse_game("1. f4 e5 2. g4 Qh4# 0-1")
         should.exist(res)
         should.exist(res.tags)
         should.exist(res.moves)
-        should(Object.keys(res.tags).length).equal(0)
-        should(res.moves.length).equal(5)
+        // Game result is converted to tag
+        should(Object.keys(res.tags).length).equal(1)
+        should(res.tags["Result"]).equal("0-1")
+        should(res.moves.length).equal(4)
         should.exist(res.moves[0])
         should(res.moves[0].notation.notation).equal("f4")
-        should(res.moves[4]).equal("0-1")
+        //should(res.moves[4]).equal("0-1")
     })
     it("should read comments without moves", function () {
         let res = parse_game("{ [%csl Ya4,Gh8,Be1] } *")
@@ -93,13 +95,13 @@ describe("When reading one game be more robust", function () {
         res = parse_game("37. cxb7 Rxh3# { Wunderschön! } 0-1 ")
         should.exist(res)
         should(res.moves[1].commentAfter).equal(" Wunderschön! ")
-        should(res.moves[2]).equal("0-1")
+        //should(res.moves[2]).equal("0-1")
     })
 
     it("should read result including whitespace", function () {
         let res = parse_game("27. Ng2 Qxg2# 0-1 ")
         should.exist(res)
-        should(res.moves[2]).equal("0-1")
+        //should(res.moves[2]).equal("0-1")
     })
 })
 
@@ -145,7 +147,7 @@ describe("When reading games with incorrect format", function () {
     it("should emmit warnings in games", function () {
         let res = parse_game('[Date "xx"] *')
         should.exist(res)
-        should(res.moves.length).equal(1)
+        should(res.moves.length).equal(0)
         should(res.messages.length).equal(1)
         should(res.messages[0].key).equal("Date")
         should(res.messages[0].value).equal("xx")
