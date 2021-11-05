@@ -5,6 +5,6 @@ const fs = require('fs')
 const main = async () => {
     const options = {allowedStartRules: ['pgn', 'tags', 'game', 'games'], output: 'source', format: 'umd'}
     const pgnParser = peg.generate(await fs.readFileSync('./src/pgn-rules.pegjs', 'utf-8'), options)
-    await fs.writeFileSync('_pgn-parser.js', pgnParser)
+    await fs.writeFileSync('./src/_pgn-parser.js', pgnParser)
 }
 main().catch(console.error)

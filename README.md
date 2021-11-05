@@ -105,7 +105,7 @@ If you want to use the library in the browser, the above method will not work. I
 
         File: parsePgn.js
         ----
-        const parser =  require('./pgn-parser.js')
+        const parser =  require('./pgn-parser.ts')
         window.parsePgn = parser.parse
 
 1. Process newly created parsePgn.js through Browserify.

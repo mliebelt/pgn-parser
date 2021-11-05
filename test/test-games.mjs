@@ -1,9 +1,9 @@
-let parser = require("../pgn-parser.js");
-
-let should = require('should');
+import pkg from "../lib/pgn-parser.js"
+const {parse} = pkg
+import should from "should"
 
 function parse_games(string) {
-    return parser.parse(string, {startRule: "games"})
+    return parse(string, {startRule: "games"})
 }
 
 describe("When reading 0 games", function () {

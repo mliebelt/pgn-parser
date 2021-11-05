@@ -1,9 +1,9 @@
-var parser = require("../pgn-parser.js");
-
-var should = require('should');
+import pkg from "../lib/pgn-parser.js"
+const {parse} = pkg
+import should from "should"
 
 function parse_tags(string) {
-    return parser.parse(string, { startRule: "tags" })
+    return parse(string, { startRule: "tags" })
 }
 
 describe("When working with all kind of tags", function () {

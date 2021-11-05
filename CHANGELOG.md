@@ -151,7 +151,7 @@ NPM trouble.
 
 ## [0.9.8](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/0.9.8) 2019-05-10
 
-Inital version, functional identical to file `PgnViewerJS/src/pgn-parser.js` (now deleted).
+Inital version, functional identical to file `PgnViewerJS/src/pgn-parser.ts` (now deleted).
 
 ### Changed
 

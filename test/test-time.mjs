@@ -1,8 +1,8 @@
-let parser = require("../pgn-parser.js");
-let fs = require('fs');
-
-let should = require('should');
-let https = require('https');
+import pkg from "../lib/pgn-parser.js"
+const {parse} = pkg
+import should from "should"
+import fs from 'fs'
+import https from 'https'
 
 /**
  * The following tests are only interesting in the following perspective:
@@ -23,7 +23,7 @@ describe("When reading many games", function () {
     it("should read the correct number: 32", function (done) {
         fs.readFile(process.cwd() + '/test/pgn/32games.pgn', 'utf8', function (err, data) {
             if (err) { throw err }
-            let res = parser.parse(data, {startRule: "games"})
+            let res = parse(data, {startRule: "games"})
             should(res.length).equal(32)
             done()
         })
@@ -31,7 +31,7 @@ describe("When reading many games", function () {
     it("should read the correct number: 232", function (done) {
         fs.readFile(process.cwd() + '/test/pgn/twic-01-232games.pgn', 'utf8', function (err, data) {
             if (err) { throw err }
-            let res = parser.parse(data, { startRule: "games" } )
+            let res = parse(data, { startRule: "games" } )
             should(res.length).equal(232)
             done()
         })
@@ -39,7 +39,7 @@ describe("When reading many games", function () {
     it("should read the correct number: 1", function (done) {
         fs.readFile(process.cwd() + '/test/pgn/benko.pgn', 'utf8', function (err, data) {
             if (err) { throw err }
-            let res = parser.parse(data, { startRule: "games" } )
+            let res = parse(data, { startRule: "games" } )
             should(res.length).equal(2)
             done()
         })
@@ -48,7 +48,7 @@ describe("When reading many games", function () {
     xit("should read the correct number of games: 2885", function (done) {
         fs.readFile(process.cwd() + '/test/pgn/twic-02-2885games.pgn', 'utf8', function (err, data) {
             if (err) { throw err }
-            let res = parser.parse(data, { startRule: "games" } )
+            let res = parse(data, { startRule: "games" } )
             should(res.length).equal(2885)
             done()
         })
@@ -58,7 +58,7 @@ describe("When reading many games", function () {
         this.timeout(15000);
         fs.readFile(process.cwd() + '/test/pgn/twic1333-9072games.pgn', 'utf8', function (err, data) {
             if (err) { throw err }
-            let res = parser.parse(data, { startRule: "games" } )
+            let res = parse(data, { startRule: "games" } )
             should(res.length).equal(9072)
             done()
         })
@@ -67,7 +67,7 @@ describe("When reading many games", function () {
         this.timeout(15000);
         fs.readFile(process.cwd() + '/test/pgn/BenkoGambit.pgn', 'utf8', function (err, data) {
             if (err) { throw err }
-            let res = parser.parse(data, { startRule: "games" } )
+            let res = parse(data, { startRule: "games" } )
             should(res.length).equal(52966)
             done()
         })
@@ -87,7 +87,7 @@ describe("When reading games from the internet", function () {
             let data = ''
             res.on('data', (chunk) => { data += chunk })
             res.on('end', () => {
-                let res = parser.parse(data, { startRule: "games" } )
+                let res = parse(data, { startRule: "games" } )
                 should(res.length).equal(2)
                 done()
             })
