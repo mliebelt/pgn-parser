@@ -32,7 +32,7 @@
   "scripts": {
     "buildpeg": "node ./bin/build.js",
     "build": "tsc -p .",
-    "test": "mocha --require ts-node/register ./test/*.mjs",
+    "test": "mocha --require ts-node/register ./test/*.ts",
     "test-interactive": "mocha -w",
     "prepare": "npm run build && npm test"
   }
