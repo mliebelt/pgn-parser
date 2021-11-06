@@ -4,6 +4,17 @@ import should from "should"
 import fs from 'fs'
 import https from 'https'
 
+function checkGamesLength(done, fileName, numberGames) {
+    fs.readFile(process.cwd() + fileName, 'utf8', function (err, data) {
+        if (err) {
+            throw err
+        }
+        let res = parse(data, {startRule: "games"})
+        should(res.length).equal(numberGames)
+        done()
+    })
+}
+
 /**
  * The following tests are only interesting in the following perspective:
  * <ul>
@@ -21,56 +32,26 @@ import https from 'https'
  */
 describe("When reading many games", function () {
     it("should read the correct number: 32", function (done) {
-        fs.readFile(process.cwd() + '/test/pgn/32games.pgn', 'utf8', function (err, data) {
-            if (err) { throw err }
-            let res = parse(data, {startRule: "games"})
-            should(res.length).equal(32)
-            done()
-        })
+        checkGamesLength(done, '/test/pgn/32games.pgn', 32)
     })
     it("should read the correct number: 232", function (done) {
-        fs.readFile(process.cwd() + '/test/pgn/twic-01-232games.pgn', 'utf8', function (err, data) {
-            if (err) { throw err }
-            let res = parse(data, { startRule: "games" } )
-            should(res.length).equal(232)
-            done()
-        })
+        checkGamesLength(done, '/test/pgn/twic-01-232games.pgn', 232)
     })
     it("should read the correct number: 1", function (done) {
-        fs.readFile(process.cwd() + '/test/pgn/benko.pgn', 'utf8', function (err, data) {
-            if (err) { throw err }
-            let res = parse(data, { startRule: "games" } )
-            should(res.length).equal(2)
-            done()
-        })
+        checkGamesLength(done, '/test/pgn/benko.pgn', 2)
     })
     // I have kept that bigger file only locally so the test will not run in Github actions
     xit("should read the correct number of games: 2885", function (done) {
-        fs.readFile(process.cwd() + '/test/pgn/twic-02-2885games.pgn', 'utf8', function (err, data) {
-            if (err) { throw err }
-            let res = parse(data, { startRule: "games" } )
-            should(res.length).equal(2885)
-            done()
-        })
+        checkGamesLength(done, '/test/pgn/twic-02-2885games.pgn', 2886)
     })
     // Same here, file is even bigger
     xit("should read the correct number of games: 9072", function (done) {
         this.timeout(15000);
-        fs.readFile(process.cwd() + '/test/pgn/twic1333-9072games.pgn', 'utf8', function (err, data) {
-            if (err) { throw err }
-            let res = parse(data, { startRule: "games" } )
-            should(res.length).equal(9072)
-            done()
-        })
+        checkGamesLength(done, '/test/pgn/twic1333-9072games.pgn', 9072)
     })
     xit("should read the correct number of games: 52966", function (done) {
-        this.timeout(15000);
-        fs.readFile(process.cwd() + '/test/pgn/BenkoGambit.pgn', 'utf8', function (err, data) {
-            if (err) { throw err }
-            let res = parse(data, { startRule: "games" } )
-            should(res.length).equal(52966)
-            done()
-        })
+        this.timeout(15000)
+        checkGamesLength(done, '/test/pgn/BenkoGambit.pgn', 52966)
     })
 })
 
