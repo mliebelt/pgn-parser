@@ -1,9 +1,9 @@
-import pkg from "../lib/pgn-parser.js"
-const {parse} = pkg
-import should from "should"
+import {parse} from "../src/pgn-parser"
+import should = require('should')
+import {ParseTree} from "../lib/types";
 
-function parseGame(string) {
-    return parse(string, {startRule: "game"})
+function parseGame(string):ParseTree {
+    return <ParseTree>parse(string, {startRule: "game"})
 }
 
 // The following test cases test everything about a game, with the exception of game moves, and tags.
@@ -187,7 +187,7 @@ describe("When doing post processing of one game", function () {
         should(res.moves[1].turn).equal('b')
     })
     it("should handle correct turn for white with FEN given by option", function () {
-        let res = parse('3. d4 exd4',
+        let res = <ParseTree>parse('3. d4 exd4',
             { startRule: 'game', fen: 'r1bqkbnr/pppp1ppp/2n5/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3'})
         should.exist(res)
         should(res.moves.length).equal(2)

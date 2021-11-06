@@ -1,10 +1,14 @@
-import pkg from "../lib/pgn-parser.js"
-const {parse} = pkg
-import should from "should"
+import {parse} from "../src/pgn-parser"
+import should = require('should')
+import {ParseTree, PgnMove} from "../lib/types"
 
-function parsePgn(string) {
-    return parse(string, {startRule: "pgn"}).moves
+function parsePgn(string):PgnMove[] {
+    return (<ParseTree>parse(string, {startRule: "pgn"})).moves
 }
+function parseGame(string):ParseTree {
+    return <ParseTree>parse(string, {startRule: "game"})
+}
+
 
 describe("When working with PGN as string", function() {
     describe("When having read the moves", function() {
@@ -307,25 +311,33 @@ does this work?? } c6`
         should(my_res.length).equal(2)
         should(my_res[0].commentAfter).equal(" start; not an eol comment\ndoes this work?? ")
     })
-    it("should ignore commands it cannot parse inside comments", function () {
+    it("should keep commands it cannot parse inside comments", function () {
         let my_res = parsePgn("1. e4 { [%foo 1.0] [%bar any,string] }")
         should(my_res.length).equal(1)
-        should(my_res[0].commentDiag.empty)
+        let commentDiag = <object>my_res[0].commentDiag
+        should(commentDiag["foo"]).equal("1.0")
+        should(commentDiag["bar"]).equal("any,string")
     })
-    it("should ignore commands sprinkled in comments it cannot parse", function () {
+    it("should keep commands sprinkled in comments it cannot parse", function () {
         let my_res = parsePgn("1. e4 { [%foo 1.0] } { [%bar any,string] }")
         should(my_res.length).equal(1)
-        should(my_res[0].commentDiag.empty)
+        let commentDiag = <object>my_res[0].commentDiag
+        should(commentDiag["foo"]).equal("1.0")
+        should(commentDiag["bar"]).equal("any,string")
     })
-    it("should ignore commands it cannot parse, read diag comments", function () {
+    it("should keep commands it cannot parse, read diag comments", function () {
         let my_res = parsePgn("1. e4 { [%foo 1.0] } { [%clk 0:02:00] }")
         should(my_res.length).equal(1)
+        let commentDiag = <object>my_res[0].commentDiag
+        should(commentDiag["foo"]).equal("1.0")
         should(my_res[0].commentDiag.clk).equal("0:02:00")
     })
     it("should ignore commands it cannot parse inside comments, but read other comments", function () {
         let my_res = parsePgn("1. e4 { first comment [%foo 1.0] second comment [%bar any,string] }")
         should(my_res.length).equal(1)
-        should(my_res[0].commentDiag.empty)
+        let commentDiag = <object>my_res[0].commentDiag
+        should(commentDiag["foo"]).equal("1.0")
+        should(commentDiag["bar"]).equal("any,string")
         should(my_res[0].commentAfter).equal(" first comment second comment")
     })
     it("should read eval command", function () {
@@ -355,45 +367,45 @@ does this work?? } c6`
 
 describe("Parsing PGN with clockCommands with unusual format", function () {
     it("should emmit messages for mct with 1 hour digit", function () {
-        let my_res = parse("e5 { [%mct 1:10:42] }", {startRule: "game"})
+        let my_res = parseGame("e5 { [%mct 1:10:42] }")
         should.exist(my_res)
         should(my_res.moves[0].commentDiag["mct"]).equal("1:10:42")
         should(my_res.messages[0].message).equal("Only 2 digits for hours normally used")
     })
     it("should emmit messages for egt, emt, clk with 2 hour digit", function () {
-        let my_res = parse("e5 { [%egt 01:10:42] }", {startRule: "game"})
+        let my_res = parseGame("e5 { [%egt 01:10:42] }")
         should.exist(my_res)
         should(my_res.moves[0].commentDiag["egt"]).equal("01:10:42")
         should(my_res.messages[0].message).equal("Only 1 digit for hours normally used")
-        my_res = parse("e5 { [%emt 01:10:42] }", {startRule: "game"})
+        my_res = parseGame("e5 { [%emt 01:10:42] }")
         should.exist(my_res)
         should(my_res.moves[0].commentDiag["emt"]).equal("01:10:42")
         should(my_res.messages[0].message).equal("Only 1 digit for hours normally used")
-        my_res = parse("e5 { [%clk 01:10:42] }", {startRule: "game"})
+        my_res = parseGame("e5 { [%clk 01:10:42] }")
         should.exist(my_res)
         should(my_res.moves[0].commentDiag["clk"]).equal("01:10:42")
         should(my_res.messages[0].message).equal("Only 1 digit for hours normally used")
     })
     it("should emmit a message for incomplete 1 hour digit commands: only seconds", function () {
-        let my_res = parse("e5 { [%emt 42] }", {startRule: "game"})
+        let my_res = parseGame("e5 { [%emt 42] }")
         should.exist(my_res)
         should(my_res.moves[0].commentDiag["emt"]).equal("42")
         should(my_res.messages[0].message).equal("Hours and minutes missing")
     })
     it("should emmit a message for incomplete 1 hour digit commands: hours missing", function () {
-        let my_res = parse("e5 { [%emt 12:42] }", {startRule: "game"})
+        let my_res = parseGame("e5 { [%emt 12:42] }")
         should.exist(my_res)
         should(my_res.moves[0].commentDiag["emt"]).equal("12:42")
         should(my_res.messages[0].message).equal("No hours found")
     })
     it("should emmit a message for incomplete 1 hour digit commands: 1 digit minutes", function () {
-        let my_res = parse("e5 { [%emt 2:42] }", {startRule: "game"})
+        let my_res = parseGame("e5 { [%emt 2:42] }")
         should.exist(my_res)
         should(my_res.moves[0].commentDiag["emt"]).equal("2:42")
         should(my_res.messages[0].message).equal("No hours found")
     })
     it("should emmit a message for use of millis", function () {
-        let my_res = parse("e5 {[%clk 0:00:59.8]}", {startRule: "game"})
+        let my_res = parseGame("e5 {[%clk 0:00:59.8]}")
         should.exist(my_res)
         should(my_res.moves[0].commentDiag["clk"]).equal("0:00:59.8")
         should(my_res.messages[0].message).equal("Unusual use of millis in clock value")
@@ -572,15 +584,15 @@ describe("When doing post processing of one game (only pgn)", function () {
         should(my_res[1].turn).equal('b')
     })
     it("should handle turn correct for black with fen", function () {
-        let my_res = parse("2... Nc6 3. d4",
-            { startRule: 'pgn', fen: 'rnbqkbnr/pppp1ppp/8/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2'}).moves
+        let my_res = (<ParseTree>parse("2... Nc6 3. d4",
+            { startRule: 'pgn', fen: 'rnbqkbnr/pppp1ppp/8/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2'})).moves
         should.exist(my_res)
         should(my_res[0].turn).equal('b')
         should(my_res[1].turn).equal('w')
     })
     it("should handle turn correct for white with fen", function () {
-        let my_res = parse("3. d4 exd4",
-            { startRule: 'pgn', fen: 'r1bqkbnr/pppp1ppp/2n5/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3'}).moves
+        let my_res = (<ParseTree>parse("3. d4 exd4",
+            { startRule: 'pgn', fen: 'r1bqkbnr/pppp1ppp/2n5/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3'})).moves
         should.exist(my_res)
         should(my_res[0].turn).equal('w')
         should(my_res[1].turn).equal('b')

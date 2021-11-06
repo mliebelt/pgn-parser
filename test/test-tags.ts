@@ -1,9 +1,10 @@
-import pkg from "../lib/pgn-parser.js"
-const {parse} = pkg
-import should from "should"
+import {parse} from "../src/pgn-parser"
+import should = require('should')
+import {ParseTree, Tags} from "../src/types";
+import {PgnMove} from "../lib/types";
 
-function parseTags(string) {
-    return parse(string, { startRule: "tags" })
+function parseTags(string):Tags {
+    return (<ParseTree>parse(string, { startRule: "tags" })).tags
 }
 
 describe("When working with all kind of tags", function () {
@@ -164,7 +165,7 @@ describe("When mixing different kinds of tags", function () {
 
 describe("Signal collect tags for unknown keys", function () {
     it("should record tag and string value for any key not known", function () {
-        let res = parseTags('[Bar "Foo"]')
+        let res = <{ Bar: string }><unknown>parseTags('[Bar "Foo"]')
         should(res.Bar).equal("Foo")
     })
     it ("should record lichess puzzle tags", function () {

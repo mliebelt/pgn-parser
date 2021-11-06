@@ -22,6 +22,7 @@
     "url": "https://github.com/mliebelt/pgn-parser.git"
   },
   "devDependencies": {
+    "@types/mocha": "^9.0.0",
     "mocha": "^9.0.3",
     "peggy": "^1.2.0",
     "should": "^13.2.3",
@@ -29,7 +30,7 @@
     "typescript": "^4.4.4"
   },
   "scripts": {
-    "buildpeg": "node build.js",
+    "buildpeg": "node ./bin/build.js",
     "build": "tsc -p .",
     "test": "mocha --require ts-node/register ./test/*.mjs",
     "test-interactive": "mocha -w",

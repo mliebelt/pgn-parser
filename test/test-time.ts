@@ -1,15 +1,15 @@
-import pkg from "../lib/pgn-parser.js"
-const {parse} = pkg
-import should from "should"
-import fs from 'fs'
-import https from 'https'
+import {parse} from "../src/pgn-parser"
+import should = require('should')
+import {ParseTree} from "../src/types";
+import fs = require('fs')
+import https = require('https')
 
 function checkGamesLength(done, fileName, numberGames) {
     fs.readFile(process.cwd() + fileName, 'utf8', function (err, data) {
         if (err) {
             throw err
         }
-        let res = parse(data, {startRule: "games"})
+        let res = <ParseTree[]>parse(data, {startRule: "games"})
         should(res.length).equal(numberGames)
         done()
     })
@@ -41,16 +41,16 @@ describe("When reading many games", function () {
         checkGamesLength(done, '/test/pgn/benko.pgn', 2)
     })
     // I have kept that bigger file only locally so the test will not run in Github actions
-    xit("should read the correct number of games: 2885", function (done) {
-        checkGamesLength(done, '/test/pgn/twic-02-2885games.pgn', 2886)
+    it("should read the correct number of games: 2885", function (done) {
+        checkGamesLength(done, '/test/pgn/twic-02-2885games.pgn', 2885)
     })
     // Same here, file is even bigger
-    xit("should read the correct number of games: 9072", function (done) {
-        this.timeout(15000);
+    it("should read the correct number of games: 9072", function (done) {
+        this.timeout(4000);
         checkGamesLength(done, '/test/pgn/twic1333-9072games.pgn', 9072)
     })
-    xit("should read the correct number of games: 52966", function (done) {
-        this.timeout(15000)
+    it("should read the correct number of games: 52966", function (done) {
+        this.timeout(20000)
         checkGamesLength(done, '/test/pgn/BenkoGambit.pgn', 52966)
     })
 })
@@ -68,7 +68,7 @@ describe("When reading games from the internet", function () {
             let data = ''
             res.on('data', (chunk) => { data += chunk })
             res.on('end', () => {
-                let res = parse(data, { startRule: "games" } )
+                let res = <ParseTree[]>parse(data, { startRule: "games" } )
                 should(res.length).equal(2)
                 done()
             })

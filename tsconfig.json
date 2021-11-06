@@ -6,7 +6,8 @@
     "declarationMap": true,
     "lib": ["es2015"],
     "module": "UMD",
-    "allowJs": true
+    "allowJs": true,
+    "moduleResolution": "Node"
   },
   "include": ["src"]
 }
