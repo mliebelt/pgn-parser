@@ -1,14 +1,10 @@
-import {parse} from "../src/pgn-parser"
+import {parseGame} from "../src/pgn-parser"
 import should = require('should')
-import {ParseTree, PgnMove} from "../lib/types"
+import {ParseTree, PgnMove} from "../src/types"
 
 function parsePgn(string):PgnMove[] {
-    return (<ParseTree>parse(string, {startRule: "pgn"})).moves
+    return (<ParseTree>parseGame(string, {startRule: "pgn"})).moves
 }
-function parseGame(string):ParseTree {
-    return <ParseTree>parse(string, {startRule: "game"})
-}
-
 
 describe("When working with PGN as string", function() {
     describe("When having read the moves", function() {
@@ -25,10 +21,8 @@ describe("When working with PGN as string", function() {
     });
 });
 
-// TODO There is no way to have `turn` set after parsing, no differentiation possible. Only when interpreting tags (FEN),
-// TODO this can be done correctly.
 describe("When reading complete game starting with the first move", function () {
-    xit("should notice white starting and color switching each move", function () {
+    it("should notice white starting and color switching each move", function () {
         let my_res = parsePgn("1. e4 e5 2. Nf3");
         should(my_res.length).equal(3);
         should(my_res[0].turn).equal("w");
@@ -57,54 +51,54 @@ describe("When reading complete game starting with the first move", function () 
 })
 
 describe("When a game notes a result at the end", function () {
-    xit("should have the result as last entry of the array", function () {
-        let my_res = parsePgn("1. e4 1-0")
-        should(my_res.length).equal(2)
-        should(my_res[1]).equal("1-0")
+    it("should have the result as Result in tags", function () {
+        let my_res = parseGame("1. e4 1-0")
+        should(my_res.moves.length).equal(1)
+        should(my_res.tags.Result).equal("1-0")
     })
-    xit("should have all kinds or result: 1-0", function () {
-        let my_res = parsePgn("1. e4 1-0")
-        should(my_res[1]).equal("1-0")
+    it("should have all kinds or result: 1-0", function () {
+        let my_res = parseGame("1. e4 1-0")
+        should(my_res.tags.Result).equal("1-0")
     })
-    xit("should have all kinds or result: 0-1", function () {
-        let my_res = parsePgn("1. e4 0-1")
-        should(my_res[1]).equal("0-1")
+    it("should have all kinds or result: 0-1", function () {
+        let my_res = parseGame("1. e4 0-1")
+        should(my_res.tags.Result).equal("0-1")
     })
-    xit("should have all kinds or result: 1/2-1/2", function () {
-        let my_res = parsePgn("1. e4  1/2-1/2")
-        should(my_res[1]).equal("1/2-1/2")
+    it("should have all kinds or result: 1/2-1/2", function () {
+        let my_res = parseGame("1. e4  1/2-1/2")
+        should(my_res.tags.Result).equal("1/2-1/2")
     })
-    xit("should have all kinds or result: *", function () {
-        let my_res = parsePgn("1. e4  *")
-        should(my_res[1]).equal("*")
+    it("should have all kinds or result: *", function () {
+        let my_res = parseGame("1. e4  *")
+        should(my_res.tags.Result).equal("*")
     })
-    xit("should ignore additional white space before or after", function () {
-        let my_res = parsePgn("1. e4     *    ")
-        should(my_res[1]).equal("*")
+    it("should ignore additional white space before or after", function () {
+        let my_res = parseGame("1. e4     *    ")
+        should(my_res.tags.Result).equal("*")
     })
-    xit("should ignore additional white space before or after success", function () {
-        let my_res = parsePgn("1. e4    1-0    ")
-        should(my_res[1]).equal("1-0")
+    it("should ignore additional white space before or after success", function () {
+        let my_res = parseGame("1. e4    1-0    ")
+        should(my_res.tags.Result).equal("1-0")
     })
-    xit("should ignore 1 space before or after", function () {
-        let my_res = parsePgn("27. Ng2 Qxg2# 0-1 ")
-        should(my_res[2]).equal("0-1")
+    it("should ignore 1 space before or after", function () {
+        let my_res = parseGame("27. Ng2 Qxg2# 0-1 ")
+        should(my_res.tags.Result).equal("0-1")
     })
-    xit("should handle variation at the end", function () {
-        let my_res = parsePgn("1. e4 (1. d4) 1/2-1/2")
-        should(my_res[1]).equal("1/2-1/2")
+    it("should handle variation at the end", function () {
+        let my_res = parseGame("1. e4 (1. d4) 1/2-1/2")
+        should(my_res.tags.Result).equal("1/2-1/2")
     })
-    xit("should handle variation at the end even for wins", function () {
-        let my_res = parsePgn("1. e4 (1. d4) 1-0")
-        should(my_res[1]).equal("1-0")
+    it("should handle variation at the end even for wins", function () {
+        let my_res = parseGame("1. e4 (1. d4) 1-0")
+        should(my_res.tags.Result).equal("1-0")
     })
-    xit("should handle variation at the end even for wins with different format", function () {
-        let my_res = parsePgn("1. e4 (1. d4) 1-0")
-        should(my_res[1]).equal("1-0")
+    it("should handle variation at the end even for wins with different format", function () {
+        let my_res = parseGame("1. e4 (1. d4) 1-0")
+        should(my_res.tags.Result).equal("1-0")
     })
-    xit("should handle variation at the end even for unclear results", function () {
-        let my_res = parsePgn("1. e4 (1. d4) *")
-        should(my_res[1]).equal("*")
+    it("should handle variation at the end even for unclear results", function () {
+        let my_res = parseGame("1. e4 (1. d4) *")
+        should(my_res.tags.Result).equal("*")
     })
 })
 
@@ -584,14 +578,14 @@ describe("When doing post processing of one game (only pgn)", function () {
         should(my_res[1].turn).equal('b')
     })
     it("should handle turn correct for black with fen", function () {
-        let my_res = (<ParseTree>parse("2... Nc6 3. d4",
+        let my_res = (<ParseTree>parseGame("2... Nc6 3. d4",
             { startRule: 'pgn', fen: 'rnbqkbnr/pppp1ppp/8/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2'})).moves
         should.exist(my_res)
         should(my_res[0].turn).equal('b')
         should(my_res[1].turn).equal('w')
     })
     it("should handle turn correct for white with fen", function () {
-        let my_res = (<ParseTree>parse("3. d4 exd4",
+        let my_res = (<ParseTree>parseGame("3. d4 exd4",
             { startRule: 'pgn', fen: 'r1bqkbnr/pppp1ppp/2n5/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3'})).moves
         should.exist(my_res)
         should(my_res[0].turn).equal('w')

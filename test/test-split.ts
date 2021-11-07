@@ -1,10 +1,11 @@
-import {parse} from "../src/pgn-parser"
+import {parseGame} from "../src/pgn-parser"
 import {split} from "../src/split-games"
+import {SplitGame} from "../src/split-games";
+
 import should = require('should')
 import fs = require('fs')
-import {ParseTree} from "../lib/types";
 
-function splitGames(string) {
+function splitGames(string):SplitGame[] {
     return split(string, {startRule: "games"})
 }
 
@@ -58,9 +59,9 @@ describe("When reading many games and split them", function () {
             let res = splitGames(data)
             let found = []
             res.forEach(function (game) {
-                let tags = (<ParseTree><unknown>parse(game.tags, {startRule: "tags"})).tags
+                let tags = parseGame(game.tags, {startRule: "tags"}).tags
                 if (tags.Result == "1-0") {
-                    found.push(parse(game.all, {startRule: "game"}))
+                    found.push(parseGame(game.all))
                 }
             })
             should(found.length).equal(22)
@@ -73,7 +74,7 @@ describe("When reading many games and split them", function () {
             let res = splitGames(data)
             let players = []
             res.forEach(function (game) {
-                let tags = (<ParseTree><unknown>parse(game.tags, {startRule: 'tags'})).tags
+                let tags = parseGame(game.tags, {startRule: 'tags'}).tags
                 players.push(tags.White)
                 players.push(tags.Black)
             })
