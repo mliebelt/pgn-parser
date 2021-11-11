@@ -19,6 +19,7 @@
     "sampleGame.pgn",
     "README.md"
   ],
+  "bin": "./bin/pgn-to-json.js",
   "author": "mliebelt",
   "license": "Apache-2.0",
   "repository": {

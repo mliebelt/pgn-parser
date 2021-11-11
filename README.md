@@ -96,6 +96,19 @@ A code example to read a complete game then looks like:
       ]
     }
 
+## How to use it as an CLI?
+
+You can use `pgn-parser` as a command line tool for parsing PGN files to JSON
+
+``` bash
+npm install --global pgn-parser
+pgn-parser file.pgn
+
+# Or
+
+npx pgn-parser file.pgn
+```
+
 ## How to use it in the browser?
 
 If you want to use the library in the browser, the above method will not work. In the [ticket 22](https://github.com/mliebelt/pgn-parser/issues/22), Bebul explained how to do it. Here is the complete recipe:
