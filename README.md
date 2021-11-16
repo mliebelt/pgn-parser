@@ -101,13 +101,15 @@ A code example to read a complete game then looks like:
 You can use `pgn-parser` as a command line tool for parsing PGN files to JSON
 
 ``` bash
-npm install --global pgn-parser
+npm install --global @mliebelt/pgn-parser
 pgn-parser file.pgn
 
 # Or
 
 npx pgn-parser file.pgn
 ```
+
+The optional parameter `-p` emits the result pretty-printed.
 
 ## How to use it in the browser?
 

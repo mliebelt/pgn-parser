@@ -9,6 +9,146 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [1.4.0](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.4.0) 21-10-20
+
+### Changed
+
+* [#100](https://github.com/mliebelt/pgn-parser/issues/100) Switched source language to Typescript
+
+### Fixed
+
+## [1.3.7](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.3.7) 21-11-16
+
+### Changed
+
+* [#102](https://github.com/mliebelt/pgn-parser/issues/102) Fix for bug when using library in strict mode
+
+### Fixed
+
+## [1.3.6](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.3.6) 21-11-16
+
+### Changed
+
+### Fixed
+
+* [#97](https://github.com/mliebelt/pgn-parser/issues/97) Fix for bug when using library in strict mode
+
+## [1.3.5](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.3.5) 21-08-15
+
+### Fixed
+
+### Changed
+
+* [#74](https://github.com/mliebelt/pgn-parser/issues/74) First working split solution
+* [#80](https://github.com/mliebelt/pgn-parser/issues/80) Cleanup code for splitting
+* [#90](https://github.com/mliebelt/pgn-parser/issues/90) Allow arbitrary action commands, keep the values
+
+### Fixed
+
+## [1.3.4](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.3.4) 21-06-21
+
+### Changed
+
+### Fixed
+
+* [#65](https://github.com/mliebelt/pgn-parser/issues/65) Fixed reset of messages
+
+# [1.3.3](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.3.3) 21-06-21
+
+### Changed
+
+* [#63](https://github.com/mliebelt/pgn-parser/issues/63) Added tags for Clock, WhiteClock, BlackClock
+
+### Fixed
+
+## [1.3.2](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.3.2) 21-06-03
+
+### Changed
+
+* [#59](https://github.com/mliebelt/pgn-parser/issues/59) Switches from pegjs to peggy
+* [#64](https://github.com/mliebelt/pgn-parser/issues/64) Bump peggy to version 1.2.0
+
+### Fixed
+
+* [#55](https://github.com/mliebelt/pgn-parser/issues/55) Be more resilient with clock annotations
+
+## [1.3.1](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.3.1) 21-05-30
+
+### Changed
+
+### Fixed
+
+* [#62](https://github.com/mliebelt/pgn-parser/issues/62) Don't record turn if not known
+
+## [1.3.0](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.3.0) 21-05-30
+
+### Changed
+
+### Fixed
+
+* [#58](https://github.com/mliebelt/pgn-parser/issues/58) Wrong date now recorded as message, not as parse error
+
+## [1.2.8](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.2.8) 21-04-30
+
+### Changed
+
+* [#54](https://github.com/mliebelt/pgn-parser/issues/54) Add drop notation for crazyhouse
+
+### Fixed
+
+## [1.2.7](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.2.7) 21-04-18
+
+### Changed
+
+### Fixed
+
+* [#52](https://github.com/mliebelt/pgn-parser/issues/52) Allow additional whitespace in tags
+
+## [1.2.6](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.2.6) 21-04-13
+
+### Changed
+
+### Fixed
+
+* [#41](https://github.com/mliebelt/pgn-parser/issues/41) Comment `%eval` reads now a number
+
+## [1.2.5](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.2.5) 21-04-06
+
+### Changed
+
+* [#51](https://github.com/mliebelt/pgn-parser/issues/51) Allow any additional tags
+
+### Fixed
+
+## [1.2.4](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.2.4) 21-04-03
+
+### Changed
+
+* [#45](https://github.com/mliebelt/pgn-parser/issues/45) Refactoring of unit tests
+* [#46](https://github.com/mliebelt/pgn-parser/issues/46) Implemented all date and time tags with correct structure
+* [#47](https://github.com/mliebelt/pgn-parser/issues/47) Implemented TimeControl fully to the spec
+* [#49](https://github.com/mliebelt/pgn-parser/issues/49) Add additional lichess tags to avoid errors
+
+### Fixed
+
+* [#44](https://github.com/mliebelt/pgn-parser/issues/44) Fix for race conditions when having games without whitespace in between
+
+## [1.2.3](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.2.3) 21-03-30
+
+### Changed
+
+### Fixed
+
+* [#43](https://github.com/mliebelt/pgn-parser/issues/43) Fix for race conditions when having games without whitespace in between
+
+## [1.2.2](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.2.2) 21-03-30
+
+### Changed
+
+### Fixed
+
+* [#42](https://github.com/mliebelt/pgn-parser/issues/42) Ignores whitespace between comments
+
 ## [1.2.1](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.2.1) 21-03-26
 
 ### Changed
