@@ -6,7 +6,7 @@ type PgnString = string
 export type SplitGame = { tags: TagString, pgn: PgnString, all: string }
 import {PgnOptions} from "./types";
 
-export const split = function(input:string, options:PgnOptions):SplitGame[] {
+export function split(input:string, options:PgnOptions):SplitGame[] {
     // let result = parser.parse(input, options)
     let result = normalizeLineEndings(input).split("\n\n")
     let res = []

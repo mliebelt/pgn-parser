@@ -1,5 +1,5 @@
 import {parseGame} from "../src/pgn-parser"
-import should = require('should')
+import * as should from 'should'
 import {ParseTree} from "../src/types";
 
 // The following test cases test everything about a game, with the exception of game moves, and tags.

@@ -26,18 +26,20 @@
     "@types/node": "^16.11.6",
     "mocha": "^9.0.3",
     "peggy": "^1.2.0",
+    "rollup": "^2.59.0",
     "should": "^13.2.3",
     "source-map-loader": "^3.0.0",
     "ts-loader": "^9.2.6",
     "ts-node": "^10.4.0",
     "typescript": "^4.4.4",
-    "webpack": "^5.60.0",
-    "webpack-cli": "^4.9.1"
+    "webpack": "^5.60.0"
   },
   "scripts": {
     "buildpeg": "node ./bin/build.js",
-    "build": "npx webpack --config webpack.config.js",
-    "compile": "tsc -p .",
+    "build": "npm run mjs && npm run cjs && npm run umd",
+    "mjs": "tsc -d && mv lib/index.js lib/index.mjs && mv lib/_pgn-parser.js lib/_pgn-parser.mjs && mv lib/pgn-parser.js lib/pgn-parser.mjs && mv lib/split-games.js lib/split-games.mjs && mv lib/types.js lib/types.mjs",
+    "cjs": "tsc -m commonjs",
+    "umd": "rollup -i lib/index.mjs -o lib/index.umd.js -f umd -n index",
     "test": "mocha --require ts-node/register ./test/*.ts",
     "test-interactive": "mocha -w",
     "prepare": "npm run build && npm test"

@@ -1,1 +1,1 @@
-{"version":3,"file":"split-games.d.ts","sourceRoot":"","sources":["../src/split-games.ts"],"names":[],"mappings":"AAOA,eAAO,MAAM,KAAK,qCAiBjB,CAAA"}
+{"version":3,"file":"split-games.d.ts","sourceRoot":"","sources":["../src/split-games.ts"],"names":[],"mappings":"AAGA,aAAK,SAAS,GAAG,MAAM,CAAA;AACvB,aAAK,SAAS,GAAG,MAAM,CAAA;AACvB,oBAAY,SAAS,GAAG;IAAE,IAAI,EAAE,SAAS,CAAC;IAAC,GAAG,EAAE,SAAS,CAAC;IAAC,GAAG,EAAE,MAAM,CAAA;CAAE,CAAA;AACxE,OAAO,EAAC,UAAU,EAAC,MAAM,SAAS,CAAC;AAEnC,wBAAgB,KAAK,CAAC,KAAK,EAAC,MAAM,EAAE,OAAO,EAAC,UAAU,GAAE,SAAS,EAAE,CAiBlE"}

@@ -1,4 +1,4 @@
-import parser = require("./_pgn-parser.js")
+import * as parser from "./_pgn-parser"
 
 import {ParseTree, ParseTreeOrArray, PgnMove, PgnOptions} from "./types";
 

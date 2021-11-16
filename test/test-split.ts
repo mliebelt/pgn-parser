@@ -2,7 +2,7 @@ import {parseGame} from "../src/pgn-parser"
 import {split} from "../src/split-games"
 import {SplitGame} from "../src/split-games";
 
-import should = require('should')
+import * as should from 'should'
 import fs = require('fs')
 
 function splitGames(string):SplitGame[] {

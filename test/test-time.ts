@@ -1,5 +1,5 @@
 import {parse} from "../src/pgn-parser"
-import should = require('should')
+import * as should from 'should'
 import {ParseTree} from "../src/types";
 import fs = require('fs')
 import https = require('https')

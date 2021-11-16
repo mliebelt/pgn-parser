@@ -1,5 +1,5 @@
 import {parse} from "../src/pgn-parser"
-import should = require('should')
+import * as should from 'should'
 import {ParseTree, Tags, PgnMove} from "../src/types"
 
 function parseTags(string):Tags {

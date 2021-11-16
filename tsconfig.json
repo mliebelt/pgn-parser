@@ -1,15 +1,17 @@
 {
   "compilerOptions": {
-    "target": "ES2015",
+    "module": "ES2015",
+    "target": "ES2017",
     "outDir": "lib",
     "declaration": true,
     "declarationMap": true,
     "lib": ["es2015"],
     "module": "umd",
     "allowJs": true,
-    "moduleResolution": "Node",
     "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "Node"
   },
   "include": ["src"]
 }

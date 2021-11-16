@@ -1,5 +1,5 @@
 import {parseGame} from "../src/pgn-parser"
-import should = require('should')
+import * as should from 'should'
 import {ParseTree, PgnMove} from "../src/types"
 
 function parsePgn(string):PgnMove[] {
