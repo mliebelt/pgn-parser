@@ -4,6 +4,7 @@ import { ParseTree, ParseTreeOrArray, PgnOptions } from "./types";
  * postParse processing can now rely on the same structure all the time.
  * @param input - the PGN string that will be parsed according to the `startRule` given
  * @param options - the parameters that have to include the `startRule`
+ * @returns a ParseTree or an array of ParseTrees, depending on the startRule
  */
 export declare function parse(input: string, options: PgnOptions): ParseTreeOrArray;
 /**
