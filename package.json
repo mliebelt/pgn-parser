@@ -30,11 +30,9 @@
     "peggy": "^1.2.0",
     "rollup": "^2.59.0",
     "should": "^13.2.3",
-    "source-map-loader": "^3.0.0",
     "ts-loader": "^9.2.6",
     "ts-node": "^10.4.0",
-    "typescript": "^4.4.4",
-    "webpack": "^5.60.0"
+    "typescript": "^4.4.4"
   },
   "scripts": {
     "buildpeg": "node ./bin/build.js",
