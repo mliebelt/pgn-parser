@@ -43,6 +43,12 @@ function postParseGame(_parseTree: ParseTree, _input, _options) {
             if (typeof move == 'string') {
                 parseTree.moves.pop()
                 if (parseTree.tags) {
+                    let tmp = parseTree.tags["Result"]
+                    if (tmp) {
+                        if (move !== tmp) {
+                            parseTree.messages.push({key: "Result", value: tmp, message: "Result in tags is different to result in SAN"})
+                        }
+                    }
                     parseTree.tags["Result"] = move
                 }
             }
