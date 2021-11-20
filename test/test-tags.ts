@@ -70,6 +70,14 @@ describe("When working with all kind of tags", function () {
         should(res.Mode).equal("OTB")
         should(res.PlyCount).equal(17)
     })
+    it("should read ELO as integer all the time (empty case)", function () {
+        let res = parseTags('[WhiteElo ""]')
+        should(res.WhiteElo).equal(0)
+    })
+    it("should read ELO as integer all the time (dash case)", function () {
+        let res = parseTags('[WhiteElo "-"]')
+        should(res.WhiteElo).equal(0)
+    })
 })
 
 describe("When working with different formats for dates", function () {

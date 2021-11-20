@@ -235,8 +235,9 @@ innerResult =
     / res:"*" { return res; }
 
 integerOrDashString =
- 	integerString
-    / quotation_mark '-' quotation_mark
+ 	v:integerString { return v }
+    / quotation_mark '-' quotation_mark {return 0 }
+    / quotation_mark quotation_mark { return 0 }
 
 integerString =
 	quotation_mark digits:[0-9]+ quotation_mark { return makeInteger(digits); }
