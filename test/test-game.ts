@@ -213,3 +213,19 @@ describe("When doing post processing of one game", function () {
         should(res.messages[0].message).equal("Result in tags is different to result in SAN")
     })
 })
+
+describe("When reading additional notation", function () {
+    it("should understand a draw offer after a move", function () {
+        let res = parseGame('1. e4 e5 2. f4 d4 (=) 3. exd5')
+        should.exist(res)
+        should(res.moves.length).equal(5)
+        should(res.moves[3].drawOffer).equal(true)
+        should(res.moves[4].drawOffer).undefined()
+    })
+    it ("should understand a draw offer after move with comments after it", function () {
+        let res = parseGame('1. e4 e5 2. f4 d4 (=) {Why now???} 3. exd5')
+        should(res.moves.length).equal(5)
+        should(res.moves[3].drawOffer).true()
+        should(res.moves[3].commentAfter).equal("Why now???")
+    })
+})

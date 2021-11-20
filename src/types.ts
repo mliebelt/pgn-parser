@@ -32,6 +32,7 @@ type MessagesObject = { messages: Message[] }
 type GameComment = { comment?: string, colorArrows?: string[], colorFields?: string[], clk?: string, eval?: string }
 export type ParseTreeOrArray = ParseTree | ParseTree[]
 export type PgnMove = {
+    drawOffer: boolean;
     moveNumber: number,
     notation: { fig?: string | null, strike: 'x' | null, col: string, row: string, check: boolean,
         promotion: string | null, notation: string, disc?: string, drop?: boolean },

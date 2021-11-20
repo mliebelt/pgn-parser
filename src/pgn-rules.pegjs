@@ -243,15 +243,19 @@ integerString =
 	quotation_mark digits:[0-9]+ quotation_mark { return makeInteger(digits); }
 
 pgn
-  = ws cm:comments? ws mn:moveNumber? ws hm:halfMove  ws nag:nags?  ws ca:comments? ws vari:variation? all:pgn?
+  = ws cm:comments? ws mn:moveNumber? ws hm:halfMove  ws nag:nags?  dr:drawOffer? ws ca:comments? ws vari:variation? all:pgn?
     { var arr = (all ? all : []);
       var move = {}; move.moveNumber = mn; move.notation = hm;
       if (ca) { move.commentAfter = ca.comment };
       if (cm) { move.commentMove = cm.comment };
+      if (dr) { move.drawOffer = true };
       move.variations = (vari ? vari : []); move.nag = (nag ? nag : null); arr.unshift(move); 
       move.commentDiag = ca;
       return arr; }
   / ws e:endGame ws {return e; }
+
+drawOffer
+  = pl '=' pr
 
 endGame
   = eg:innerResult { return [eg]; }
