@@ -73,6 +73,7 @@ describe("When working with all kind of tags", function () {
     it("should read ELO as integer all the time (empty case)", function () {
         let res = parseTags('[WhiteElo ""]')
         should(res.WhiteElo).equal(0)
+        should(res.messages[0].message).equal("Use \"-\" for an unknown value")
     })
     it("should read ELO as integer all the time (dash case)", function () {
         let res = parseTags('[WhiteElo "-"]')

@@ -704,7 +704,7 @@
     var peg$f70 = function(res) {return res; };
     var peg$f71 = function(v) { return v };
     var peg$f72 = function() {return 0 };
-    var peg$f73 = function() { return 0 };
+    var peg$f73 = function() { addMessage({ message: 'Use "-" for an unknown value'}); return 0 };
     var peg$f74 = function(digits) { return makeInteger(digits); };
     var peg$f75 = function(cm, mn, hm, nag, ca, vari, all) { var arr = (all ? all : []);
           var move = {}; move.moveNumber = mn; move.notation = hm;
