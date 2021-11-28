@@ -520,6 +520,17 @@ describe("Parsing PGN game with all kinds of promotions", function () {
         should(function () { parsePgn("c8=P") } ).throwError()
         should( function() { parsePgn("c8=K") }).throwError()
     })
+    it("should allow promotion with and without '=' sign", function (){
+        let my_res = parsePgn("e4Q e5R f3B c6N c4 c5")
+        //let my_res = parsePgn("e4=Q e5=R f3=B c6=N c4=P c5=K")
+        should(my_res.length).equal(6)
+        should(my_res[0].notation.promotion).equal('=Q')
+        should(my_res[1].notation.promotion).equal('=R')
+        should(my_res[2].notation.promotion).equal('=B')
+        should(my_res[3].notation.promotion).equal('=N')
+        should(my_res[4].notation.promotion).not.equal('=P')
+        should(my_res[5].notation.promotion).not.equal('=K')
+    } )
 })
 
 describe("Parsing PGN game with all kinds of discriminators", function () {

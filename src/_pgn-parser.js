@@ -6465,15 +6465,13 @@
         s1 = peg$FAILED;
         if (peg$silentFails === 0) { peg$fail(peg$e158); }
       }
-      if (s1 !== peg$FAILED) {
-        s2 = peg$parsepromFigure();
-        if (s2 !== peg$FAILED) {
-          peg$savedPos = s0;
-          s0 = peg$f123(s2);
-        } else {
-          peg$currPos = s0;
-          s0 = peg$FAILED;
-        }
+      if (s1 === peg$FAILED) {
+        s1 = null;
+      }
+      s2 = peg$parsepromFigure();
+      if (s2 !== peg$FAILED) {
+        peg$savedPos = s0;
+        s0 = peg$f123(s2);
       } else {
         peg$currPos = s0;
         s0 = peg$FAILED;

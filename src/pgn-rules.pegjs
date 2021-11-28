@@ -430,7 +430,7 @@ check
   / ch:(! '$$$' '#') { return ch[1]; }
 
 promotion
-  = '=' f:promFigure { return '=' + f; }
+  = '='? f:promFigure { return '=' + f; }
 
 nags
   = nag:nag ws nags:nags? { var arr = (nags ? nags : []); arr.unshift(nag); return arr; }
