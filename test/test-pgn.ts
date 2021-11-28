@@ -543,6 +543,14 @@ describe("Parsing PGN game with all kinds of discriminators", function () {
     })
 })
 
+describe("Parsing PGN games which follow 'Laws of Chess'", function () {
+    it("should allow 'e.p.' in the notation", function (){
+        let my_res = parsePgn("exd6 e.p.")
+        should(my_res.length).equal(1)
+        should(my_res[0].notation.notation).equal('exd6')
+    })
+})
+
 describe("Just examples of complex notations or errors of the past", function () {
     it("should be useful in the documentation", function () {
         let my_res = parsePgn("1. e4! {my favorite} e5 (1... c5!?)")

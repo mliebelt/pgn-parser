@@ -407,7 +407,7 @@ whiteSpace
 
 halfMove
   = fig:figure? & checkdisc disc:discriminator str:strike?
-    col:column row:row pr:promotion? ch:check?
+    col:column row:row pr:promotion? ch:check? ws 'e.p.'?
     { var hm = {}; hm.fig = (fig ? fig : null); hm.disc =  (disc ? disc : null); hm.strike = (str ? str : null);
     hm.col = col; hm.row = row; hm.check = (ch ? ch : null); hm.promotion = pr;
     hm.notation = (fig ? fig : "") + (disc ? disc : "") + (str ? str : "") + col + row + (pr ? pr : "") + (ch ? ch : "");
