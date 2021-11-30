@@ -218,7 +218,15 @@ clockColor = 'B' / 'W' / 'N'
 clockTimeQ = quotation_mark value:clockTime quotation_mark { return value; }
 clockTime = value:clockValue1D { return value; }
 
-timeControl = quotation_mark res:tcnq quotation_mark    { return res; }
+timeControl = quotation_mark res:tcnqs quotation_mark
+    { if (!res) { addMessage({ message: "Tag TimeControl has to have a value" }); return ""; }
+      return res; }
+
+tcnqs = tcnqs:(
+       head:tcnq
+         tail:(':' m:tcnq { return m; })*
+         { return [head].concat(tail) }
+       )? { return tcnqs; }
 
 tcnq = '?' { return { kind: 'unknown', value: '?' }; }
     / '-' { return { kind: 'unlimited', value: '-' }; }
