@@ -230,6 +230,7 @@ tcnqs = tcnqs:(
 
 tcnq = '?' { return { kind: 'unknown', value: '?' }; }
     / '-' { return { kind: 'unlimited', value: '-' }; }
+    / moves:integer "/" seconds:integer '+' incr:integer { return { kind: 'movesInSecondsIncrement', moves: moves, seconds: seconds, increment: incr }; }
     / moves:integer "/" seconds:integer { return { kind: 'movesInSeconds', moves: moves, seconds: seconds }; }
     / seconds:integer '+' incr:integer { return { kind: 'increment', seconds: seconds, increment: incr }; }
     / seconds:integer { return { kind: 'suddenDeath', seconds: seconds }; }

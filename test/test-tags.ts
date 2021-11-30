@@ -301,9 +301,13 @@ describe("Understand all possible TimeControl tags", function () {
         should(res.TimeControl[1].kind).equal("suddenDeath")
         should(res.TimeControl[1].seconds).equal(3600)
     })
-    xit("should understand common time format: German tournament (with increment)", function () {
-        // This format is currently not supported by the spec, because it includes time per moves AND increment
-        let res = parseTags('[TimeControl "40/5200+30:1800+30')
+    it("should understand common time format: German tournament (with increment)", function () {
+        let res = parseTags('[TimeControl "40/5200+30"]')
+        should.exist(res)
+        should(res.TimeControl[0].kind).equal("movesInSecondsIncrement")
+        should(res.TimeControl[0].moves).equal(40)
+        should(res.TimeControl[0].seconds).equal(5200)
+        should(res.TimeControl[0].increment).equal(30)
     })
     it("should raise an error for empty time control", function () {
         let res = parseTags('[TimeControl ""]')
@@ -321,9 +325,6 @@ describe("Understand all possible TimeControl tags", function () {
         res = parseTags('[TimeControl "400*"]')
         should(res.messages.length).equal(1)
         should(res.messages[0].message).equal('Format of tag: "TimeControl" not correct: "400*"')
-        res = parseTags('[TimeControl "40/600+40"]')
-        should(res.messages.length).equal(1)
-        should(res.messages[0].message).equal('Format of tag: "TimeControl" not correct: "40/600+40"')
     })
     it("should raise an error for all periods with some error in it", function () {
         let res = parseTags('[TimeControl "400+:400*"]')
