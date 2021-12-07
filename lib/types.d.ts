@@ -73,6 +73,7 @@ declare type GameComment = {
 };
 export declare type ParseTreeOrArray = ParseTree | ParseTree[];
 export declare type PgnMove = {
+    drawOffer: boolean;
     moveNumber: number;
     notation: {
         fig?: string | null;

@@ -331,6 +331,11 @@ describe("Understand all possible TimeControl tags", function () {
         should(res.messages.length).equal(1)
         should(res.messages[0].message).equal('Format of tag: "TimeControl" not correct: "400+:400*"')
     })
+    it("should raise an error for unknown TimeControl", function () {
+        let res = parseTags('[TimeControl "60 minutes"]')
+        should(res.messages.length).equal(1)
+        should(res.messages[0].message).equal('Format of tag: "TimeControl" not correct: "60 minutes"')
+    })
 })
 
 describe("When reading tags with clock context", function () {
