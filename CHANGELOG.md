@@ -9,11 +9,28 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
-## [1.4.0](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.4.0) 21-10-20
+## [1.4.1](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.4.1) 22-01-06
+
+### Changed
+
+* [#99](https://github.com/mliebelt/pgn-parser/issues/99) Result in SAN is kept as tag
+* [#57](https://github.com/mliebelt/pgn-parser/issues/57) Add draw offer to notation
+* [#113](https://github.com/mliebelt/pgn-parser/issues/113) Allow 'e.p.' when parsing
+* [#114](https://github.com/mliebelt/pgn-parser/issues/114) Allow leaving out '=' when promoting
+* [#117](https://github.com/mliebelt/pgn-parser/issues/117) Combine `movesInSeconds` with `increment` TimeControl
+
+### Fixed
+
+* [#83](https://github.com/mliebelt/pgn-parser/issues/83) Set ELO to 0 if not set
+* [#101](https://github.com/mliebelt/pgn-parser/issues/101) Be robust with unknown TimeControl tag
+* [#116](https://github.com/mliebelt/pgn-parser/issues/116) Allow more than 1 period in TimeFormat
+
+## [1.4.0](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.4.0) 21-11-16
 
 ### Changed
 
 * [#100](https://github.com/mliebelt/pgn-parser/issues/100) Switched source language to Typescript
+* [#102](https://github.com/mliebelt/pgn-parser/issues/102) Deployed new version
 
 ### Fixed
 
