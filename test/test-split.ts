@@ -1,6 +1,5 @@
 import {parseGame} from "../src/pgn-parser"
-import {split} from "../src/split-games"
-import {SplitGame} from "../src/split-games";
+import {split, SplitGame} from "../src/split-games"
 
 import * as should from 'should'
 import fs = require('fs')

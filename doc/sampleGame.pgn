@@ -6,7 +6,7 @@
 [Black "Carlsen,Magnus"]
 [Result "1/2-1/2"]
 [WhiteElo "2055"]
-[BlackElo ""]
+[BlackElo "0"]
 [ECO "D12"]
 
 1.d4 Nf6 2.Nf3 d5 3.e3 Bf5 4.c4 c6 5.Nc3 e6 6.Bd3 Bxd3 7.Qxd3 Nbd7 8.b3 Bd6

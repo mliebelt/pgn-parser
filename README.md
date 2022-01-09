@@ -18,11 +18,11 @@ notated, so that computer programs like the [PgnViewerJS](https://github.com/mli
 
 Everyone that wants to implement chess software and has to read PGN notation. The library is a runtime component to be included in the usual way.
 
-    import { parser } from '@mliebelt/pgn-parser'
+    import { parse } from '@mliebelt/pgn-parser'
 
 or
 
-    let parser = require("@mliebelt/pgn-parser").parser
+    let parse = require("@mliebelt/pgn-parser").parse
 
 ## How to install it?
 
@@ -30,40 +30,7 @@ or
 
 ## How to use it?
 
-Look at the many test cases that show how to use it. Here is an example:
-
-```javascript
-const fs = require('fs/promises')
-const path = require('path')
-const {splitter, parser} = require('@mliebelt/pgn-parser')
-// helpers
-const parseGames = (string) => parser.parse(string, {startRule: 'games'})
-const splitGames = (string) => splitter.split(string, {startRule: "games"})
-
-// assuming source directory is sibling of node_modules
-const gameFilePath = path.resolve(__dirname, '../node_modules/@mliebelt/pgn-parser/sampleGame.pgn')
-fs.readFile(gameFilePath, 'utf-8')
-        .then(pgnFile=> {
-           const game = parseGames(pgnFile).pop()
-           console.log('game.moves[0] = ', game.moves[0])
-        })
-        .catch(console.error)
-
-// assuming source directory is sibling of node_modules
-const gamesFilePath = path.resolve(__dirname, '../node_modules/@mliebelt/pgn-parser/sampleGames.pgn')
-fs.readFile(gamesFilePath, 'utf-8')
-        .then(pgnFile=> {
-           const games = splitGames(pgnFile)
-           const players = []
-           games.forEach((game) => {
-              const tags = parser.parse(game.tags, {startRule: 'tags'})
-              players.push(tags.White)
-              players.push(tags.Black)
-           })
-           console.log('Games: ', JSON.stringify(games, null, 2))
-           console.log('Players: ', JSON.stringify(players, null, 2))
-        })
-        .catch(console.error)
+Look at the many test cases that show how to use it. Have a look at the examples in directory doc.
 ```
 
 It does not have an API, just a JSON structure that has to be read then. You have 4 top level rules to use the parser:
@@ -75,8 +42,8 @@ It does not have an API, just a JSON structure that has to be read then. You hav
 
 A code example to read a complete game then looks like:
 
-    import parser from '@mliebelt/pgn-parser'
-    let game = parser.parse('[White "Me"] [Black "Magnus"] 1. f4 e5 2. g4 Qh4#', {startRule: "game"})
+    import parse from '@mliebelt/pgn-parser'
+    let game = parse('[White "Me"] [Black "Magnus"] 1. f4 e5 2. g4 Qh4#', {startRule: "game"})
     console.log(JSON.stringify(res, null, 2))
     ==>
     JSON.stringify(res, null, 2)
@@ -120,8 +87,8 @@ If you want to use the library in the browser, the above method will not work. I
 
         File: parsePgn.js
         ----
-        const parser =  require('./pgn-parser.ts')
-        window.parsePgn = parser.parse
+        const parse =  require('./pgn-parser.ts').parse
+        window.parsePgn = parse
 
 1. Process newly created parsePgn.js through Browserify.
 
