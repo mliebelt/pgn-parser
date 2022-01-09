@@ -31,7 +31,6 @@ or
 ## How to use it?
 
 Look at the many test cases that show how to use it. Have a look at the examples in directory doc.
-```
 
 It does not have an API, just a JSON structure that has to be read then. You have 4 top level rules to use the parser:
 
