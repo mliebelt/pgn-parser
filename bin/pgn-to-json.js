@@ -3,7 +3,7 @@
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
-const { parser } = require("..");
+const { parse } = require("..");
 
 const STDIN_FILE_NO = 0;
 
@@ -68,7 +68,7 @@ const filesToJson = (files) => {
       .trim();
 
     if (fileContent) {
-      const gamesOnFile = parser.parse(fileContent, { startRule: "games" });
+      const gamesOnFile = parse(fileContent, { startRule: "games" });
 
       games.push(...gamesOnFile);
     }
