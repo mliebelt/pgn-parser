@@ -41,7 +41,7 @@ It does not have an API, just a JSON structure that has to be read then. You hav
 
 A code example to read a complete game then looks like:
 
-    import parse from '@mliebelt/pgn-parser'
+    import { parse } from '@mliebelt/pgn-parser'
     let game = parse('[White "Me"] [Black "Magnus"] 1. f4 e5 2. g4 Qh4#', {startRule: "game"})
     console.log(JSON.stringify(res, null, 2))
     ==>
@@ -62,6 +62,8 @@ A code example to read a complete game then looks like:
       ]
     }
 
+See the example 'doc/read-sample.js' that can be directly used in the shell: `node doc/read-sample.js`.
+
 ## How to use it as an CLI?
 
 You can use `pgn-parser` as a command line tool for parsing PGN files to JSON
@@ -79,27 +81,9 @@ The optional parameter `-p` emits the result pretty-printed.
 
 ## How to use it in the browser?
 
-If you want to use the library in the browser, the above method will not work. In the [ticket 22](https://github.com/mliebelt/pgn-parser/issues/22), Bebul explained how to do it. Here is the complete recipe:
+There is a UMD version of the library available which works both in node and in the browser. The file `doc/index.html` is an example that shows how it works, and explains what to do for that.
 
-1. Install [Browserify](http://browserify.org/).
-1. Store the parse function as window property
-
-        File: parsePgn.js
-        ----
-        const parse =  require('./pgn-parser.ts').parse
-        window.parsePgn = parse
-
-1. Process newly created parsePgn.js through Browserify.
-
-       browserify parsePgn.js -o pgn-bundle.js
-
-1. In the `index.html` then use:
-
-        <script type="text/javascript" src="pgn/pgn-bundle.js"></script>
-
-1. And the parsePgn is now available:
-
-         let gameList = parsePgn('[White "Me"] [Black "Magnus"] 1. f4 e5 2. g4 Qh4#', {startRule: "game"});        
+So it is not necessary any more to build a version of that library with `browserify`.
 
 ## References
 

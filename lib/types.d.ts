@@ -56,7 +56,7 @@ export declare type Tags = {
 } & DateTags & TimeTags & MessagesObject & {
     [key in TimeControlKeys]: TimeControl;
 };
-declare type Message = {
+export declare type Message = {
     key: string;
     value: string;
     message: string;
@@ -64,7 +64,7 @@ declare type Message = {
 declare type MessagesObject = {
     messages: Message[];
 };
-declare type GameComment = {
+export declare type GameComment = {
     comment?: string;
     colorArrows?: string[];
     colorFields?: string[];
@@ -77,17 +77,17 @@ export declare type PgnMove = {
     moveNumber: number;
     notation: {
         fig?: string | null;
-        strike: 'x' | null;
+        strike?: 'x' | null;
         col: string;
         row: string;
-        check: boolean;
+        check?: string;
         promotion: string | null;
         notation: string;
         disc?: string;
         drop?: boolean;
     };
     variations: PgnMove[][];
-    nag: string | null;
+    nag: string[];
     commentDiag: GameComment;
     commentMove?: string;
     commentAfter?: string;

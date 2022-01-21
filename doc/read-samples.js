@@ -1,7 +1,8 @@
 const fs = require('fs/promises')
 const path = require('path')
-const parse = require('..').parse
-const split = require('..').split
+// This shows which part of the library is used. Make clear that the main entry of `packages.json` is used.
+const parse = require('../lib/index').parse
+const split = require('../lib/index').split
 // helpers
 const parseGames = (string) => parse(string, {startRule: 'games'})
 const splitGames = (string) => split(string, {startRule: "games"})

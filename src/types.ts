@@ -26,18 +26,18 @@ export type PgnTime = { value?: string, hour?: number, minute?: number, second?:
 export type TimeTags = { [key in TimeTagKeys]: PgnTime }
 export type Tags = { [key in TagKeys]: string } & DateTags & TimeTags & MessagesObject & { [key in TimeControlKeys]: TimeControl }
 
-type Message = { key: string, value: string, message: string }
+export type Message = { key: string, value: string, message: string }
 type MessagesObject = { messages: Message[] }
 
-type GameComment = { comment?: string, colorArrows?: string[], colorFields?: string[], clk?: string, eval?: string }
+export type GameComment = { comment?: string, colorArrows?: string[], colorFields?: string[], clk?: string, eval?: string }
 export type ParseTreeOrArray = ParseTree | ParseTree[]
 export type PgnMove = {
     drawOffer: boolean;
     moveNumber: number,
-    notation: { fig?: string | null, strike: 'x' | null, col: string, row: string, check: boolean,
+    notation: { fig?: string | null, strike?: 'x' | null, col: string, row: string, check?: string,
         promotion: string | null, notation: string, disc?: string, drop?: boolean },
     variations: PgnMove[][],
-    nag: string | null,
+    nag: string[],
     commentDiag: GameComment,
     commentMove?: string,
     commentAfter?: string,
