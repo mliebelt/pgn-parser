@@ -1,7 +1,7 @@
 const fs = require('fs/promises')
 const path = require('path')
-// This shows which part of the library is used. Make clear that the main entry of `packages.json` is used.
-const parse = require('../lib/index').parse
+// This is the variant where the UMD version of the library is used. That version works in both node.js and the browser!
+const parse = require('../lib/index.umd').parse
 // helpers
 const parseGames = (string) => parse(string, {startRule: 'games'})
 
