@@ -1,5 +1,8 @@
-import * as parser from "./_pgn-parser"
-
+// import PegParser = require("./_pgn-parser")
+// import * as PegParser from './_pgn-parser'
+import PegParser from "./_pgn-parser.js"
+// let pkg = require('./_pgn-parser')
+// let PgnParser = pkg
 import {ParseTree, ParseTreeOrArray, PgnMove, PgnOptions} from "./types";
 
 /**
@@ -26,7 +29,8 @@ export function parse(input: string, options: PgnOptions): ParseTreeOrArray {
 export function parseGame(input: string, options: PgnOptions = {startRule: "game"}): ParseTree {
     input = input.trim()
     // Ensure that the correct structure exists: { tags: xxx, moves: ... }
-    let result = parser.parse(input, options)
+    // @ts-ignore
+    let result = PegParser.parse(input, options)
     if (options.startRule === "pgn") {
         result = {moves: result}
     } else if (options.startRule === "tags") {
@@ -102,8 +106,8 @@ export function parseGames(input, options: PgnOptions = {startRule: "games"}): P
     function handleGamesAnomaly(parseTree: ParseTreeOrArray): ParseTree[] {
         if (!Array.isArray(parseTree)) return []
         if (parseTree.length === 0) return parseTree
-        let last = parseTree.pop()
-        if ((Object.keys(last.tags).length > 0) || (last.moves.length > 0)) {
+        let last: ParseTree = parseTree.pop() as ParseTree
+        if ((last.tags !== undefined) || (last.moves.length > 0)) {
             parseTree.push(last)
         }
         return parseTree
@@ -114,7 +118,8 @@ export function parseGames(input, options: PgnOptions = {startRule: "games"}): P
     }
 
     const gamesOptions = Object.assign({startRule: "games"}, options);
-    let result = <ParseTree[]>parser.parse(input, gamesOptions)
+    // @ts-ignore
+    let result = <ParseTree[]>PegParser.parse(input, gamesOptions)
     if (!result) { return [] }
     postParseGames(result, input, gamesOptions)
     result.forEach((pt) => {

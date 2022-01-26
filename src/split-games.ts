@@ -15,7 +15,7 @@ import {PgnOptions} from "./types";
 export function split(input:string, options:PgnOptions = {startRule: "games"}):SplitGame[] {
     // let result = parser.parse(input, options)
     let result = normalizeLineEndings(input).split("\n\n")
-    let res = []
+    let res: SplitGame[] = []
     let g: SplitGame = { tags: '', pgn: '', all: ''}
     result.forEach(function (part) {
         if (part.startsWith('[')) {

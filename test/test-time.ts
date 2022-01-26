@@ -1,10 +1,10 @@
-import {parse} from "../src/pgn-parser"
-import * as should from 'should'
-import {ParseTree} from "../src/types";
-import fs = require('fs')
-import https = require('https')
+import {parse} from "../src"
+import should from "should"
+import {ParseTree} from "../src";
+import fs from 'fs'
+import https from 'https'
 
-function checkGamesLength(done, fileName, numberGames) {
+function checkGamesLength(done: any, fileName: string, numberGames: number) {
     fs.readFile(process.cwd() + fileName, 'utf8', function (err, data) {
         if (err) {
             throw err

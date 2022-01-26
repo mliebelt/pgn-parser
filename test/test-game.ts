@@ -1,6 +1,15 @@
-import {parseGame} from "../src/pgn-parser"
-import * as should from 'should'
-import {ParseTree} from "../src/types";
+import { parseGame, ParseTree, TagKeys } from "../src"
+import should from 'should'
+
+let tag = function (pt: ParseTree, tag: TagKeys): string {
+    if (! pt.tags) {
+        return ""
+    }
+    if (pt.tags && pt.tags[tag]) {
+        return pt.tags[tag]
+    }
+    return ""
+}
 
 // The following test cases test everything about a game, with the exception of game moves, and tags.
 describe("When working with one game", function () {
@@ -10,8 +19,8 @@ describe("When working with one game", function () {
         should.exist(res)
         should.exist(res.tags)
         should.exist(res.moves)
-        should(res.tags["White"]).equal("Me")
-        should(res.tags["Black"]).equal("Magnus")
+        should(tag(res, "White")).equal("Me")
+        should(tag(res, "Black")).equal("Magnus")
         should(res.moves.length).equal(4)
         should.exist(res.moves[0])
         should(res.moves[0].notation.notation).equal("f4")
@@ -30,8 +39,8 @@ describe("When working with one game", function () {
         should.exist(res.tags)
         should.exist(res.moves)
         should(res.moves.length).equal(0)   // end game
-        should(res.tags["White"]).equal("Me")
-        should(res.tags["Black"]).equal("Magnus")
+        should(tag(res, "White")).equal("Me")
+        should(tag(res, "Black")).equal("Magnus")
     })
 
     it("should read moves without tags without game termination marker", function () {
@@ -39,7 +48,8 @@ describe("When working with one game", function () {
         should.exist(res)
         should.exist(res.tags)
         should.exist(res.moves)
-        should(Object.keys(res.tags).length).equal(0)
+        let tags = res.tags ? res.tags : []
+        should(Object.keys(tags).length).equal(0)
         should(res.moves.length).equal(4)
         should.exist(res.moves[0])
         should(res.moves[0].notation.notation).equal("f4")
@@ -50,8 +60,10 @@ describe("When working with one game", function () {
         should.exist(res.tags)
         should.exist(res.moves)
         // Game result is converted to tag
+        let tags = res.tags ? res.tags : []
+        // @ts-ignore
         should(Object.keys(res.tags).length).equal(1)
-        should(res.tags["Result"]).equal("0-1")
+        should(tag(res,"Result")).equal("0-1")
         should(res.moves.length).equal(4)
         should.exist(res.moves[0])
         should(res.moves[0].notation.notation).equal("f4")
@@ -61,7 +73,9 @@ describe("When working with one game", function () {
         let res = parseGame("{ [%csl Ya4,Gh8,Be1] } *")
         should.exist(res)
         should.exist(res.gameComment)
+        // @ts-ignore
         should.exist(res.gameComment.colorFields)
+        // @ts-ignore
         should(res.gameComment.colorFields.length).equal(3)
     })
 })
@@ -107,34 +121,48 @@ describe("When reading a game with gameComment", function () {
         should.exist(res)
         should.exist(res.moves)
         should.exist(res.gameComment)
+        // @ts-ignore
         should(res.gameComment.comment).equal("test")
     })
     it ("should read arrows and circles in game comment", function () {
         let res = parseGame("{ [%cal Ye4e8] [%csl Rd4] } 1. e4")
         should.exist(res)
         should.exist(res.gameComment)
+        // @ts-ignore
         should(res.gameComment.colorArrows.length).equal(1)
+        // @ts-ignore
         should(res.gameComment.colorArrows[0]).equal("Ye4e8")
+        // @ts-ignore
         should(res.gameComment.colorFields.length).equal(1)
+        // @ts-ignore
         should(res.gameComment.colorFields[0]).equal("Rd4")
     })
     it ("should read arrows and circles in two game comments", function () {
         let res = parseGame("{ [%cal Ye4e8] } { [%csl Rd4] } 1. e4")
         should.exist(res)
         should.exist(res.gameComment)
+        // @ts-ignore
         should(res.gameComment.colorArrows.length).equal(1)
+        // @ts-ignore
         should(res.gameComment.colorArrows[0]).equal("Ye4e8")
+        // @ts-ignore
         should(res.gameComment.colorFields.length).equal(1)
+        // @ts-ignore
         should(res.gameComment.colorFields[0]).equal("Rd4")
     })
     it ("should read mix of arrows and circles with other comments", function () {
         let res = parseGame("{comment1 [%cal Ye4e8] } {comment2 [%csl Rd4] } 1. e4")
         should.exist(res)
         should.exist(res.gameComment)
+        // @ts-ignore
         should(res.gameComment.colorArrows.length).equal(1)
+        // @ts-ignore
         should(res.gameComment.colorArrows[0]).equal("Ye4e8")
+        // @ts-ignore
         should(res.gameComment.colorFields.length).equal(1)
+        // @ts-ignore
         should(res.gameComment.colorFields[0]).equal("Rd4")
+        // @ts-ignore
         should(res.gameComment.comment).equal("comment1 comment2")
     })
 })
@@ -194,21 +222,21 @@ describe("When doing post processing of one game", function () {
         let res = parseGame('[Result "1-0"] 1. e4 1-0')
         should.exist(res)
         should(res.moves.length).equal(1)
-        should(res.tags.Result).equal("1-0")
+        should(tag(res, "Result")).equal("1-0")
         should(res.messages.length).equal(0)
     })
     it("should handle result from SAN as tag", function () {
         let res = parseGame('1. e4 1-0')
         should.exist(res)
         should(res.moves.length).equal(1)
-        should(res.tags.Result).equal("1-0")
+        should(tag(res, "Result")).equal("1-0")
         should(res.messages.length).equal(0)
     })
     it("should handle different result from SAN as tag", function () {
         let res = parseGame('[Result "0-1"] 1. e4 1-0')
         should.exist(res)
         should(res.moves.length).equal(1)
-        should(res.tags.Result).equal("1-0")
+        should(tag(res, "Result")).equal("1-0")
         should(res.messages.length).equal(1)
         should(res.messages[0].message).equal("Result in tags is different to result in SAN")
     })

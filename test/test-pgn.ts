@@ -1,9 +1,20 @@
-import {parseGame} from "../src/pgn-parser"
-import * as should from 'should'
-import {ParseTree, PgnMove} from "../src/types"
+import {parseGame} from "../src"
+import should from 'should'
+import {ParseTree, PgnMove} from "../src"
+import {TagKeys} from "../src";
 
-function parsePgn(string):PgnMove[] {
+function parsePgn(string: string):PgnMove[] {
     return (<ParseTree>parseGame(string, {startRule: "pgn"})).moves
+}
+
+let tag = function (pt: ParseTree, tag: TagKeys): string {
+    if (! pt.tags) {
+        return ""
+    }
+    if (pt.tags && pt.tags[tag]) {
+        return pt.tags[tag]
+    }
+    return ""
 }
 
 describe("When working with PGN as string", function() {
@@ -54,51 +65,51 @@ describe("When a game notes a result at the end", function () {
     it("should have the result as Result in tags", function () {
         let my_res = parseGame("1. e4 1-0")
         should(my_res.moves.length).equal(1)
-        should(my_res.tags.Result).equal("1-0")
+        should(tag(my_res, "Result")).equal("1-0")
     })
     it("should have all kinds or result: 1-0", function () {
         let my_res = parseGame("1. e4 1-0")
-        should(my_res.tags.Result).equal("1-0")
+        should(tag(my_res, "Result")).equal("1-0")
     })
     it("should have all kinds or result: 0-1", function () {
         let my_res = parseGame("1. e4 0-1")
-        should(my_res.tags.Result).equal("0-1")
+        should(tag(my_res, "Result")).equal("0-1")
     })
     it("should have all kinds or result: 1/2-1/2", function () {
         let my_res = parseGame("1. e4  1/2-1/2")
-        should(my_res.tags.Result).equal("1/2-1/2")
+        should(tag(my_res, "Result")).equal("1/2-1/2")
     })
     it("should have all kinds or result: *", function () {
         let my_res = parseGame("1. e4  *")
-        should(my_res.tags.Result).equal("*")
+        should(tag(my_res, "Result")).equal("*")
     })
     it("should ignore additional white space before or after", function () {
         let my_res = parseGame("1. e4     *    ")
-        should(my_res.tags.Result).equal("*")
+        should(tag(my_res, "Result")).equal("*")
     })
     it("should ignore additional white space before or after success", function () {
         let my_res = parseGame("1. e4    1-0    ")
-        should(my_res.tags.Result).equal("1-0")
+        should(tag(my_res, "Result")).equal("1-0")
     })
     it("should ignore 1 space before or after", function () {
         let my_res = parseGame("27. Ng2 Qxg2# 0-1 ")
-        should(my_res.tags.Result).equal("0-1")
+        should(tag(my_res, "Result")).equal("0-1")
     })
     it("should handle variation at the end", function () {
         let my_res = parseGame("1. e4 (1. d4) 1/2-1/2")
-        should(my_res.tags.Result).equal("1/2-1/2")
+        should(tag(my_res, "Result")).equal("1/2-1/2")
     })
     it("should handle variation at the end even for wins", function () {
         let my_res = parseGame("1. e4 (1. d4) 1-0")
-        should(my_res.tags.Result).equal("1-0")
+        should(tag(my_res, "Result")).equal("1-0")
     })
     it("should handle variation at the end even for wins with different format", function () {
         let my_res = parseGame("1. e4 (1. d4) 1-0")
-        should(my_res.tags.Result).equal("1-0")
+        should(tag(my_res, "Result")).equal("1-0")
     })
     it("should handle variation at the end even for unclear results", function () {
         let my_res = parseGame("1. e4 (1. d4) *")
-        should(my_res.tags.Result).equal("*")
+        should(tag(my_res, "Result")).equal("*")
     })
 })
 
@@ -126,7 +137,9 @@ describe("Reading PGN game with all kinds of comments", function () {
         let my_res = parsePgn("1. e4 {first} {[%cal Re4e6] [%csl Rd4]} e5!")
         should(my_res.length).equal(2)
         should(my_res[0].commentAfter).equal("first")
+        // @ts-ignore
         should(my_res[0].commentDiag.colorArrows[0]).equal("Re4e6")
+        // @ts-ignore
         should(my_res[0].commentDiag.colorFields[0]).equal("Rd4")
     })
     it("should read additional whitespace when reading comments (according to the spec)", function () {
@@ -139,18 +152,26 @@ describe("Reading PGN game with all kinds of comments", function () {
         let my_res = parsePgn("1. e4 {[%csl Ye4,Rd4,Ga1,Bh1]}")
         should(my_res[0].commentDiag).not.equal(null)
         should.exist(my_res[0].commentDiag.colorFields)
-        should(my_res[0].commentDiag.colorFields[0]).equal("Ye4")
+        // @ts-ignore
+        should(my_res[0].commentDiag?.colorFields[0]).equal("Ye4")
+        // @ts-ignore
         should(my_res[0].commentDiag.colorFields[1]).equal("Rd4")
+        // @ts-ignore
         should(my_res[0].commentDiag.colorFields[2]).equal("Ga1")
+        // @ts-ignore
         should(my_res[0].commentDiag.colorFields[3]).equal("Bh1")
     })
     it("should understand comment annotations: arrows", function () {
         let my_res = parsePgn("1. e4 {[%cal Ye4e8,Rd4a4,Ga1h8,Bh1c7]}")
         should.exist(my_res[0].commentDiag)
         should.exist(my_res[0].commentDiag.colorArrows)
+        // @ts-ignore
         should(my_res[0].commentDiag.colorArrows[0]).equal("Ye4e8")
+        // @ts-ignore
         should(my_res[0].commentDiag.colorArrows[1]).equal("Rd4a4")
+        // @ts-ignore
         should(my_res[0].commentDiag.colorArrows[2]).equal("Ga1h8")
+        // @ts-ignore
         should(my_res[0].commentDiag.colorArrows[3]).equal("Bh1c7")
     })
     it("should understand combination of comment and arrows", function () {
@@ -159,6 +180,7 @@ describe("Reading PGN game with all kinds of comments", function () {
         should.exist(my_res[0].commentDiag.colorArrows)
 
         should(my_res[0].commentAfter).equal("comment")
+        // @ts-ignore
         should(my_res[0].commentDiag.colorArrows[0]).equal("Ye4e8")
     })
     it("should understand combination of comment, arrows and fields", function () {
@@ -168,7 +190,9 @@ describe("Reading PGN game with all kinds of comments", function () {
         should.exist(my_res[0].commentDiag.colorFields)
 
         should(my_res[0].commentAfter).equal("comment ")
+        // @ts-ignore
         should(my_res[0].commentDiag.colorArrows[0]).equal("Ye4e8")
+        // @ts-ignore
         should(my_res[0].commentDiag.colorFields[0]).equal("Rd4")
     })
     it("should understand combination of comment, arrows and fields with a comment", function () {
@@ -179,7 +203,9 @@ describe("Reading PGN game with all kinds of comments", function () {
         should.exist(my_res[0].commentAfter)
 
         should(my_res[0].commentAfter).equal(" comment1 comment2 ")
+        // @ts-ignore
         should(my_res[0].commentDiag.colorArrows[0]).equal("Ye4e8")
+        // @ts-ignore
         should(my_res[0].commentDiag.colorFields[0]).equal("Rd4")
     })
     it("should understand combination of comment, arrows and fields, and comment again", function () {
@@ -191,7 +217,9 @@ describe("Reading PGN game with all kinds of comments", function () {
         should.exist(my_res[0].commentAfter)
 
         should(my_res[0].commentAfter).equal(" comment1 comment2 ")
+        // @ts-ignore
         should(my_res[0].commentDiag.colorArrows[0]).equal("Ye4e8")
+        // @ts-ignore
         should(my_res[0].commentDiag.colorFields[0]).equal("Rd4")
     })
     it("should understand permutations of comment, arrows and fields", function () {
@@ -201,7 +229,9 @@ describe("Reading PGN game with all kinds of comments", function () {
         should.exist(my_res[0].commentDiag.colorFields)
 
         should(my_res[0].commentAfter).equal("comment ")
+        // @ts-ignore
         should(my_res[0].commentDiag.colorArrows[0]).equal("Ye4e8")
+        // @ts-ignore
         should(my_res[0].commentDiag.colorFields[0]).equal("Rd4")
     })
     it("should understand combination of fields and arrows", function () {
@@ -209,7 +239,9 @@ describe("Reading PGN game with all kinds of comments", function () {
         should.exist(my_res[0].commentDiag)
         should.exist(my_res[0].commentDiag.colorFields)
         should.exist(my_res[0].commentDiag.colorArrows)
+        // @ts-ignore
         should(my_res[0].commentDiag.colorFields[0]).equal("Rd4")
+        // @ts-ignore
         should(my_res[0].commentDiag.colorArrows[0]).equal("Ye4e8")
     })
     it("should understand permutations of fields and arrows", function () {
@@ -217,7 +249,9 @@ describe("Reading PGN game with all kinds of comments", function () {
         should.exist(my_res[0].commentDiag)
         should.exist(my_res[0].commentDiag.colorFields)
         should.exist(my_res[0].commentDiag.colorArrows)
+        // @ts-ignore
         should(my_res[0].commentDiag.colorFields[0]).equal("Rd4")
+        // @ts-ignore
         should(my_res[0].commentDiag.colorArrows[0]).equal("Ye4e8")
     })
     it("should understand whitespace when adding fields and arrows", function () {
@@ -225,8 +259,11 @@ describe("Reading PGN game with all kinds of comments", function () {
         should.exist(my_res[0].commentDiag)
         should.exist(my_res[0].commentDiag.colorFields)
         should.exist(my_res[0].commentDiag.colorArrows)
+        // @ts-ignore
         should(my_res[0].commentDiag.colorFields[0]).equal("Rd4")
+        // @ts-ignore
         should(my_res[0].commentDiag.colorArrows[0]).equal("Ye4e8")
+        // @ts-ignore
         should(my_res[0].commentDiag.colorArrows[1]).equal("Gd1d3")
     })
     // Does not meet the supplement specification, which requires (at least) one whitespace
@@ -235,8 +272,11 @@ describe("Reading PGN game with all kinds of comments", function () {
         should.exist(my_res[0].commentDiag)
         should.exist(my_res[0].commentDiag.colorFields)
         should.exist(my_res[0].commentDiag.colorArrows)
+        // @ts-ignore
         should(my_res[0].commentDiag.colorFields[0]).equal("Rd4")
+        // @ts-ignore
         should(my_res[0].commentDiag.colorArrows[0]).equal("Ye4e8")
+        // @ts-ignore
         should(my_res[0].commentDiag.colorArrows[1]).equal("Gd1d3")
     })
     it("should understand one clock annotation per move", function () {
@@ -272,6 +312,7 @@ describe("Reading PGN game with all kinds of comments", function () {
         let my_res = parsePgn("1. e4 { First move } { [%cal Gd2d4] } { [%clk 0:02:00] }")
         should.exist(my_res[0].commentDiag)
         should(my_res[0].commentDiag["clk"]).equal("0:02:00")
+        // @ts-ignore
         should(my_res[0].commentDiag.colorArrows[0]).equal("Gd2d4")
         should(my_res[0].commentAfter).equal(" First move ")
     })
@@ -309,20 +350,25 @@ does this work?? } c6`
         let my_res = parsePgn("1. e4 { [%foo 1.0] [%bar any,string] }")
         should(my_res.length).equal(1)
         let commentDiag = <object>my_res[0].commentDiag
+        // @ts-ignore
         should(commentDiag["foo"]).equal("1.0")
+        // @ts-ignore
         should(commentDiag["bar"]).equal("any,string")
     })
     it("should keep commands sprinkled in comments it cannot parse", function () {
         let my_res = parsePgn("1. e4 { [%foo 1.0] } { [%bar any,string] }")
         should(my_res.length).equal(1)
         let commentDiag = <object>my_res[0].commentDiag
+        // @ts-ignore
         should(commentDiag["foo"]).equal("1.0")
+        // @ts-ignore
         should(commentDiag["bar"]).equal("any,string")
     })
     it("should keep commands it cannot parse, read diag comments", function () {
         let my_res = parsePgn("1. e4 { [%foo 1.0] } { [%clk 0:02:00] }")
         should(my_res.length).equal(1)
         let commentDiag = <object>my_res[0].commentDiag
+        // @ts-ignore
         should(commentDiag["foo"]).equal("1.0")
         should(my_res[0].commentDiag.clk).equal("0:02:00")
     })
@@ -330,7 +376,9 @@ does this work?? } c6`
         let my_res = parsePgn("1. e4 { first comment [%foo 1.0] second comment [%bar any,string] }")
         should(my_res.length).equal(1)
         let commentDiag = <object>my_res[0].commentDiag
+        // @ts-ignore
         should(commentDiag["foo"]).equal("1.0")
+        // @ts-ignore
         should(commentDiag["bar"]).equal("any,string")
         should(my_res[0].commentAfter).equal(" first comment second comment")
     })
@@ -347,14 +395,18 @@ does this work?? } c6`
     it("should read action comments, and avoid text comment on only whitespace", function () {
         let my_res = parsePgn("e5 { [%csl Gf6] }")
         should.exist(my_res)
+        // @ts-ignore
         should(my_res[0].commentDiag.colorFields.length).equal(1)
+        // @ts-ignore
         should(my_res[0].commentDiag.colorFields[0]).equal("Gf6")
         should(my_res[0].commentAfter).undefined()
     })
     it("should read unknown action comments", function () {
         let my_res = parsePgn("1. d4 {[%depth20 +0.35] [%depth1 +0.34]} Nf6 {[%depth20 +0.24] [%depth1 +0.13]}")
         should.exist(my_res)
+        // @ts-ignore
         should(my_res[0].commentDiag["depth20"]).equal("+0.35")
+        // @ts-ignore
         should(my_res[1].commentDiag["depth1"]).equal("+0.13")
     })
 })

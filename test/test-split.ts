@@ -1,10 +1,11 @@
-import {parseGame} from "../src/pgn-parser"
-import {split, SplitGame} from "../src/split-games"
+import {parseGame} from "../src"
+import {split, SplitGame} from "../src"
 
-import * as should from 'should'
-import fs = require('fs')
+import should from 'should'
+import fs from 'fs'
+import {ParseTree, Tags} from "../src";
 
-function splitGames(string):SplitGame[] {
+function splitGames(string: string):SplitGame[] {
     return split(string, {startRule: "games"})
 }
 
@@ -56,9 +57,10 @@ describe("When reading many games and split them", function () {
         fs.readFile(process.cwd() + '/test/pgn/32games.pgn', 'utf8', function (err, data) {
             if (err) { throw err }
             let res = splitGames(data)
-            let found = []
+            let found: ParseTree[] = []
             res.forEach(function (game) {
                 let tags = parseGame(game.tags, {startRule: "tags"}).tags
+                // @ts-ignore
                 if (tags.Result == "1-0") {
                     found.push(parseGame(game.all))
                 }
@@ -71,11 +73,11 @@ describe("When reading many games and split them", function () {
         fs.readFile(process.cwd() + '/test/pgn/32games.pgn', 'utf8', function (err, data) {
             if (err) { throw err }
             let res = splitGames(data)
-            let players = []
+            let players: string[] = []
             res.forEach(function (game) {
-                let tags = parseGame(game.tags, {startRule: 'tags'}).tags
-                players.push(tags.White)
-                players.push(tags.Black)
+                let tags = parseGame(game.tags, {startRule: 'tags'}).tags as Tags
+                players.push(tags["White"])
+                players.push(tags["Black"])
             })
             let unique = [...new Set(players)]
             should(unique.length).equal(38)

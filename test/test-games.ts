@@ -1,5 +1,5 @@
-import {parseGames} from "../src/pgn-parser"
-import * as should from 'should'
+import {parseGames} from "../src"
+import should from 'should'
 
 describe("When reading 0 games", function () {
     it("should read 0 games from empty string", function () {

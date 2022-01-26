@@ -29,7 +29,8 @@ export type Tags = { [key in TagKeys]: string } & DateTags & TimeTags & Messages
 export type Message = { key: string, value: string, message: string }
 type MessagesObject = { messages: Message[] }
 
-export type GameComment = { comment?: string, colorArrows?: string[], colorFields?: string[], clk?: string, eval?: string }
+export type GameComment = { comment?: string, colorArrows?: string[], colorFields?: string[],
+    clk?: string, egt?: string, emt?: string, mct?: string, eval?: string }
 export type ParseTreeOrArray = ParseTree | ParseTree[]
 export type PgnMove = {
     drawOffer: boolean;

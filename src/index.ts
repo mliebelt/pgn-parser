@@ -1,2 +1,3 @@
-export { split } from './split-games'
-export { parse } from './pgn-parser'
+export { parse, parseGames, parseGame } from './pgn-parser'
+export { split, SplitGame } from './split-games'
+export * from './types'
