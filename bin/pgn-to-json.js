@@ -1,7 +1,6 @@
 #! /usr/bin/env node
 
 const fs = require("fs");
-const os = require("os");
 const path = require("path");
 const { parse } = require("..");
 
@@ -11,7 +10,7 @@ const usage = () => `\
 Parse PGN files to JSON.
 
 USAGE:
-  pgn-to-json [options] [FILE]...
+  pgn-parser [options] [--] [FILE]...
 
 OPTIONS:
   -h, --help       Show help
@@ -24,10 +23,11 @@ ARGS:
 const processArguments = (process) => {
   const args = process.argv.slice(2);
   const files = [];
-  const options = {};
+  const options = { help: false, pretty: false };
+  let onlyFiles = false
 
   for (const arg of args) {
-    if (arg.startsWith('-')) {
+    if (arg.startsWith('-') && !onlyFiles) {
       switch (arg) {
         case '-h':
         case '--help':
@@ -40,19 +40,24 @@ const processArguments = (process) => {
           break;
 
         case '-':
-          files.push(0);
+          files.push(STDIN_FILE_NO);
           break;
+
+        case '--':
+          onlyFiles = true
+          break
 
         default:
           throw Error(`Unknown option ${arg}`);
       }
     } else {
       files.push(arg)
+      onlyFiles = true
     }
   }
 
   if (files.length === 0) {
-    files.push(0);
+    files.push(STDIN_FILE_NO);
   }
 
   return { files, options }
@@ -63,7 +68,7 @@ const filesToJson = (files) => {
 
   for (const file of files) {
     const fileContent = fs
-      .readFileSync(file === 0 ? file : path.resolve(file))
+      .readFileSync(file === STDIN_FILE_NO ? file : path.resolve(file))
       .toString()
       .trim();
 
@@ -79,6 +84,7 @@ const filesToJson = (files) => {
 
 const main = (process) => {
   let arguments
+
   try {
     arguments = processArguments(process);
   } catch(e) {
@@ -88,9 +94,9 @@ const main = (process) => {
     return
   }
 
-  const { files, options } = arguments
+  const { files, options: { help, pretty } } = arguments
 
-  if (options.help) {
+  if (help) {
     console.log(usage())
     process.exit(0)
     return
@@ -98,11 +104,7 @@ const main = (process) => {
 
   const gamesParsed = filesToJson(files);
 
-  const gamesJson = (
-    options.pretty
-      ? JSON.stringify(gamesParsed, null, 2)
-      : JSON.stringify(gamesParsed)
-  )
+  const gamesJson = JSON.stringify(gamesParsed, null, pretty ? 2 : undefined)
 
   console.log(gamesJson)
 };
