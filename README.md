@@ -74,7 +74,7 @@ pgn-parser file.pgn
 
 # Or
 
-npx pgn-parser file.pgn
+npx @mliebelt/pgn-parser file.pgn
 ```
 
 The optional parameter `-p` emits the result pretty-printed.
