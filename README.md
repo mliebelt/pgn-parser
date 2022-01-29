@@ -62,7 +62,7 @@ A code example to read a complete game then looks like:
       ]
     }
 
-See the example 'doc/read-sample.js' that can be directly used in the shell: `node doc/read-sample.js`.
+See the example `doc/read-sample.js` that can be directly used in the shell: `node doc/read-sample.js`. The directory contains some more examples how to use it.
 
 ## How to use it as an CLI?
 
@@ -83,7 +83,7 @@ The optional parameter `-p` emits the result pretty-printed.
 
 There is a UMD version of the library available which works both in node and in the browser. The file `doc/index.html` is an example that shows how it works, and explains what to do for that.
 
-So it is not necessary any more to build a version of that library with `browserify`.
+So it is not necessary anymore to build a version of that library with `browserify`.
 
 ## References
 

@@ -9,6 +9,24 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [1.4.3](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.4.1) 22-01-29
+
+### Changed
+
+### Fixed
+
+* [#136](https://github.com/mliebelt/pgn-parser/issues/136) Final solution: use UMD only, provide examples for different contexts
+
+## [1.4.2](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.4.1) 22-01-21
+
+### Changed
+
+### Fixed
+
+* [#136](https://github.com/mliebelt/pgn-parser/issues/136) README, additional examples
+* [#137](https://github.com/mliebelt/pgn-parser/issues/137) Fix import, change in API
+* [#144](https://github.com/mliebelt/pgn-parser/issues/144) First try to fix build: rollup
+
 ## [1.4.1](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.4.1) 22-01-06
 
 ### Changed

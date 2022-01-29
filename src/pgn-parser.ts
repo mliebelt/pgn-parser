@@ -2,7 +2,7 @@
 // import * as PegParser from './_pgn-parser'
 import PegParser from "./_pgn-parser.js"
 // let pkg = require('./_pgn-parser')
-// let PgnParser = pkg
+// let PegParser = pkg
 import {ParseTree, ParseTreeOrArray, PgnMove, PgnOptions} from "./types";
 
 /**
