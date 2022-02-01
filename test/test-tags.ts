@@ -253,84 +253,61 @@ describe("Understand all possible TimeControl tags", function () {
         let res = parseTags('[TimeControl "?"]')
         should.exist(res)
         should.exist(res.TimeControl)
-        // @ts-ignore
         should(res.TimeControl[0].kind).equal("unknown")
-        // @ts-ignore
         should(res.TimeControl[0].value).equal("?")
     })
     it("should read TimeControl tag of kind unlimited", function () {
         let res = parseTags('[TimeControl "-"]')
         should.exist(res)
         should.exist(res.TimeControl)
-        // @ts-ignore
         should(res.TimeControl[0].kind).equal("unlimited")
-        // @ts-ignore
         should(res.TimeControl[0].value).equal("-")
     })
     it("should read TimeControl tag of kind movesInSeconds", function () {
         let res = parseTags('[TimeControl "40/9000"]')
         should.exist(res)
         should.exist(res.TimeControl)
-        // @ts-ignore
         should(res.TimeControl[0].kind).equal("movesInSeconds")
-        // @ts-ignore
         should(res.TimeControl[0].moves).equal(40)
-        // @ts-ignore
         should(res.TimeControl[0].seconds).equal(9000)
     })
     it("should read TimeControl tag of kind suddenDeath", function () {
         let res = parseTags('[TimeControl "60"]')
         should.exist(res)
         should.exist(res.TimeControl)
-        // @ts-ignore
         should(res.TimeControl[0].kind).equal("suddenDeath")
-        // @ts-ignore
         should(res.TimeControl[0].seconds).equal(60)
     })
     it("should read TimeControl tag of kind increment", function () {
         let res = parseTags('[TimeControl "60+1"]')
         should.exist(res)
         should.exist(res.TimeControl)
-        // @ts-ignore
         should(res.TimeControl[0].kind).equal("increment")
-        // @ts-ignore
         should(res.TimeControl[0].seconds).equal(60)
-        // @ts-ignore
         should(res.TimeControl[0].increment).equal(1)
     })
     it("should read TimeControl tag of kind hourglass", function () {
         let res = parseTags('[TimeControl "*60"]')
         should.exist(res)
         should.exist(res.TimeControl)
-        // @ts-ignore
         should(res.TimeControl[0].kind).equal("hourglass")
-        // @ts-ignore
         should(res.TimeControl[0].seconds).equal(60)
     })
     it("should understand common time format: German tournament (no increment)", function () {
         let res = parseTags('[TimeControl "40/7200:3600"]')
         should.exist(res)
-        // @ts-ignore
         should(res.TimeControl[0].kind).equal("movesInSeconds")
-        // @ts-ignore
         should(res.TimeControl[0].seconds).equal(7200)
-        // @ts-ignore
         should(res.TimeControl[0].moves).equal(40)
-        // @ts-ignore
         should(res.TimeControl[1].kind).equal("suddenDeath")
-        // @ts-ignore
         should(res.TimeControl[1].seconds).equal(3600)
     })
     it("should understand common time format: German tournament (with increment)", function () {
         let res = parseTags('[TimeControl "40/5200+30"]')
         should.exist(res)
-        // @ts-ignore
         should(res.TimeControl[0].kind).equal("movesInSecondsIncrement")
-        // @ts-ignore
         should(res.TimeControl[0].moves).equal(40)
-        // @ts-ignore
         should(res.TimeControl[0].seconds).equal(5200)
-        // @ts-ignore
         should(res.TimeControl[0].increment).equal(30)
     })
     it("should raise an error for empty time control", function () {

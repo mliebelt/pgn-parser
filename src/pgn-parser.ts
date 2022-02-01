@@ -29,7 +29,6 @@ export function parse(input: string, options: PgnOptions): ParseTreeOrArray {
 export function parseGame(input: string, options: PgnOptions = {startRule: "game"}): ParseTree {
     input = input.trim()
     // Ensure that the correct structure exists: { tags: xxx, moves: ... }
-    // @ts-ignore
     let result = PegParser.parse(input, options)
     if (options.startRule === "pgn") {
         result = {moves: result}
@@ -118,7 +117,6 @@ export function parseGames(input, options: PgnOptions = {startRule: "games"}): P
     }
 
     const gamesOptions = Object.assign({startRule: "games"}, options);
-    // @ts-ignore
     let result = <ParseTree[]>PegParser.parse(input, gamesOptions)
     if (!result) { return [] }
     postParseGames(result, input, gamesOptions)

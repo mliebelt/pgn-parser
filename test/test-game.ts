@@ -61,8 +61,7 @@ describe("When working with one game", function () {
         should.exist(res.moves)
         // Game result is converted to tag
         let tags = res.tags ? res.tags : []
-        // @ts-ignore
-        should(Object.keys(res.tags).length).equal(1)
+        should(Object.keys(tags).length).equal(1)
         should(tag(res,"Result")).equal("0-1")
         should(res.moves.length).equal(4)
         should.exist(res.moves[0])
@@ -73,10 +72,8 @@ describe("When working with one game", function () {
         let res = parseGame("{ [%csl Ya4,Gh8,Be1] } *")
         should.exist(res)
         should.exist(res.gameComment)
-        // @ts-ignore
-        should.exist(res.gameComment.colorFields)
-        // @ts-ignore
-        should(res.gameComment.colorFields.length).equal(3)
+        should.exist(res.gameComment?.colorFields)
+        should(res.gameComment?.colorFields?.length).equal(3)
     })
 })
 
@@ -121,49 +118,41 @@ describe("When reading a game with gameComment", function () {
         should.exist(res)
         should.exist(res.moves)
         should.exist(res.gameComment)
-        // @ts-ignore
-        should(res.gameComment.comment).equal("test")
+        should(res.gameComment?.comment).equal("test")
     })
     it ("should read arrows and circles in game comment", function () {
         let res = parseGame("{ [%cal Ye4e8] [%csl Rd4] } 1. e4")
         should.exist(res)
         should.exist(res.gameComment)
-        // @ts-ignore
-        should(res.gameComment.colorArrows.length).equal(1)
-        // @ts-ignore
-        should(res.gameComment.colorArrows[0]).equal("Ye4e8")
-        // @ts-ignore
-        should(res.gameComment.colorFields.length).equal(1)
-        // @ts-ignore
-        should(res.gameComment.colorFields[0]).equal("Rd4")
+        let arrows = res.gameComment?.colorArrows || []
+        should(arrows.length).equal(1)
+        should(arrows[0]).equal("Ye4e8")
+        let fields = res.gameComment?.colorFields || []
+        should(fields.length).equal(1)
+        should(fields[0]).equal("Rd4")
     })
     it ("should read arrows and circles in two game comments", function () {
         let res = parseGame("{ [%cal Ye4e8] } { [%csl Rd4] } 1. e4")
         should.exist(res)
         should.exist(res.gameComment)
-        // @ts-ignore
-        should(res.gameComment.colorArrows.length).equal(1)
-        // @ts-ignore
-        should(res.gameComment.colorArrows[0]).equal("Ye4e8")
-        // @ts-ignore
-        should(res.gameComment.colorFields.length).equal(1)
-        // @ts-ignore
-        should(res.gameComment.colorFields[0]).equal("Rd4")
+        let arrows = res.gameComment?.colorArrows || []
+        should(arrows.length).equal(1)
+        should(arrows[0]).equal("Ye4e8")
+        let fields = res.gameComment?.colorFields || []
+        should(fields.length).equal(1)
+        should(fields[0]).equal("Rd4")
     })
     it ("should read mix of arrows and circles with other comments", function () {
         let res = parseGame("{comment1 [%cal Ye4e8] } {comment2 [%csl Rd4] } 1. e4")
         should.exist(res)
         should.exist(res.gameComment)
-        // @ts-ignore
-        should(res.gameComment.colorArrows.length).equal(1)
-        // @ts-ignore
-        should(res.gameComment.colorArrows[0]).equal("Ye4e8")
-        // @ts-ignore
-        should(res.gameComment.colorFields.length).equal(1)
-        // @ts-ignore
-        should(res.gameComment.colorFields[0]).equal("Rd4")
-        // @ts-ignore
-        should(res.gameComment.comment).equal("comment1 comment2")
+        let arrows = res.gameComment?.colorArrows || []
+        should(arrows.length).equal(1)
+        should(arrows[0]).equal("Ye4e8")
+        let fields = res.gameComment?.colorFields || []
+        should(fields.length).equal(1)
+        should(fields[0]).equal("Rd4")
+        should(res.gameComment?.comment).equal("comment1 comment2")
     })
 })
 

@@ -60,8 +60,7 @@ describe("When reading many games and split them", function () {
             let found: ParseTree[] = []
             res.forEach(function (game) {
                 let tags = parseGame(game.tags, {startRule: "tags"}).tags
-                // @ts-ignore
-                if (tags.Result == "1-0") {
+                if (tags?.Result == "1-0") {
                     found.push(parseGame(game.all))
                 }
             })
