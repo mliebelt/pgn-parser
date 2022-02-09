@@ -1,9 +1,10 @@
 // import PegParser = require("./_pgn-parser")
 // import * as PegParser from './_pgn-parser'
+
 import PegParser from "./_pgn-parser.js"
-// let pkg = require('./_pgn-parser')
-// let PegParser = pkg
-import {ParseTree, ParseTreeOrArray, PgnMove, PgnOptions} from "./types";
+// const SyntaxError = require("./_pgn-parser").SyntaxError
+import { SyntaxError } from "./_pgn-parser-types"
+import {ParseTree, PgnMove, PgnOptions, Tags } from "./types"
 
 /**
  * General parse function, that accepts all `startRule`s. Calls then the more specific ones, so that the
@@ -12,7 +13,7 @@ import {ParseTree, ParseTreeOrArray, PgnMove, PgnOptions} from "./types";
  * @param options - the parameters that have to include the `startRule`
  * @returns a ParseTree or an array of ParseTrees, depending on the startRule
  */
-export function parse(input: string, options: PgnOptions): ParseTreeOrArray {
+export function parse(input: string, options: PgnOptions): ParseTree | ParseTree[] | PgnMove[] | Tags {
     if (!options || (options.startRule === 'games')) {
         return parseGames(input, options)
     } else {
@@ -30,12 +31,17 @@ export function parseGame(input: string, options: PgnOptions = {startRule: "game
     input = input.trim()
     // Ensure that the correct structure exists: { tags: xxx, moves: ... }
     let result = PegParser.parse(input, options)
+    let res2: ParseTree = { moves: [] as PgnMove[], messages: [] }
     if (options.startRule === "pgn") {
-        result = {moves: result}
+        let moves = result
+        res2.moves = moves
     } else if (options.startRule === "tags") {
-        result = {tags: result}
+        let tags = result
+        res2.tags = tags
+    } else {
+        res2 = result
     }
-    return postParseGame(result, input, options)
+    return postParseGame(res2, input, options)
 }
 
 function postParseGame(_parseTree: ParseTree, _input, _options) {
@@ -102,7 +108,7 @@ function postParseGame(_parseTree: ParseTree, _input, _options) {
  * @returns an array of ParseTrees, one for each game included
  */
 export function parseGames(input, options: PgnOptions = {startRule: "games"}): ParseTree[] {
-    function handleGamesAnomaly(parseTree: ParseTreeOrArray): ParseTree[] {
+    function handleGamesAnomaly(parseTree: ParseTree[]): ParseTree[] {
         if (!Array.isArray(parseTree)) return []
         if (parseTree.length === 0) return parseTree
         let last: ParseTree = parseTree.pop() as ParseTree
@@ -117,7 +123,7 @@ export function parseGames(input, options: PgnOptions = {startRule: "games"}): P
     }
 
     const gamesOptions = Object.assign({startRule: "games"}, options);
-    let result = <ParseTree[]>PegParser.parse(input, gamesOptions)
+    let result = <ParseTree[]>PegParser.parse(input, gamesOptions) as ParseTree[]
     if (!result) { return [] }
     postParseGames(result, input, gamesOptions)
     result.forEach((pt) => {
@@ -125,3 +131,5 @@ export function parseGames(input, options: PgnOptions = {startRule: "games"}): P
     })
     return result
 }
+
+export { SyntaxError }

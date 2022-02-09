@@ -9,6 +9,15 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [1.4.4](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.4.1) 22-02-09
+
+### Changed
+
+## [#100](https://github.com/mliebelt/pgn-parser/issues/100) Eliminiated `@ts-ignore`
+## [#162](https://github.com/mliebelt/pgn-parser/issues/162) Export SyntaxError
+
+### Fixed
+
 ## [1.4.3](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.4.1) 22-01-29
 
 ### Changed

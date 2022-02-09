@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "allowJs": true,
+//    "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "baseUrl": "src",
     "declaration": true,
@@ -13,12 +13,14 @@
     "pretty": true,
     "resolveJsonModule": true,
     "rootDir": "src",
-    "skipLibCheck": true,
+//    "skipLibCheck": true,
     "strict": true,
     "traceResolution": false,
     "types": ["node", "mocha", "should"],
     "typeRoots": ["./node_modules/@types"]
   },
   "exclude": ["./node_modules", "./lib", "./test"],
-  "include": ["src/split-games.ts", "src/pgn-parser.ts", "src/index.ts", "src/types.ts"]
+  "include": ["src/split-games.ts", "src/pgn-parser.ts", "src/index.ts", "src/types.ts",
+    "src/_pgn-parser-types.d.ts"
+  ]
 }

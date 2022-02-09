@@ -7,7 +7,7 @@
     "peg",
     "parser"
   ],
-  "version": "1.4.3",
+  "version": "1.4.4",
   "homepage": "https://github.com/mliebelt/pgn-parser/blob/master/README.md",
   "bugs": "https://github.com/mliebelt/pgn-parser/issues",
   "main": "lib/index.umd.js",
@@ -42,12 +42,13 @@
     "typescript": "^4.4.4"
   },
   "scripts": {
+    "clean": "rm -fr lib/*",
     "buildpeg": "node ./bin/build-peg.js",
-    "build": "npm run mjs && npm run umd && npm run dts",
+    "build": "npm run clean && npm run mjs && npm run umd && npm run dts",
     "mjs": "tsc -p tsconfig-mjs.json",
     "cjs": "tsc -p tsconfig.json",
     "umd": "rollup lib/mjs/index.js -c rollup.config.js -o lib/index.umd.js -f umd",
-    "dts": "rollup -c rollup.config-dts.js",
+    "dts": "cp src/_pgn-parser-types.d.ts lib/mjs/ && rollup -c rollup.config-dts.js",
     "test": "mocha  --require ts-node/register ./test/**/*.ts",
     "test-interactive": "mocha -w ./test/**/*.ts",
     "prepare": "npm run build && npm test"
