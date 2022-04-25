@@ -28,7 +28,7 @@
     "url": "https://github.com/mliebelt/pgn-parser.git"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^21.0.1",
+    "@rollup/plugin-commonjs": "^22.0.0",
     "@rollup/plugin-node-resolve": "^13.1.3",
     "rollup-plugin-dts": "^4.1.0",
     "@types/mocha": "^9.0.0",
