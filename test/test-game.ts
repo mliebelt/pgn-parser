@@ -246,3 +246,10 @@ describe("When reading additional notation", function () {
         should(res.moves[3].commentAfter).equal("Why now???")
     })
 })
+
+describe("When reading failure games", function () {
+    it('should handle variants and comments (discussion 271)', function () {
+        let res = parseGame('1. e3 h5 ( 1... f6 ) 2. Bc4 d6 3. Bb5+ Qd7 4. h3 f5 5. e4 g5 6. Qxh5+ { test } Kd8 7. Bc4 b6 8. Be6 a5 9. Bxd7 b5 10. Qe8#')
+        should(res.moves.length).equal(19)
+    });
+})
