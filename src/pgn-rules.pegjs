@@ -185,6 +185,17 @@ ws "whitespace" = [ \t\n\r]*
 wsp = [ \t\n\r]+
 eol = [\n\r]+
 
+esc_char_check
+  = [^\"\\\r\n]
+    / esc
+      sequence:(
+          '\\' { return  "\\"; }
+        / quotation_mark { return "\x22"; }
+      )
+      { return sequence; }
+
+esc = '\\'
+
 string "string"
   = quotation_mark chars:char* quotation_mark { return chars.join(""); }
 
@@ -195,7 +206,7 @@ quotation_mark
   = '"'
 
 char
-  = !quotation_mark char:. { return char; }
+  = !quotation_mark char: esc_char_check { return char; }
 
 dateString = quotation_mark year:([0-9\?] [0-9\?] [0-9\?] [0-9\?]) '.' month:([0-9\?] [0-9\?]) '.' day:([0-9\?] [0-9\?]) quotation_mark
 	{ let val = "" + year.join("") + '.' + month.join("") + '.' + day.join("");
