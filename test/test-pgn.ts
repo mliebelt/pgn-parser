@@ -1,5 +1,5 @@
 import {parseGame} from "../src"
-import should from 'should'
+import should = require('should')
 import {ParseTree, PgnMove} from "../src"
 import {TagKeys} from "../src";
 import assert = require("assert");

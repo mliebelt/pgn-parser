@@ -1,5 +1,5 @@
 import { parseGame, ParseTree, TagKeys } from "../src"
-import should from 'should'
+import should = require('should')
 
 let tag = function (pt: ParseTree, tag: TagKeys): string {
     if (! pt.tags) {

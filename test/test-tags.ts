@@ -1,5 +1,5 @@
 import {parse} from "../src"
-import should  from 'should'
+import should = require('should')
 import {ParseTree, Tags, PgnMove} from "../src"
 
 function parseTags(string: string):Tags {
@@ -368,7 +368,7 @@ describe("When reading tags with clock context", function () {
 
 describe("When reading strange formats", function () {
     it("should understand even tags with special characters", function () {
-        let res = parseTags('[Event "Let\'s Play!\"]')
+        let res = parseTags("[Event \"Let\\'s Play!\"]")
         should.exist(res)
     })
 })
