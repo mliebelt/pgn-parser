@@ -368,7 +368,11 @@ describe("When reading tags with clock context", function () {
 
 describe("When reading strange formats", function () {
     it("should understand even tags with special characters", function () {
-        let res = parseTags("[Event \"Let\\'s Play!\"]")
+        let res = parseTags('[Event "Let\'s Play!"]')
+        should.exist(res)
+    })
+    it("should understand games with doublequotes inside strings when escaped (#309)", function() {
+        let res = parseTags('[Event "Bg7 in the Sicilian: 2.Nf3 d6 3.Bc4 - The \\"Closed\\" Dragon"]')
         should.exist(res)
     })
 })

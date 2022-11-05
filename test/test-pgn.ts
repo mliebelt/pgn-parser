@@ -619,7 +619,7 @@ describe("Just examples of complex notations or errors of the past", function ()
         should.exist(my_res)
     })
     it("should understand error #309: included escaped doublequote", function () {
-        let my_res = parseGame('[Event "Bg7 in the Sicilian: 2.Nf3 d6 3.Bc4 - The \"Closed\" Dragon"]*')
+        let my_res = parseGame('[Event "Bg7 in the Sicilian: 2.Nf3 d6 3.Bc4 - The \\"Closed\\" Dragon"]*')
         should.exist(my_res)
         should.exist(my_res.tags?.Event)
         should(tag(my_res, "Event")).equal('Bg7 in the Sicilian: 2.Nf3 d6 3.Bc4 - The "Closed" Dragon')

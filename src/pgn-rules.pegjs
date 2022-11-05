@@ -195,7 +195,7 @@ quotation_mark
   = '"'
 
 string
-  = '"' _ stringContent:stringChar+ _ '"' {  return stringContent.map(c => c.char || c).join('') }
+  = '"' _ stringContent:stringChar* _ '"' {  return stringContent.map(c => c.char || c).join('') }
 
 stringChar
   = [^"\\\r\n]
