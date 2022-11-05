@@ -1,8 +1,8 @@
 import {parseGame} from "../src"
 import {split, SplitGame} from "../src"
 
-import should from 'should'
-import fs from 'fs'
+import should = require('should')
+import fs = require('fs')
 import {ParseTree, Tags} from "../src";
 
 function splitGames(string: string):SplitGame[] {
@@ -78,6 +78,7 @@ describe("When reading many games and split them", function () {
                 players.push(tags["White"])
                 players.push(tags["Black"])
             })
+            // @ts-ignore
             let unique = [...new Set(players)]
             should(unique.length).equal(38)
             done()

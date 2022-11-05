@@ -1,5 +1,5 @@
 import {parseGame} from "../src"
-import should from 'should'
+import should = require('should')
 import {ParseTree, PgnMove} from "../src"
 import {TagKeys} from "../src";
 import assert = require("assert");
@@ -608,7 +608,7 @@ describe("Just examples of complex notations or errors of the past", function ()
             () => parsePgn('1. . .'),
             (err:any) => {
                 should(err.name).equal('SyntaxError')
-                should(err.message).equal('Expected "O-O", "O-O-O", "x", [R,N,B,Q,K,P], [a-h], or whitespace but "." found.')
+                should(err.message).equal('Expected "O-O", "O-O-O", "x", [RNBQKP], [a-h], or whitespace but "." found.')
                 return true
             }
         )

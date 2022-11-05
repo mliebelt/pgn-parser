@@ -1,8 +1,8 @@
 import {parse} from "../src"
-import should from "should"
+import should = require('should')
 import {ParseTree} from "../src";
-import fs from 'fs'
-import https from 'https'
+import fs = require('fs')
+import https = require('https')
 
 function checkGamesLength(done: any, fileName: string, numberGames: number) {
     fs.readFile(process.cwd() + fileName, 'utf8', function (err, data) {
