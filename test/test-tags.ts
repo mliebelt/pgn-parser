@@ -368,7 +368,7 @@ describe("When reading tags with clock context", function () {
 
 describe("When reading strange formats", function () {
     it("should understand even tags with special characters", function () {
-        let res = parseTags("[Event \"Let\\'s Play!\"]")
+        let res = parseTags('[Event "Let\'s Play!\"]')
         should.exist(res)
     })
 })
