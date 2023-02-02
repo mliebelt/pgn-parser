@@ -179,6 +179,20 @@ describe("Reading PGN game with all kinds of comments", function () {
         let arrows = my_res[0].commentDiag?.colorArrows || []
         should(arrows[0]).equal("Ye4e8")
     })
+    it("should understand empty comments (cal)", function () {
+        let my_res = parsePgn("1. e4{[%csl Ge5][%cal ]}")
+        should.exist(my_res[0].commentDiag)
+        should.exist(my_res[0].commentDiag.colorFields)
+    })
+    it("should understand empty comments (csl)", function () {
+        let my_res = parsePgn("1. e4{[%csl ][%cal Ye4e8]}")
+        should.exist(my_res[0].commentDiag)
+        should.exist(my_res[0].commentDiag.colorArrows)
+    })
+    it("should understand empty comments (csl and cal)", function () {
+        let my_res = parsePgn("1. e4{[%csl ][%cal ]}")
+        should.exist(my_res[0].commentDiag)
+    })
     it("should understand combination of comment, arrows and fields", function () {
         let my_res = parsePgn("1. e4 { [%cal Ye4e8] [%csl Rd4] comment }")
         should.exist(my_res[0].commentDiag)

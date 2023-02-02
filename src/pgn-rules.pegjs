@@ -293,9 +293,9 @@ comment
   / cm:commentEndOfLine { return { comment: cm}; }
 
 innerComment
-  = ws bl "%csl" wsp cf:colorFields ws br ws tail:(ic:innerComment { return ic })*
+  = ws bl "%csl" wsp cf:colorFields? ws br ws tail:(ic:innerComment { return ic })*
       { return merge([{ colorFields: cf }].concat(tail[0])) }
-  / ws bl "%cal" wsp ca:colorArrows ws br ws tail:(ic:innerComment { return ic })*
+  / ws bl "%cal" wsp ca:colorArrows? ws br ws tail:(ic:innerComment { return ic })*
       { return merge([{ colorArrows: ca }].concat(tail[0])) }
   / ws bl "%" cc:clockCommand1D wsp cv:clockValue1D ws br ws tail:(ic:innerComment { return ic })*
       { var ret = {}; ret[cc]= cv; return merge([ret].concat(tail[0])) }
