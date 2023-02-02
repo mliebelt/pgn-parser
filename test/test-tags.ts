@@ -1,6 +1,7 @@
 import {parse} from "../src"
 import should = require('should')
-import {ParseTree, Tags, PgnMove} from "../src"
+import {ParseTree} from "../src"
+import { Tags, PgnMove} from "@mliebelt/pgn-types"
 
 function parseTags(string: string):Tags {
     let pt: ParseTree = parse(string, { startRule: "tags" }) as ParseTree

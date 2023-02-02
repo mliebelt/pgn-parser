@@ -4,7 +4,8 @@
 import PegParser from "./_pgn-parser.js"
 // const SyntaxError = require("./_pgn-parser").SyntaxError
 import { SyntaxError } from "./_pgn-parser-types"
-import {ParseTree, PgnMove, PgnOptions, Tags } from "./types"
+import {ParseTree, PgnOptions } from "./types"
+import { PgnMove, Tags } from "@mliebelt/pgn-types";
 
 /**
  * General parse function, that accepts all `startRule`s. Calls then the more specific ones, so that the

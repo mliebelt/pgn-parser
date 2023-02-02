@@ -3,7 +3,8 @@ import {split, SplitGame} from "../src"
 
 import should = require('should')
 import fs = require('fs')
-import {ParseTree, Tags} from "../src";
+import {ParseTree} from "../src";
+import {Tags} from "@mliebelt/pgn-types"
 
 function splitGames(string: string):SplitGame[] {
     return split(string, {startRule: "games"})

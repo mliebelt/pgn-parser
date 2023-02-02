@@ -1,4 +1,5 @@
-import { parseGame, ParseTree, TagKeys } from "../src"
+import { parseGame, ParseTree} from "../src"
+import { TagKeys} from "@mliebelt/pgn-types"
 import should = require('should')
 
 let tag = function (pt: ParseTree, tag: TagKeys): string {

@@ -1,8 +1,9 @@
 import {parseGame} from "../src"
 import should = require('should')
-import {ParseTree, PgnMove} from "../src"
-import {TagKeys} from "../src";
-import assert = require("assert");
+import {ParseTree} from "../src"
+import {TagKeys, PgnMove} from "@mliebelt/pgn-types";
+import assert = require("assert")
+
 
 function parsePgn(string: string):PgnMove[] {
     return (<ParseTree>parseGame(string, {startRule: "pgn"})).moves
