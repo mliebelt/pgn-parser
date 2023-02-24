@@ -310,10 +310,10 @@ innerComment
         else { return { comment: c.join("") } } }
 
 nonCommand
-  = !"[%" !"}" char:. { return char; }
+  = !"[%" !"}" ch:. { return ch; }
 
 nbr
-  = !br char:. { return char; }
+  = !br ch:. { return ch; }
 
 commentEndOfLine
   = semicolon cm:[^\n\r]* eol { return cm.join(""); }
