@@ -289,7 +289,8 @@ comments
   { return merge([cf].concat(cfl)) }
 
 comment
-  = cl cm:innerComment cr { return cm;}
+  = cl cr { return; }
+  / cl cm:innerComment cr { return cm;}
   / cm:commentEndOfLine { return { comment: cm}; }
 
 innerComment

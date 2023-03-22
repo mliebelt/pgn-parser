@@ -116,6 +116,15 @@ describe("When a game notes a result at the end", function () {
 })
 
 describe("Reading PGN game with all kinds of comments", function () {
+    it("should read empty comments without problems", function () {
+        let my_res = parsePgn("1. e4 {} e5")
+        should(my_res.length).equal(2)
+    })
+    it("should read errornous pgn from #349", function () {
+        let my_res = parseGame('[Setup "1"] [FEN "4r1k1/1q3ppp/p7/8/Q3r3/8/P4PPP/R3R1K1 w - - 0 1"] 1. Qxe8+ {} Rxe8 2. Rxe8# *')
+        should(my_res.moves.length).equal(3)
+        should(my_res.moves[0].commentAfter).be.undefined()
+    })
     it("should read comments at all locations", function () {
         let my_res = parsePgn("{First} 1. e4 {third} e5! {fourth}")
         should(my_res.length).equal(2)
