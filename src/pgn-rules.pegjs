@@ -189,7 +189,7 @@ esc_quotation
   = '\\"' { return  '\"'; }
 
 stringNoQuot
-  = chars:[-a-zA-Z0-9.]* { return chars.join(""); }
+  = chars:[-a-zA-Z0-9_.]* { return chars.join(""); }
 
 quotation_mark
   = '"'

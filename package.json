@@ -7,7 +7,7 @@
     "peg",
     "parser"
   ],
-  "version": "1.4.7",
+  "version": "1.4.8",
   "homepage": "https://github.com/mliebelt/pgn-parser/blob/master/README.md",
   "bugs": "https://github.com/mliebelt/pgn-parser/issues",
   "main": "lib/index.umd.js",
@@ -28,7 +28,7 @@
     "url": "https://github.com/mliebelt/pgn-parser.git"
   },
   "dependencies": {
-    "@mliebelt/pgn-types": "^1.0.3"
+    "@mliebelt/pgn-types": "^1.0.4"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^24.0.0",

@@ -415,6 +415,11 @@ does this work?? } c6`
         should(my_res[0].commentDiag["depth20"]).equal("+0.35")
         should(my_res[1].commentDiag["depth1"]).equal("+0.13")
     })
+    it("should read action comment with underscore (#362)", function (){
+        let my_res = parsePgn("1. e4 e5 2. Nf3 Nc6 3. d4 Nf6 { [%c_effect f6;square;f6;type;Inaccuracy;persistent;true] } 4. dxe5")
+        should.exist(my_res)
+        should(my_res[5].commentDiag["c_effect"]).equal("f6;square;f6;type;Inaccuracy;persistent;true")
+    })
 })
 
 describe("Parsing PGN with clockCommands with unusual format", function () {
