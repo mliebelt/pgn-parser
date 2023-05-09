@@ -721,11 +721,11 @@ function peg$parse(input, options) {
   var peg$f73 = function(tcnqs) { return tcnqs; };
   var peg$f74 = function() { return { kind: 'unknown', value: '?' }; };
   var peg$f75 = function() { return { kind: 'unlimited', value: '-' }; };
-  var peg$f76 = function(moves, seconds, incr) { return { kind: 'movesInSecondsIncrement', moves: moves, seconds: seconds, increment: incr }; };
-  var peg$f77 = function(moves, seconds) { return { kind: 'movesInSeconds', moves: moves, seconds: seconds }; };
-  var peg$f78 = function(seconds, incr) { return { kind: 'increment', seconds: seconds, increment: incr }; };
-  var peg$f79 = function(seconds) { return { kind: 'suddenDeath', seconds: seconds }; };
-  var peg$f80 = function(seconds) { return { kind: 'hourglass', seconds: seconds }; };
+  var peg$f76 = function(moves, seconds, incr) { return { kind: 'movesInSecondsIncrement', moves: moves, seconds: seconds, increment: incr, value: '' + moves + '/' + seconds + '+' + incr }; };
+  var peg$f77 = function(moves, seconds) { return { kind: 'movesInSeconds', moves: moves, seconds: seconds, value: '' + moves + '/' + seconds }; };
+  var peg$f78 = function(seconds, incr) { return { kind: 'increment', seconds: seconds, increment: incr, value: '' + seconds + '+' + incr }; };
+  var peg$f79 = function(seconds) { return { kind: 'suddenDeath', seconds: seconds, value: '' + seconds }; };
+  var peg$f80 = function(seconds) { return { kind: 'hourglass', seconds: seconds, value: '*' + seconds }; };
   var peg$f81 = function(res) { return res; };
   var peg$f82 = function(res) {return res; };
   var peg$f83 = function(res) { return res; };

@@ -245,11 +245,11 @@ tcnqs = tcnqs:(
 
 tcnq = '?' { return { kind: 'unknown', value: '?' }; }
     / '-' { return { kind: 'unlimited', value: '-' }; }
-    / moves:integer "/" seconds:integer '+' incr:integer { return { kind: 'movesInSecondsIncrement', moves: moves, seconds: seconds, increment: incr }; }
-    / moves:integer "/" seconds:integer { return { kind: 'movesInSeconds', moves: moves, seconds: seconds }; }
-    / seconds:integer '+' incr:integer { return { kind: 'increment', seconds: seconds, increment: incr }; }
-    / seconds:integer { return { kind: 'suddenDeath', seconds: seconds }; }
-    / '*' seconds:integer { return { kind: 'hourglass', seconds: seconds }; }
+    / moves:integer "/" seconds:integer '+' incr:integer { return { kind: 'movesInSecondsIncrement', moves: moves, seconds: seconds, increment: incr, value: '' + moves + '/' + seconds + '+' + incr }; }
+    / moves:integer "/" seconds:integer { return { kind: 'movesInSeconds', moves: moves, seconds: seconds, value: '' + moves + '/' + seconds }; }
+    / seconds:integer '+' incr:integer { return { kind: 'increment', seconds: seconds, increment: incr, value: '' + seconds + '+' + incr }; }
+    / seconds:integer { return { kind: 'suddenDeath', seconds: seconds, value: '' + seconds }; }
+    / '*' seconds:integer { return { kind: 'hourglass', seconds: seconds, value: '*' + seconds }; }
 
 result = quotation_mark res:innerResult quotation_mark { return res; }
 innerResult =

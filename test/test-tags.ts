@@ -271,6 +271,7 @@ describe("Understand all possible TimeControl tags", function () {
         should(res.TimeControl[0].kind).equal("movesInSeconds")
         should(res.TimeControl[0].moves).equal(40)
         should(res.TimeControl[0].seconds).equal(9000)
+        should(res.TimeControl[0].value).equal("40/9000")
     })
     it("should read TimeControl tag of kind suddenDeath", function () {
         let res = parseTags('[TimeControl "60"]')
@@ -278,6 +279,7 @@ describe("Understand all possible TimeControl tags", function () {
         should.exist(res.TimeControl)
         should(res.TimeControl[0].kind).equal("suddenDeath")
         should(res.TimeControl[0].seconds).equal(60)
+        should(res.TimeControl[0].value).equal("60")
     })
     it("should read TimeControl tag of kind increment", function () {
         let res = parseTags('[TimeControl "60+1"]')
@@ -286,6 +288,7 @@ describe("Understand all possible TimeControl tags", function () {
         should(res.TimeControl[0].kind).equal("increment")
         should(res.TimeControl[0].seconds).equal(60)
         should(res.TimeControl[0].increment).equal(1)
+        should(res.TimeControl[0].value).equal("60+1")
     })
     it("should read TimeControl tag of kind hourglass", function () {
         let res = parseTags('[TimeControl "*60"]')
@@ -293,6 +296,7 @@ describe("Understand all possible TimeControl tags", function () {
         should.exist(res.TimeControl)
         should(res.TimeControl[0].kind).equal("hourglass")
         should(res.TimeControl[0].seconds).equal(60)
+        should(res.TimeControl[0].value).equal("*60")
     })
     it("should understand common time format: German tournament (no increment)", function () {
         let res = parseTags('[TimeControl "40/7200:3600"]')
@@ -302,6 +306,7 @@ describe("Understand all possible TimeControl tags", function () {
         should(res.TimeControl[0].moves).equal(40)
         should(res.TimeControl[1].kind).equal("suddenDeath")
         should(res.TimeControl[1].seconds).equal(3600)
+       // should(res.TimeControl[0].value).equal("40/7200:3600")        // not working at the moment, grammar does not support that
     })
     it("should understand common time format: German tournament (with increment)", function () {
         let res = parseTags('[TimeControl "40/5200+30"]')
@@ -310,6 +315,7 @@ describe("Understand all possible TimeControl tags", function () {
         should(res.TimeControl[0].moves).equal(40)
         should(res.TimeControl[0].seconds).equal(5200)
         should(res.TimeControl[0].increment).equal(30)
+        should(res.TimeControl[0].value).equal("40/5200+30")
     })
     it("should raise an error for empty time control", function () {
         let res = parseTags('[TimeControl ""]')
