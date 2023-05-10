@@ -717,7 +717,7 @@ function peg$parse(input, options) {
   var peg$f70 = function(res) { if (!res) { addMessage({ message: "Tag TimeControl has to have a value" }); return ""; }
       return res; };
   var peg$f71 = function(head, m) { return m; };
-  var peg$f72 = function(head, tail) { return [head].concat(tail) };
+  var peg$f72 = function(head, tail) { let ret = [head].concat(tail); ret.value = ret.map(ret => ret.value).join(':'); return ret; };
   var peg$f73 = function(tcnqs) { return tcnqs; };
   var peg$f74 = function() { return { kind: 'unknown', value: '?' }; };
   var peg$f75 = function() { return { kind: 'unlimited', value: '-' }; };

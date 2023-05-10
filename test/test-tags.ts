@@ -255,14 +255,14 @@ describe("Understand all possible TimeControl tags", function () {
         should.exist(res)
         should.exist(res.TimeControl)
         should(res.TimeControl[0].kind).equal("unknown")
-        should(res.TimeControl[0].value).equal("?")
+        should(res.TimeControl.value).equal("?")
     })
     it("should read TimeControl tag of kind unlimited", function () {
         let res = parseTags('[TimeControl "-"]')
         should.exist(res)
         should.exist(res.TimeControl)
         should(res.TimeControl[0].kind).equal("unlimited")
-        should(res.TimeControl[0].value).equal("-")
+        should(res.TimeControl.value).equal("-")
     })
     it("should read TimeControl tag of kind movesInSeconds", function () {
         let res = parseTags('[TimeControl "40/9000"]')
@@ -271,7 +271,7 @@ describe("Understand all possible TimeControl tags", function () {
         should(res.TimeControl[0].kind).equal("movesInSeconds")
         should(res.TimeControl[0].moves).equal(40)
         should(res.TimeControl[0].seconds).equal(9000)
-        should(res.TimeControl[0].value).equal("40/9000")
+        should(res.TimeControl.value).equal("40/9000")
     })
     it("should read TimeControl tag of kind suddenDeath", function () {
         let res = parseTags('[TimeControl "60"]')
@@ -279,7 +279,7 @@ describe("Understand all possible TimeControl tags", function () {
         should.exist(res.TimeControl)
         should(res.TimeControl[0].kind).equal("suddenDeath")
         should(res.TimeControl[0].seconds).equal(60)
-        should(res.TimeControl[0].value).equal("60")
+        should(res.TimeControl.value).equal("60")
     })
     it("should read TimeControl tag of kind increment", function () {
         let res = parseTags('[TimeControl "60+1"]')
@@ -288,7 +288,7 @@ describe("Understand all possible TimeControl tags", function () {
         should(res.TimeControl[0].kind).equal("increment")
         should(res.TimeControl[0].seconds).equal(60)
         should(res.TimeControl[0].increment).equal(1)
-        should(res.TimeControl[0].value).equal("60+1")
+        should(res.TimeControl.value).equal("60+1")
     })
     it("should read TimeControl tag of kind hourglass", function () {
         let res = parseTags('[TimeControl "*60"]')
@@ -296,7 +296,7 @@ describe("Understand all possible TimeControl tags", function () {
         should.exist(res.TimeControl)
         should(res.TimeControl[0].kind).equal("hourglass")
         should(res.TimeControl[0].seconds).equal(60)
-        should(res.TimeControl[0].value).equal("*60")
+        should(res.TimeControl.value).equal("*60")
     })
     it("should understand common time format: German tournament (no increment)", function () {
         let res = parseTags('[TimeControl "40/7200:3600"]')
@@ -306,16 +306,18 @@ describe("Understand all possible TimeControl tags", function () {
         should(res.TimeControl[0].moves).equal(40)
         should(res.TimeControl[1].kind).equal("suddenDeath")
         should(res.TimeControl[1].seconds).equal(3600)
-       // should(res.TimeControl[0].value).equal("40/7200:3600")        // not working at the moment, grammar does not support that
+        should(res.TimeControl.value).equal("40/7200:3600")
     })
-    it("should understand common time format: German tournament (with increment)", function () {
-        let res = parseTags('[TimeControl "40/5200+30"]')
+    it("should understand common time format: German Bundesliga (with increment)", function () {
+        let res = parseTags('[TimeControl "40/6000+30:3000+30"]')
         should.exist(res)
         should(res.TimeControl[0].kind).equal("movesInSecondsIncrement")
         should(res.TimeControl[0].moves).equal(40)
-        should(res.TimeControl[0].seconds).equal(5200)
+        should(res.TimeControl[0].seconds).equal(6000)
         should(res.TimeControl[0].increment).equal(30)
-        should(res.TimeControl[0].value).equal("40/5200+30")
+        should(res.TimeControl[1].seconds).equal(3000)
+        should(res.TimeControl[1].increment).equal(30)
+        should(res.TimeControl.value).equal("40/6000+30:3000+30")
     })
     it("should raise an error for empty time control", function () {
         let res = parseTags('[TimeControl ""]')

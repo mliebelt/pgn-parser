@@ -240,7 +240,7 @@ timeControl = quotation_mark res:tcnqs quotation_mark
 tcnqs = tcnqs:(
        head:tcnq
          tail:(':' m:tcnq { return m; })*
-         { return [head].concat(tail) }
+         { let ret = [head].concat(tail); ret.value = ret.map(ret => ret.value).join(':'); return ret; }
        )? { return tcnqs; }
 
 tcnq = '?' { return { kind: 'unknown', value: '?' }; }
