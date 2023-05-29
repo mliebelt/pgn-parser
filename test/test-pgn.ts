@@ -3,6 +3,7 @@ import should = require('should')
 import {ParseTree} from "../src"
 import {TagKeys, PgnMove} from "@mliebelt/pgn-types";
 import assert = require("assert")
+import {getInputFileNameFromOutput} from "ts-loader/dist/instances";
 
 
 function parsePgn(string: string):PgnMove[] {
@@ -282,6 +283,12 @@ describe("Reading PGN game with all kinds of comments", function () {
         should(fields[0]).equal("Rd4")
         should(arrows[0]).equal("Ye4e8")
         should(arrows[1]).equal("Gd1d3")
+    })
+    it("should understand game comment with arrows", function (){
+        let res = parseGame("{ [%cal Ge2e4,Ge2g4,Ge2c4] } e4")
+        should.exist(res)
+        should.exist(res.gameComment?.colorArrows)
+        should(res.gameComment?.colorArrows?.length).equal(3)
     })
     // Does not meet the supplement specification, which requires (at least) one whitespace
     xit("should understand lack of whitespace when adding fields and arrows", function () {
@@ -652,6 +659,11 @@ describe("Just examples of complex notations or errors of the past", function ()
         should.exist(my_res)
         should.exist(my_res.tags?.Event)
         should(tag(my_res, "Event")).equal('Bg7 in the Sicilian: 2.Nf3 d6 3.Bc4 - The "Closed" Dragon')
+    })
+    it("should handle BOM on the beginning of games", function () {
+        let res = parsePgn('\uFEFF1. Qxe8+ {} Rxe8 2. Rxe8# *\n')
+        should.exist(res)
+        should(res.length).equal(3)
     })
 })
 

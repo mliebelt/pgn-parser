@@ -40,7 +40,9 @@
 
 }
 
-games = ws games:(
+BOM = "\uFEFF"
+
+games = BOM? ws games:(
        head:game
          tail:(ws m:game { return m; })*
          {
@@ -50,13 +52,13 @@ games = ws games:(
             //console.log("Length: " + games.length);
             return games; }
 
-game = t:tags? c:comments? p:pgn
+game = BOM? t:tags? c:comments? p:pgn
     {
       //console.log("Length pgn: " + p.length);
       var mess = messages; messages = [];
       return { tags: t, gameComment: c, moves: p, messages: mess }; }
 
-tags = ws members:(
+tags = BOM? ws members:(
       head:tag
       tail:(ws m:tag { return m; })*
       {
@@ -267,7 +269,7 @@ integerString =
 	quotation_mark digits:[0-9]+ quotation_mark { return makeInteger(digits); }
 
 pgn
-  = ws cm:comments? ws mn:moveNumber? ws hm:halfMove  ws nag:nags?  dr:drawOffer? ws ca:comments? ws vari:variation? all:pgn?
+  = BOM? ws cm:comments? ws mn:moveNumber? ws hm:halfMove  ws nag:nags?  dr:drawOffer? ws ca:comments? ws vari:variation? all:pgn?
     { var arr = (all ? all : []);
       var move = {}; move.moveNumber = mn; move.notation = hm;
       if (ca) { move.commentAfter = ca.comment };

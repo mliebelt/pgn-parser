@@ -1,4 +1,4 @@
-import { parseGame, ParseTree} from "../src"
+import {parseGame, parseGames, ParseTree} from "../src"
 import { TagKeys} from "@mliebelt/pgn-types"
 import should = require('should')
 
@@ -252,5 +252,17 @@ describe("When reading failure games", function () {
     it('should handle variants and comments (discussion 271)', function () {
         let res = parseGame('1. e3 h5 ( 1... f6 ) 2. Bc4 d6 3. Bb5+ Qd7 4. h3 f5 5. e4 g5 6. Qxh5+ { test } Kd8 7. Bc4 b6 8. Be6 a5 9. Bxd7 b5 10. Qe8#')
         should(res.moves.length).equal(19)
-    });
+    })
+    it("should handle BOM on the beginning of games", function () {
+        let res = parseGame('\uFEFF[Event ""]\n' +
+            '[Setup "1"]\n' +
+            '[FEN "4r1k1/1q3ppp/p7/8/Q3r3/8/P4PPP/R3R1K1 w - - 0 1"]\n' +
+            '1. Qxe8+ {} Rxe8 2. Rxe8# *\n')
+        should.exist(res)
+        should(res.moves.length).equal(3)
+    })
+})
+
+
+describe("When reading games with error", function () {
 })

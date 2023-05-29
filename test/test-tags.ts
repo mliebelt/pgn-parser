@@ -1,4 +1,4 @@
-import {parse} from "../src"
+import {parse, parseGame} from "../src"
 import should = require('should')
 import {ParseTree} from "../src"
 import { Tags, PgnMove} from "@mliebelt/pgn-types"
@@ -382,6 +382,26 @@ describe("When reading strange formats", function () {
     })
     it("should understand games with doublequotes inside strings when escaped (#309)", function() {
         let res = parseTags('[Event "Bg7 in the Sicilian: 2.Nf3 d6 3.Bc4 - The \\"Closed\\" Dragon"]')
+        should.exist(res)
+    })
+    it("should understand all tags even with strange characters (#349)", function () {
+       let res = parseTags('[Event ""]\n' +
+           '[White "зада~~а 1"]\n' +
+           '[Black ""]\n' +
+           '[Site ""]\n' +
+           '[Round ""]\n' +
+           '[Annotator ""]\n' +
+           '[Result "*"]\n' +
+           '[Date "2020.07.12"]\n' +
+           '[PlyCount "3"]\n' +
+           '[Setup "1"]\n' +
+           '[FEN "4r1k1/1q3ppp/p7/8/Q3r3/8/P4PPP/R3R1K1 w - - 0 1"]')
+        should.exist(res)
+    })
+    it("should handle BOM on the beginning of games", function () {
+        let res = parseTags('\uFEFF[Event ""]\n' +
+            '[Setup "1"]\n' +
+            '[FEN "4r1k1/1q3ppp/p7/8/Q3r3/8/P4PPP/R3R1K1 w - - 0 1"]\n')
         should.exist(res)
     })
 })
