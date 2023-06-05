@@ -1,6 +1,6 @@
 # pgn-parser
 
-![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/mliebelt/pgn-parser/Node.js%20CI?logo=github&label=Build%26Test)
+![GitHub Workflow Status](https://github.com/mliebelt/pgn-parser/actions/workflows/nodejs.yml/badge.svg)
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/mliebelt/pgn-parser?color=33aa33&label=Version&logo=npm)
 ![npm](https://img.shields.io/npm/dm/@mliebelt/pgn-parser?label=Downloads&logo=npm)
 ![GitHub](https://img.shields.io/github/license/mliebelt/pgn-parser?label=License)
