@@ -340,6 +340,8 @@ color
   / "G" { return "G"; } // green
   / "R" { return "R"; } // red
   / "B" { return "B"; } // blue
+  / "O" { return "O"; } // orange
+  / "C" { return "C"; } // magenta
 
 field
   = col:column row:row { return col + row; }
