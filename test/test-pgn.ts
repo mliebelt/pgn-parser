@@ -161,7 +161,7 @@ describe("Reading PGN game with all kinds of comments", function () {
         should(my_res[1].commentAfter).equal("    fourth  ")
     })
     it("should understand comment annotations: fields", function () {
-        let my_res = parsePgn("1. e4 {[%csl Ye4,Rd4,Ga1,Bh1]}")
+        let my_res = parsePgn("1. e4 {[%csl Ye4,Rd4,Ga1,Bh1,Oe1,Cb1]}")
         should(my_res[0].commentDiag).not.equal(null)
         should.exist(my_res[0].commentDiag.colorFields)
         let fields = my_res[0].commentDiag?.colorFields || []
@@ -169,9 +169,11 @@ describe("Reading PGN game with all kinds of comments", function () {
         should(fields[1]).equal("Rd4")
         should(fields[2]).equal("Ga1")
         should(fields[3]).equal("Bh1")
+        should(fields[4]).equal("Oe1")
+        should(fields[5]).equal("Cb1")
     })
     it("should understand comment annotations: arrows", function () {
-        let my_res = parsePgn("1. e4 {[%cal Ye4e8,Rd4a4,Ga1h8,Bh1c7]}")
+        let my_res = parsePgn("1. e4 {[%cal Ye4e8,Rd4a4,Ga1h8,Bh1c7,Oc1c7,Ch1h7]}")
         should.exist(my_res[0].commentDiag)
         let arrows = my_res[0].commentDiag?.colorArrows || []
         should.exist(my_res[0].commentDiag.colorArrows)
@@ -179,6 +181,8 @@ describe("Reading PGN game with all kinds of comments", function () {
         should(arrows[1]).equal("Rd4a4")
         should(arrows[2]).equal("Ga1h8")
         should(arrows[3]).equal("Bh1c7")
+        should(arrows[4]).equal("Oc1c7")
+        should(arrows[5]).equal("Ch1h7")
     })
     it("should understand combination of comment and arrows", function () {
         let my_res = parsePgn("1. e4 { [%cal Ye4e8] comment}")
