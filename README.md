@@ -1,11 +1,10 @@
 # pgn-parser
 
-![GitHub Workflow Status](https://github.com/mliebelt/pgn-parser/actions/workflows/nodejs.yml/badge.svg)
-![GitHub package.json version](https://img.shields.io/github/package-json/v/mliebelt/pgn-parser?color=33aa33&label=Version&logo=npm)
-![npm](https://img.shields.io/npm/dm/@mliebelt/pgn-parser?label=Downloads&logo=npm)
-![GitHub](https://img.shields.io/github/license/mliebelt/pgn-parser?label=License)
-<!--- ![Libraries.io dependency status for GitHub repo](https://img.shields.io/librariesio/github/:mliebelt/:pgn-parser)
-is currently not working, so it is skipped. Check that later again. --->
+[![GitHub Workflow Status](https://github.com/mliebelt/pgn-parser/actions/workflows/nodejs.yml/badge.svg)](https://github.com/mliebelt/pgn-parser/actions)
+[![GitHub package.json version](https://img.shields.io/github/package-json/v/mliebelt/pgn-parser?color=33aa33&label=Version&logo=npm)](https://www.npmjs.com/package/@mliebelt/pgn-parser)
+[![npm](https://img.shields.io/npm/dm/@mliebelt/pgn-parser?label=Downloads&logo=npm)](https://www.npmjs.com/package/@mliebelt/pgn-parser)
+[![GitHub](https://img.shields.io/github/license/mliebelt/pgn-parser?label=License)](https://github.com/mliebelt/pgn-parser/blob/main/LICENSE)
+[![Libraries.io dependency status for GitHub repo](https://img.shields.io/librariesio/github/mliebelt/pgn-parser)](https://libraries.io/npm/@mliebelt%2Fpgn-parser)
 
 Javascript library to allow reading of a PGN (Portable Game Notation) chess game notation, and providing the result as JSON.
 
