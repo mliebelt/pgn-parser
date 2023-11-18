@@ -648,7 +648,7 @@ describe("Just examples of complex notations or errors of the past", function ()
             () => parsePgn('1. . .'),
             (err:any) => {
                 should(err.name).equal('SyntaxError')
-                should(err.message).equal('Expected "O-O", "O-O-O", "x", [RNBQKP], [a-h], or whitespace but "." found.')
+                should(err.message).equal('Expected "O-O", "O-O-O", "Z0", "x", [RNBQKP], [a-h], or whitespace but "." found.')
                 return true
             }
         )
@@ -671,6 +671,15 @@ describe("Just examples of complex notations or errors of the past", function ()
     })
 })
 
+describe("Parsing pgn notation with null moves", function () {
+    it("should allow null moves inserted", function () {
+        let res:PgnMove[] = parsePgn('1. e4 e5 2. Z0 Nc6 3. Z0 Nf6')
+        should.exist(res)
+        should(res.length).equal(6)
+        should(res[2].notation.notation).equal('Z0')
+        should(res[4].notation.notation).equal('Z0')
+    })
+})
 describe("Parsing Crazyhouse notation", function () {
     it("should understand drop notation", function () {
         let my_res = parsePgn("12... B@e7 {[%clk 0:00:45]}")
