@@ -54,6 +54,7 @@
     "dts": "cp src/_pgn-parser-types.d.ts lib/mjs/ && rollup -c rollup.config-dts.mjs",
     "test": "mocha  --require ts-node/register ./test/**/*.ts",
     "test-interactive": "mocha -w ./test/**/*.ts",
-    "prepare": "npm run build && npm test"
+    "prepare": "npm run build && npm test",
+    "pgnp-duplicates": "node ./bin/pgnp-duplicates.js"
   }
 }
