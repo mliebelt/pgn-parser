@@ -9,21 +9,21 @@
 
 const fs = require("fs");
 const path = require("path");
-const { parse } = require("..");
+const { filesToJson } = require("..");
 
 const STDIN_FILE_NO = 0;
 
 const usage = () => `\
-Parse PGN files to JSON.
+Checks given files for duplicates.
 
 USAGE:
-  pgn-parser [options] [--] [FILE]...
+  npm run pgnp-duplicates [--] [FILES]...
 
 OPTIONS:
   -h, --help       Show help
 
 ARGS:
-  <FILE>...     PGN file(s) to parse as JSON. Use '-' for stdin.
+  <FILES>...     PGN file(s) to search duplicates in. Use '-' for stdin.
                 If no FILE is provided it reads from stdin`
 
 const processArguments = (process) => {
@@ -66,6 +66,14 @@ const processArguments = (process) => {
 
 const duplicates = (files) => {
     console.log('Call received with', files)
+    // TODO: Implement the algorithm.
+    // 1. Read all files as JSON
+    let games = filesToJson(files)
+    console.log('Read num arrays == files:', games.length)
+    console.log('Read num games in last file: ', games[games.length - 1].length)
+    // 2. Strip all read games to their mainline
+    // 3. Compute hash for all mainlines and hold them appropriately
+    // 4. For each mainline, check if there is another mainline with the same hash
 };
 
 const main = (process) => {
