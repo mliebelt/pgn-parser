@@ -258,6 +258,7 @@ innerResult =
 	res:"1-0" {return res; }
     / res:"0-1" { return res; }
     / res:"1/2-1/2" { return res; }
+    / "1/2" { return "1/2-1/2"; }
     / res:"*" { return res; }
 
 integerOrDashString =

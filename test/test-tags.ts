@@ -206,6 +206,9 @@ describe("Allow different kind of results", function () {
     it("should read all kind of results: 1/2-1/2", function () {
         let res = parseTags('[Result "1/2-1/2"]')
         should(res.Result).equal("1/2-1/2")
+        res = parseTags('[Result "1/2"]')
+        should(res.Result).equal("1/2-1/2")
+
     })
     it("should signal error on result: 1:0", function () {
         let res = parseTags('[Result "1:0"]')
