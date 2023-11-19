@@ -7,7 +7,7 @@
     "peg",
     "parser"
   ],
-  "version": "1.4.13",
+  "version": "1.4.14",
   "homepage": "https://github.com/mliebelt/pgn-parser/blob/master/README.md",
   "bugs": "https://github.com/mliebelt/pgn-parser/issues",
   "main": "lib/index.umd.js",
@@ -54,7 +54,6 @@
     "dts": "cp src/_pgn-parser-types.d.ts lib/mjs/ && rollup -c rollup.config-dts.mjs",
     "test": "mocha  --require ts-node/register ./test/**/*.ts",
     "test-interactive": "mocha -w ./test/**/*.ts",
-    "prepare": "npm run build && npm test",
-    "pgnp-duplicates": "node ./bin/pgnp-duplicates.js"
+    "prepare": "npm run build && npm test"
   }
 }
