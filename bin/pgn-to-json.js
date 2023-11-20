@@ -2,7 +2,7 @@
 
 const fs = require("fs");
 const path = require("path");
-const { filesToJson } = require("..");
+const { parse } = require("..");
 
 const STDIN_FILE_NO = 0;
 
@@ -63,10 +63,30 @@ const processArguments = (process) => {
   return { files, options }
 };
 
+const filesToJson = (files) => {
+  const games = [];
+
+  for (const file of files) {
+    const fileContent = fs
+      .readFileSync(file === STDIN_FILE_NO ? file : path.resolve(file))
+      .toString()
+      .trim();
+
+    if (fileContent) {
+      const gamesOnFile = parse(fileContent, { startRule: "games" });
+
+      games.push(...gamesOnFile);
+    }
+  }
+
+  return games;
+};
+
 const main = (process) => {
-  let args
+  let arguments
+
   try {
-    args = processArguments(process);
+    arguments = processArguments(process);
   } catch(e) {
     console.error(e.message)
     console.log(usage())
@@ -74,7 +94,7 @@ const main = (process) => {
     return
   }
 
-  const { files, options: { help, pretty } } = args
+  const { files, options: { help, pretty } } = arguments
 
   if (help) {
     console.log(usage())
