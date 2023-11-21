@@ -16,7 +16,7 @@
 //    "skipLibCheck": true,
     "strict": true,
     "traceResolution": false,
-    "types": ["node", "mocha", "should"],
+    "types": ["node", "mocha"],
     "typeRoots": ["./node_modules/@types"]
   },
   "exclude": ["./node_modules", "./lib", "./test"],
