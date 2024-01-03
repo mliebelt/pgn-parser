@@ -9,16 +9,80 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
-## [1.4.4](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.4.1) 22-02-09
+## [1.4.14](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.4.14) 24-01-03
 
 ### Changed
 
-## [#100](https://github.com/mliebelt/pgn-parser/issues/100) Eliminiated `@ts-ignore`
-## [#162](https://github.com/mliebelt/pgn-parser/issues/162) Export SyntaxError
+* [#463](https://github.com/mliebelt/pgn-parser/issues/463) Document handling of additional characters in PGN (which may be interpreted as move)
+* [#444](https://github.com/mliebelt/pgn-parser/issues/444) Upgrade to Typescript 5.3.2
 
 ### Fixed
 
-## [1.4.3](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.4.1) 22-01-29
+* [#462](https://github.com/mliebelt/pgn-parser/issues/462) Fix wrong handling with multiple newline characters doing the split
+
+## [1.4.13](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.4.13) 23-11-18
+
+### Changed
+
+* [#439](https://github.com/mliebelt/pgn-parser/issues/439) Remove support for node 14
+* [#430](https://github.com/mliebelt/pgn-parser/issues/430) Allow 1/2 as valid result
+* [#436](https://github.com/mliebelt/pgn-parser/issues/436) Allow Z0 as empty move in PGN
+* [#391](https://github.com/mliebelt/pgn-parser/issues/391) Allow additional colors from chess.com
+
+### Fixed
+
+## [1.4.12](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.4.12) 23-05-29
+
+### Changed
+
+* [#349](https://github.com/mliebelt/pgn-parser/issues/349) Allow BOM in PGN (exported by Chessbase)
+
+### Fixed
+
+## [1.4.11](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.4.11) 23-05-10
+
+### Changed
+
+* [#365](https://github.com/mliebelt/pgn-parser/issues/365) Have TimeControl string as value after parsing
+
+## [1.4.9](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.4.9) 23-05-07
+
+### Changed
+
+* [#362](https://github.com/mliebelt/pgn-parser/issues/362) Allow chess.com commentary (ignored then)
+
+### Fixed
+
+## [1.4.6](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.4.6) 23-02-02
+
+### Changed
+
+* [#332](https://github.com/mliebelt/pgn-parser/issues/332) Added `pgn-types`
+
+### Fixed
+
+* [#333](https://github.com/mliebelt/pgn-parser/issues/333) Fixes some problems with combinations of circle and arrows in comments
+
+## [1.4.5](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.4.5) 22-11-05
+
+### Changed
+
+### Fixed
+
+* [#309](https://github.com/mliebelt/pgn-parser/issues/309) Allow escaped doublequotes inside tags
+* [#312](https://github.com/mliebelt/pgn-parser/issues/312) Fixed Typescript errors in imports
+
+## [1.4.4](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.4.4) 22-02-09
+
+### Changed
+
+* [#100](https://github.com/mliebelt/pgn-parser/issues/100) Cleanup of unnecessary `@ts-ignore`
+
+### Fixed
+
+* [#162](https://github.com/mliebelt/pgn-parser/issues/162) Export SyntaxError
+
+## [1.4.3](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.4.3) 22-01-29
 
 ### Changed
 
@@ -26,7 +90,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 * [#136](https://github.com/mliebelt/pgn-parser/issues/136) Final solution: use UMD only, provide examples for different contexts
 
-## [1.4.2](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.4.1) 22-01-21
+## [1.4.2](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.4.2) 22-01-21
 
 ### Changed
 
