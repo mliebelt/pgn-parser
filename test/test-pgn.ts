@@ -62,6 +62,14 @@ describe("When reading complete game starting with the first move", function () 
         should(my_res[4].moveNumber).equal(null)
         should(my_res[5].moveNumber).equal(3)
     })
+    /* See the comments on https://github.com/mliebelt/pgn-parser/issues/463# to get the context. That is
+     * valid from the grammar point of view, so this test is commented out.
+     */
+    xit("should flag an error when move number is not an integer followed by a dot", function () {
+        // let my_res = parsePgn("aa1. e4")
+        let my_res = parseGame("1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Ba4 Nf6 5. O-O Be7 6. Re1 b5 7. Bb3 d6 8. c3 O-O 9. h3 Nb8 aa10. d4 Nbd7")
+        should(my_res.moves.length).equal(20)   // Current result is 21, due to the additional move aa1
+    })
 })
 
 describe("When a game notes a result at the end", function () {
