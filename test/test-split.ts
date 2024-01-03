@@ -140,4 +140,14 @@ describe("When reading many games and split them", function () {
         should.exist(res)
         should(res.length).equal(2)
     })
+    it("#462 handle additional newlines in game", function (done) {
+        fs.readFile(process.cwd() + '/test/pgn/lichess_mliebelt_2024-01-03.pgn', 'utf8', function (err, data) {
+            if (err) {
+                throw err
+            }
+            let res = splitGames(data)
+            should.exist(res)
+            should(res.length).equal(8)
+        })
+    })
 })
