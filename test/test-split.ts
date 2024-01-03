@@ -1,5 +1,6 @@
 import {parseGame} from "../src"
 import {split, SplitGame} from "../src"
+import { normalizeLineEndings } from "../src/split-games"
 
 import should = require('should')
 import fs = require('fs')
@@ -14,10 +15,15 @@ describe("Should able to split one game", function () {
     it("split it into tags and pgn", function () {
         let res = splitGames("*")
         should.exist(res)
+        should(res.length).equal(1)
     })
-
     it ("with some content in both sections", function () {
-        let res = splitGames('[Event "My Event"] 1. e4 e5 *')
+        let res = splitGames('[Event "My Event"]\n\n1. e4 e5 *')
+        should.exist(res)
+        should(res.length).equal(1)
+    })
+    it ("with some content in both sections with additional newlines", function () {
+        let res = splitGames('[Event "My Event"]\n\n\n\n1. e4 e5 *')
         should.exist(res)
     })
 })
@@ -148,6 +154,21 @@ describe("When reading many games and split them", function () {
             let res = splitGames(data)
             should.exist(res)
             should(res.length).equal(8)
+            done()
         })
+    })
+})
+
+describe("When normalizing line endings", function () {
+    it("should handle multiple empty lines", function () {
+        let res = normalizeLineEndings('a\n\n\n\n\n\nb')
+        should.exist(res)
+        should(res.length).equal(8)
+    })
+    it("should handle the line end convention of windows as well", function () {
+        let res = normalizeLineEndings('a\r\n\r\n\r\n\r\n\r\n\r\nb')
+        should.exist(res)
+        should(res.length).equal(8)
+        should(res[1]).equal('\n')
     })
 })
