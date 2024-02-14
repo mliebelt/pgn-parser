@@ -37,7 +37,7 @@
     "@types/mocha": "^10.0.4",
     "@types/node": "^20.9.1",
     "mocha": "^10.2.0",
-    "peggy": "^3.0.2",
+    "peggy": "^4.0.0",
     "rollup": "^4.5.0",
     "should": "^13.2.3",
     "ts-loader": "^9.5.1",
