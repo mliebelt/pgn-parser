@@ -3,7 +3,7 @@
 
 import PegParser from "./_pgn-parser.js"
 // const SyntaxError = require("./_pgn-parser").SyntaxError
-import { SyntaxError } from "./_pgn-parser-types"
+//import { SyntaxError } from "./_pgn-parser-types"
 import {ParseTree, PgnOptions } from "./types"
 import { PgnMove, Tags } from "@mliebelt/pgn-types";
 
@@ -133,4 +133,4 @@ export function parseGames(input, options: PgnOptions = {startRule: "games"}): P
     return result
 }
 
-export { SyntaxError }
+// export { SyntaxError }
