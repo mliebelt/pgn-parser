@@ -34,12 +34,9 @@
     "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "rollup-plugin-dts": "^6.1.0",
-    "@types/mocha": "^10.0.4",
     "@types/node": "^20.9.1",
-    "mocha": "^10.2.0",
     "peggy": "^4.0.0",
     "rollup": "^4.9.4",
-    "should": "^13.2.3",
     "tsm": "^2.0.0",
     "ts-loader": "^9.5.1",
     "ts-node": "^10.9.1",
@@ -54,9 +51,7 @@
     "cjs": "tsc -p tsconfig.json",
     "umd": "rollup lib/mjs/index.js -c rollup.config.mjs -o lib/index.umd.js -f umd",
     "dts": "cp src/_pgn-parser-types.d.ts lib/mjs/ && rollup -c rollup.config-dts.mjs",
-    "test": "mocha  --require ts-node/register ./test/**/*.ts",
-    "test-interactive": "mocha -w ./test/**/*.ts",
-    "test:uvu": "uvu -r tsm test-uvu",
+    "test": "uvu -r tsm test",
     "prepare": "npm run build && npm test"
   }
 }
