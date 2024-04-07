@@ -4,7 +4,7 @@
 import PegParser from "./_pgn-parser.js"
 // const SyntaxError = require("./_pgn-parser").SyntaxError
 //import { SyntaxError } from "./_pgn-parser-types"
-import {ParseTree, PgnOptions } from "./types"
+import {ParseTree, PgnOptions, Turn} from "./types"
 import { PgnMove, Tags } from "@mliebelt/pgn-types";
 
 /**
@@ -34,18 +34,16 @@ export function parseGame(input: string, options: PgnOptions = {startRule: "game
     let result = PegParser.parse(input, options)
     let res2: ParseTree = { moves: [] as PgnMove[], messages: [] }
     if (options.startRule === "pgn") {
-        let moves = result
-        res2.moves = moves
+        res2.moves = result
     } else if (options.startRule === "tags") {
-        let tags = result
-        res2.tags = tags
+        res2.tags = result
     } else {
         res2 = result
     }
     return postParseGame(res2, input, options)
 }
 
-function postParseGame(_parseTree: ParseTree, _input, _options) {
+function postParseGame(_parseTree: ParseTree, _input: string, _options: { startRule: string; } & PgnOptions) {
     /** Ensure that the result is kept as tag only, so no check of last move is necessary any more. */
     function handleGameResult(parseTree: ParseTree) {
         if (_options.startRule !== 'tags') {
@@ -68,12 +66,12 @@ function postParseGame(_parseTree: ParseTree, _input, _options) {
 
     function handleTurn(parseResult: ParseTree) {
         function handleTurnGame(_game:ParseTree) {
-            function getTurnFromFEN(fen) {
-                return fen.split(/\s+/)[1];
+            function getTurnFromFEN(fen: string) {
+                return fen.split(/\s+/)[1] as Turn;
             }
 
-            function setTurn(_move, _currentTurn) {
-                function switchTurn(currentTurn) {
+            function setTurn(_move:PgnMove, _currentTurn: Turn) {
+                function switchTurn(currentTurn: Turn) {
                     return currentTurn === 'w' ? 'b' : 'w';
                 }
                 _move.turn = _currentTurn
@@ -108,7 +106,7 @@ function postParseGame(_parseTree: ParseTree, _input, _options) {
  * @param options the optional parameters (not used at the moment)
  * @returns an array of ParseTrees, one for each game included
  */
-export function parseGames(input, options: PgnOptions = {startRule: "games"}): ParseTree[] {
+export function parseGames(input: string, options: PgnOptions = {startRule: "games"}): ParseTree[] {
     function handleGamesAnomaly(parseTree: ParseTree[]): ParseTree[] {
         if (!Array.isArray(parseTree)) return []
         if (parseTree.length === 0) return parseTree
