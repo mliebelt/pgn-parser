@@ -528,17 +528,46 @@ parsingDifferentNotations("should read short and long castling", function () {
     })
 parsingDifferentNotations.run()
 
+const parsingMoveNumbers = suite("Parsing PGN game with all kinds of move numbers in it")
+
+parsingMoveNumbers("should parse no move numbers", function () {
+        let my_res = parsePgn("e4 e5 Nf3 Nc6")
+        assert.is(my_res.length,4) 
+        assert.is(my_res[0].notation.notation,"e4")
+    })
+parsingMoveNumbers("should parse normal move numbers", function () {
+        let my_res = parsePgn("1. e4 e5 2. Nf3 Nc6")
+        assert.is(my_res.length,4)
+        assert.is(my_res[0].notation.notation,"e4")
+    })
+parsingMoveNumbers("should parse additional move numbers without a problem", function () {
+        let my_res = parsePgn("1. e4 1. e5 2. Nf3 2. Nc6")
+        assert.is(my_res.length,4)
+        assert.is(my_res[0].notation.notation,"e4")
+    })
+parsingMoveNumbers("should parse move numbers with additional dots and whitespaces", function () {
+        let my_res = parsePgn("1... e4 1.....     e5 2......     Nf3 2   .... Nc6")
+        assert.is(my_res.length,4)
+        assert.is(my_res[0].notation.notation,"e4")
+    })
+parsingMoveNumbers("should parse move numbers with wrong move number with dots and whitespaces", function () {
+        let my_res = parsePgn("1. ... e4 1 e5 2 Nf3 2.  ... Nc6")
+        assert.is(my_res.length,4)
+        assert.is(my_res[0].notation.notation,"e4")
+    })
+parsingMoveNumbers.run()
+
 const parsingSpecialMoveCharacter = suite("Parsing PGN game with all kinds of special move character")
 
 parsingSpecialMoveCharacter("should understand all sorts of additional notation (without NAGs and promotion)", function () {
         let my_res = parsePgn("1. e4+ dxe5 2. Nf3# Nc6+")
-        assert.is(my_res.length,4) 
-        assert.is(my_res[0].notation.notation,"e4+") 
-        assert.is(my_res[0].notation.check,"+") 
-        assert.is(my_res[1].notation.notation,"dxe5") 
-        assert.is(my_res[1].notation.strike,"x") 
-        assert.is(my_res[2].notation.notation,"Nf3#") 
-        assert.is(my_res[2].notation.check,"#") 
+        assert.is(my_res.length,4)
+        assert.is(my_res[0].notation.notation,"e4+")
+        assert.is(my_res[0].notation.check,"+")
+        assert.is(my_res[1].notation.notation,"dxe5")
+        assert.is(my_res[1].notation.strike,"x")
+        assert.is(my_res[2].notation.notation,"Nf3#")
+        assert.is(my_res[2].notation.check,"#")
     })
 parsingSpecialMoveCharacter.run()
 
