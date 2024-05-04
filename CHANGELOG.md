@@ -9,6 +9,16 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [1.4.15](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.4.15) 24-05-04
+
+### Changed
+
+* [#488](https://github.com/mliebelt/pgn-parser/issues/488) Migrated from mocha tests to uvu
+
+### Fixed
+
+* [#528](https://github.com/mliebelt/pgn-parser/issues/528) Fix strange chessjs format of move numbers (`11. ... Rd8`)
+
 ## [1.4.14](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.4.14) 24-01-03
 
 ### Changed

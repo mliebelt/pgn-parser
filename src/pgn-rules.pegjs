@@ -425,7 +425,7 @@ pl = '('
 pr = ')'
 
 moveNumber
-    = num:integer whiteSpace* dot* { return num; }
+    = num:integer whiteSpace* dot* whiteSpace* dot* { return num; }
 
 dot = "."
 
