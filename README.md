@@ -42,9 +42,11 @@ A code example to read a complete game then looks like:
 ```javascript
 import { parse } from '@mliebelt/pgn-parser'
 let game = parse('[White "Me"] [Black "Magnus"] 1. f4 e5 2. g4 Qh4#', {startRule: "game"})
-console.log(JSON.stringify(res, null, 2))
-==>
-JSON.stringify(res, null, 2)
+console.log(JSON.stringify(game, null, 2))
+```
+
+This leads to the following output:
+```json
 {
   "tags": {
     "White": "Me",
