@@ -31,7 +31,7 @@
     "@mliebelt/pgn-types": "^1.0.4"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-commonjs": "^26.0.1",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "rollup-plugin-dts": "^6.1.0",
     "@types/node": "^20.9.1",
