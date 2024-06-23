@@ -77,6 +77,25 @@ workingWithOneGame("should read comments without moves", function () {
         assert.ok(res.gameComment?.colorFields)
         assert.is(res.gameComment?.colorFields?.length, 3)
     })
+
+workingWithOneGame("should read game comment before the moves", function ()
+    {
+        let input = '[Event "London Opening: Introduction"]\n' +
+    '[Site "https://lichess.org/study/pLBSiPGF/wdGlcwDu"]\n' +
+    '[Result "*"]\n' +
+    '[Variant "Standard"]\n' +
+    '[ECO "D00"]\n' +
+    '[Opening "Queen\'s Pawn Game: Accelerated London System"]\n' +
+    '[Annotator "https://lichess.org/@/Sbernsto"]\n' +
+    '[UTCDate "2024.05.20"]\n' +
+    '[UTCTime "15:09:38"]\n' +
+    '\n' +
+    '{ Hi! You\'ve probably heard about an opening for white called the London System. In this study, I will teach you the basics of this popular opening. } 1. d4 { We will be starting with d4. It is not as aggressive as e4 can be but d4 is a good middleground between aggressive and solid games.}'
+        let res:ParseTree = parseGame(input)
+        assert.ok(res.gameComment)
+    }
+
+)
 workingWithOneGame.run()
 
 const beingMoreRobust = suite("When reading one game be more robust")
