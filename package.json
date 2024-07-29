@@ -34,7 +34,7 @@
     "@rollup/plugin-commonjs": "^26.0.1",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "rollup-plugin-dts": "^6.1.0",
-    "@types/node": "^20.9.1",
+    "@types/node": "^22.0.0",
     "peggy": "^4.0.0",
     "rollup": "^4.9.4",
     "tsm": "^2.0.0",
