@@ -276,7 +276,7 @@ pgn
       if (ca) { move.commentAfter = ca.comment };
       if (cm) { move.commentMove = cm.comment };
       if (dr) { move.drawOffer = true };
-      move.variations = (vari ? vari : []); move.nag = (nag ? nag : null); arr.unshift(move); 
+      move.variations = (vari ? vari : []); move.nag = (nag ? nag : null); arr.unshift(move);
       move.commentDiag = ca;
       return arr; }
   / ws e:endGame ws {return e; }
@@ -454,7 +454,7 @@ halfMove
   / 'O-O' ch:check? { var hm = {}; hm.notation = 'O-O'+ (ch ? ch : ""); hm.check = (ch ? ch : null); return  hm; }
   / fig:figure '@' col:column row:row
     { var hm = {}; hm.fig = fig; hm.drop = true; hm.col = col; hm.row = row; hm.notation = fig + '@' + col + row; return hm; }
-  / "Z0"
+  / ("Z0" / "-" "-")
      { var hm = {}; hm.notation = "Z0"; return hm; }
 
 check
