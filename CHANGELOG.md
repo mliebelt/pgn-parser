@@ -9,6 +9,15 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [1.4.16](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.4.16) 25-04-19
+
+### Changed
+
+* [#536](https://github.com/mliebelt/pgn-parser/issues/536) Changed example to fix error
+* [#641](https://github.com/mliebelt/pgn-parser/issues/641) Allow null moves with notation `--`
+
+### Fixed
+
 ## [1.4.15](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.4.15) 24-05-04
 
 ### Changed
@@ -285,7 +294,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 * [#25](https://github.com/mliebelt/pgn-parser/issues/25) Was fixed some time before, added a test case.
-* [#34](https://github.com/mliebelt/pgn-parser/issues/34) Add game comment at the beginning, could be used for graphical annotations of the start position as well. PGN works with Chesstempo, Lichess, Scid. 
+* [#34](https://github.com/mliebelt/pgn-parser/issues/34) Add game comment at the beginning, could be used for graphical annotations of the start position as well. PGN works with Chesstempo, Lichess, Scid.
 * [#35](https://github.com/mliebelt/pgn-parser/issues/35) Cleaned up grammar, remove `commentBefore`.
 * [#36](https://github.com/mliebelt/pgn-parser/issues/36) Restricted move numbers to the valid format from spec.
 
