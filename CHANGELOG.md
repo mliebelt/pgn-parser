@@ -9,6 +9,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [1.4.17](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.4.17) 25-05-04
+
+### Changed
+
+* [#683](https://github.com/mliebelt/pgn-parser/issues/683) Added `errorHint` to `SyntaxError`
+
+### Fixed
+
 ## [1.4.16](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.4.16) 25-04-19
 
 ### Changed

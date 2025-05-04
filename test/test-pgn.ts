@@ -53,9 +53,7 @@ completeWithFirst("should read all kind of move numbers without problems", funct
 // completeWithFirst("should flag an error when move number is not an integer followed by a dot", function () {
 xtest("should flag an error when move number is not an integer followed by a dot", function () {
   // let my_res = parsePgn("aa1. e4")
-  let my_res = parseGame(
-    "1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Ba4 Nf6 5. O-O Be7 6. Re1 b5 7. Bb3 d6 8. c3 O-O 9. h3 Nb8 aa10. d4 Nbd7",
-  );
+  let my_res = parseGame("1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Ba4 Nf6 5. O-O Be7 6. Re1 b5 7. Bb3 d6 8. c3 O-O 9. h3 Nb8 aa10. d4 Nbd7");
   assert.is(my_res.moves.length, 20); // Current result is 21, due to the additional move aa1
 });
 completeWithFirst.run();
@@ -118,9 +116,7 @@ gameWithComments("should read empty comments without problems", function () {
   assert.is(my_res.length, 2);
 });
 gameWithComments("should read errornous pgn from #349", function () {
-  let my_res = parseGame(
-    '[Setup "1"] [FEN "4r1k1/1q3ppp/p7/8/Q3r3/8/P4PPP/R3R1K1 w - - 0 1"] 1. Qxe8+ {} Rxe8 2. Rxe8# *',
-  );
+  let my_res = parseGame('[Setup "1"] [FEN "4r1k1/1q3ppp/p7/8/Q3r3/8/P4PPP/R3R1K1 w - - 0 1"] 1. Qxe8+ {} Rxe8 2. Rxe8# *');
   assert.is(my_res.moves.length, 3);
   assert.is(my_res.moves[0].commentAfter, undefined);
 });
@@ -427,9 +423,7 @@ gameWithComments("should read unknown action comments", function () {
   assert.is(my_res[1].commentDiag["depth1"], "+0.13");
 });
 gameWithComments("should read action comment with underscore (#362)", function () {
-  let my_res = parsePgn(
-    "1. e4 e5 2. Nf3 Nc6 3. d4 Nf6 { [%c_effect f6;square;f6;type;Inaccuracy;persistent;true] } 4. dxe5",
-  );
+  let my_res = parsePgn("1. e4 e5 2. Nf3 Nc6 3. d4 Nf6 { [%c_effect f6;square;f6;type;Inaccuracy;persistent;true] } 4. dxe5");
   assert.ok(my_res);
   assert.is(my_res[5].commentDiag["c_effect"], "f6;square;f6;type;Inaccuracy;persistent;true");
 });
@@ -565,19 +559,16 @@ parsingMoveNumbers.run();
 
 const parsingSpecialMoveCharacter = suite("Parsing PGN game with all kinds of special move character");
 
-parsingSpecialMoveCharacter(
-  "should understand all sorts of additional notation (without NAGs and promotion)",
-  function () {
-    let my_res = parsePgn("1. e4+ dxe5 2. Nf3# Nc6+");
-    assert.is(my_res.length, 4);
-    assert.is(my_res[0].notation.notation, "e4+");
-    assert.is(my_res[0].notation.check, "+");
-    assert.is(my_res[1].notation.notation, "dxe5");
-    assert.is(my_res[1].notation.strike, "x");
-    assert.is(my_res[2].notation.notation, "Nf3#");
-    assert.is(my_res[2].notation.check, "#");
-  },
-);
+parsingSpecialMoveCharacter("should understand all sorts of additional notation (without NAGs and promotion)", function () {
+  let my_res = parsePgn("1. e4+ dxe5 2. Nf3# Nc6+");
+  assert.is(my_res.length, 4);
+  assert.is(my_res[0].notation.notation, "e4+");
+  assert.is(my_res[0].notation.check, "+");
+  assert.is(my_res[1].notation.notation, "dxe5");
+  assert.is(my_res[1].notation.strike, "x");
+  assert.is(my_res[2].notation.notation, "Nf3#");
+  assert.is(my_res[2].notation.check, "#");
+});
 parsingSpecialMoveCharacter.run();
 
 const parsingNAGs = suite("Parsing PGN game with all kinds of NAGs");
@@ -689,6 +680,7 @@ complexOrErrors("should allow alternative syntax for catching exceptions", () =>
     (err: any) => {
       assert.is(err.name, "SyntaxError");
       assert.is(err.message, 'Expected "-", "O-O", "O-O-O", "Z0", "x", [RNBQKP], [a-h], or whitespace but "." found.');
+      console.log(err.errorHint);
       return true;
     },
   );
