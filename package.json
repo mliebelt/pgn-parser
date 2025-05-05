@@ -35,7 +35,7 @@
     "@rollup/plugin-node-resolve": "^16.0.0",
     "rollup-plugin-dts": "^6.1.0",
     "@types/node": "^22.0.0",
-    "peggy": "^4.0.0",
+    "peggy": "^5.0.0",
     "rollup": "^4.9.4",
     "tsm": "^2.0.0",
     "ts-loader": "^9.5.1",
