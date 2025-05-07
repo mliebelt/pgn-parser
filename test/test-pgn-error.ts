@@ -1,6 +1,6 @@
 import { test, suite } from "uvu";
 import assert from "uvu/assert";
-import { parseGame } from "../src";
+import { parseGame, parseGames } from "../src";
 import { ParseTree } from "../src";
 import { TagKeys, PgnMove } from "@mliebelt/pgn-types";
 import { getInputFileNameFromOutput } from "ts-loader/dist/instances";
@@ -71,10 +71,22 @@ complexOrErrors("should handle BOM on the beginning of games", function () {
 });
 complexOrErrors.run();
 
-// Handling of errors
+// Handling of errors in 1 game
 function parseError(content: string, errorHint: string) {
   assert.throws(
     () => parseGame(content),
+    (err: any) => {
+      assert.is(err.name, "SyntaxError");
+      assert.is(err.errorHint, errorHint);
+      return true;
+    },
+  );
+}
+
+// Handling of errors in many games
+function parseErrorGames(content: string, errorHint: string) {
+  assert.throws(
+    () => parseGames(content),
     (err: any) => {
       assert.is(err.name, "SyntaxError");
       assert.is(err.errorHint, errorHint);
@@ -92,8 +104,17 @@ errorHandling("Tags and pgn parsing", function () {
 [FEN "r1b1k1nr/pppp3p/2n3p1/8/4q3/2Q2N2/PP3PPP/R1B1K2R w - - 0 1"]
 
 1. K d1 Qd5+ *`;
-  const expected = 'Error at line 4, column 5:\n2: [FEN "r1b1k1nr/pppp3p/2n3p1/8/4q3/2Q2N2/PP3PPP/R1B1K2R w - - 0 1"]\n3: \n4: 1. K** d1 Qd5+ *';
+  const expected =
+    'Error at line 4, column 5:\n2: [FEN "r1b1k1nr/pppp3p/2n3p1/8/4q3/2Q2N2/PP3PPP/R1B1K2R w - - 0 1"]\n3: \n4: 1. K** d1 Qd5+ *';
   parseError(input, expected);
+});
+
+errorHandling("More than 1 game parsing", function () {
+  const input = `e4 e5abc *
+
+d4 d5`;
+  const expected = 'Error at line 1, column 7:\n1: e4 e5a**bc *\n2: \n3: d4 d5';
+  parseErrorGames(input, expected);
 });
 
 errorHandling.run();

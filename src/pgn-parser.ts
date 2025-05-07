@@ -108,7 +108,11 @@ function postParseGame(_parseTree: ParseTree, _input: string, _options: { startR
           let tmp = parseTree.tags["Result"];
           if (tmp) {
             if (move !== tmp) {
-              parseTree.messages.push({ key: "Result", value: tmp, message: "Result in tags is different to result in SAN" });
+              parseTree.messages.push({
+                key: "Result",
+                value: tmp,
+                message: "Result in tags is different to result in SAN",
+              });
             }
           }
           parseTree.tags["Result"] = move;
@@ -175,16 +179,21 @@ export function parseGames(input: string, options: PgnOptions = { startRule: "ga
     return handleGamesAnomaly(parseTrees);
   }
 
-  const gamesOptions = Object.assign({ startRule: "games" }, options);
-  let result = (<ParseTree[]>PegParser.parse(input, gamesOptions)) as ParseTree[];
-  if (!result) {
-    return [];
+  try {
+    const gamesOptions = Object.assign({ startRule: "games" }, options);
+    let result = (<ParseTree[]>PegParser.parse(input, gamesOptions)) as ParseTree[];
+    if (!result) {
+      return [];
+    }
+    postParseGames(result, input, gamesOptions);
+    result.forEach((pt) => {
+      postParseGame(pt, input, gamesOptions);
+    });
+    return result;
+  } catch (error) {
+    // error will be enhanced, so throw the returning error object
+    throw parseError(input, options, error);
   }
-  postParseGames(result, input, gamesOptions);
-  result.forEach((pt) => {
-    postParseGame(pt, input, gamesOptions);
-  });
-  return result;
 }
 
 // export { SyntaxError };
