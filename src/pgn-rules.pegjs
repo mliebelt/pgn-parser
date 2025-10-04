@@ -298,19 +298,19 @@ comment
 
 innerComment
   = ws bl "%csl" wsp cf:colorFields? ws br ws tail:(ic:innerComment { return ic })*
-      { return merge([{ colorFields: cf }].concat(tail[0])) }
+      { return merge([{ colorFields: cf }].concat(tail)) }
   / ws bl "%cal" wsp ca:colorArrows? ws br ws tail:(ic:innerComment { return ic })*
-      { return merge([{ colorArrows: ca }].concat(tail[0])) }
+      { return merge([{ colorArrows: ca }].concat(tail)) }
   / ws bl "%" cc:clockCommand1D wsp cv:clockValue1D ws br ws tail:(ic:innerComment { return ic })*
-      { var ret = {}; ret[cc]= cv; return merge([ret].concat(tail[0])) }
+      { var ret = {}; ret[cc]= cv; return merge([ret].concat(tail)) }
   / ws bl "%" cc:clockCommand2D wsp cv:clockValue2D ws br ws tail:(ic:innerComment { return ic })*
-      { var ret = {}; ret[cc]= cv; return merge([ret].concat(tail[0])) }
+      { var ret = {}; ret[cc]= cv; return merge([ret].concat(tail)) }
   / ws bl "%eval" wsp ev:stringNoQuot ws br ws tail:(ic:innerComment { return ic })*
-      { var ret = {};  ret["eval"]= parseFloat(ev); return merge([ret].concat(tail[0])) }
+      { var ret = {};  ret["eval"]= parseFloat(ev); return merge([ret].concat(tail)) }
   / ws bl "%" ac:stringNoQuot wsp val:nbr+ br ws tail:(ic:innerComment { return ic })*
-      { var ret = {}; ret[ac]= val.join(""); return merge([ret].concat(tail[0])) }
+      { var ret = {}; ret[ac]= val.join(""); return merge([ret].concat(tail)) }
   / c:nonCommand+ tail:(ws ic:innerComment { return ic })*
-      { if (tail.length > 0) { return merge([{ comment: trimEnd(c.join("")) }].concat(trimStart(tail[0]))) }
+      { if (tail.length > 0) { return merge([{ comment: trimEnd(c.join("")) }].concat(tail)) }
         else { return { comment: c.join("") } } }
 
 nonCommand

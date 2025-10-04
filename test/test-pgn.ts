@@ -115,7 +115,7 @@ gameWithComments("should read empty comments without problems", function () {
   let my_res = parsePgn("1. e4 {} e5");
   assert.is(my_res.length, 2);
 });
-gameWithComments("should read errornous pgn from #349", function () {
+gameWithComments("should read erroneous pgn from #349", function () {
   let my_res = parseGame('[Setup "1"] [FEN "4r1k1/1q3ppp/p7/8/Q3r3/8/P4PPP/R3R1K1 w - - 0 1"] 1. Qxe8+ {} Rxe8 2. Rxe8# *');
   assert.is(my_res.moves.length, 3);
   assert.is(my_res.moves[0].commentAfter, undefined);
@@ -427,6 +427,15 @@ gameWithComments("should read action comment with underscore (#362)", function (
   assert.ok(my_res);
   assert.is(my_res[5].commentDiag["c_effect"], "f6;square;f6;type;Inaccuracy;persistent;true");
 });
+gameWithComments("should understand evals mixed with normal comments", function () {
+    let game = parseGame('{ [%cal Rg4f5] (-5.03 → -2.48) Blunder. Rxh1 was best. [%eval -2.48] (player\'s move was Bf5) } 22. Rdg1  0-1');
+    assert.ok(game);
+    assert.ok(game.gameComment);
+    let arrows = game.gameComment?.colorArrows || [];
+    assert.is(arrows[0], "Rg4f5");
+    assert.is(game.gameComment?.eval, -2.48);
+    assert.is(game.gameComment?.comment, "(-5.03 → -2.48) Blunder. Rxh1 was best. (player's move was Bf5) ");
+})
 gameWithComments.run();
 
 const clockCommands = suite("Parsing PGN with clockCommands with unusual format");
