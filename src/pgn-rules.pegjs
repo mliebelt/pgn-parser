@@ -320,7 +320,7 @@ nbr
   = !br ch:. { return ch; }
 
 commentEndOfLine
-  = semicolon cm:[^\n\r]* eol { return cm.join(""); }
+  = semicolon cm:[^\n\r]* (eol / !.) { return cm.join(""); }
 
 colorFields
   = cf:colorField ws cfl:("," ws colorField)*
