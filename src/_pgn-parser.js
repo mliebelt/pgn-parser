@@ -5611,7 +5611,7 @@ function peg$parse(input, options) {
   }
 
   function peg$parsecommentEndOfLine() {
-    var s0, s1, s2, s3;
+    var s0, s1, s2, s3, s4;
 
     s0 = peg$currPos;
     s1 = peg$parsesemicolon();
@@ -5635,6 +5635,24 @@ function peg$parse(input, options) {
         }
       }
       s3 = peg$parseeol();
+      if (s3 === peg$FAILED) {
+        s3 = peg$currPos;
+        peg$silentFails++;
+        if (input.length > peg$currPos) {
+          s4 = input.charAt(peg$currPos);
+          peg$currPos++;
+        } else {
+          s4 = peg$FAILED;
+          if (peg$silentFails === 0) { peg$fail(peg$e166); }
+        }
+        peg$silentFails--;
+        if (s4 === peg$FAILED) {
+          s3 = undefined;
+        } else {
+          peg$currPos = s3;
+          s3 = peg$FAILED;
+        }
+      }
       if (s3 !== peg$FAILED) {
         peg$savedPos = s0;
         s0 = peg$f115(s2);
