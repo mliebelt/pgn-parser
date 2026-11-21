@@ -718,7 +718,7 @@ function peg$parse(input, options) {
       if (millis) {
          val = val + '.' + millis;
          addMessage({ message: `Unusual use of millis in time: ${val}` });
-         mi(millis);
+         ms = parseInt(millis, 10);
       }
       return { value: val, hour: mi(hour), minute: mi(minute), second: mi(second), millis: ms }; };
   var peg$f65 = function(millis) { return millis.join(""); };

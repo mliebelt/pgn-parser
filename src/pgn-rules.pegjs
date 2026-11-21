@@ -223,7 +223,7 @@ timeString = quotation_mark hour:([0-9]+) ':' minute:([0-9]+) ':' second:([0-9]+
       if (millis) {
          val = val + '.' + millis;
          addMessage({ message: `Unusual use of millis in time: ${val}` });
-         mi(millis);
+         ms = parseInt(millis, 10);
       }
       return { value: val, hour: mi(hour), minute: mi(minute), second: mi(second), millis: ms }; }
 millis = '.' millis:([0-9]+) { return millis.join(""); }
