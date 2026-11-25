@@ -1,6 +1,6 @@
 import { test, suite } from "uvu";
 import assert from "uvu/assert";
-import { parseGame } from "../src";
+import { parseGame, parseGames } from "../src";
 import { ParseTree } from "../src";
 import { TagKeys, PgnMove } from "@mliebelt/pgn-types";
 import { getInputFileNameFromOutput } from "ts-loader/dist/instances";
@@ -513,6 +513,37 @@ parsingVariations("should read hierarchical variation", function () {
   assert.is(my_res[1].variations[0][0].notation.notation, "c5");
   assert.is(my_res[1].variations[0][1].variations[0][0].notation.notation, "d4");
   assert.is(my_res[1].variations[0][1].variations[0][1].notation.notation, "cxd4");
+});
+parsingVariations("should read comments after the last variation", function () {
+  let my_res = parsePgn("1. e4 e5 (1... c5) {first} *");
+  assert.is(my_res.length, 2);
+  assert.is(my_res[1].variations.length, 1);
+  assert.is(my_res[1].commentAfter, "first");
+  my_res = parsePgn("1. e4 {a} (1. d4) {b} (1. c4 d5 (1... e5) {c}) ; d\n *");
+  assert.is(my_res.length, 1);
+  assert.is(my_res[0].variations.length, 2);
+  assert.is(my_res[0].commentAfter, "a b d");
+  assert.is(my_res[0].variations[1][1].commentAfter, "c");
+});
+parsingVariations("should read comments between variations", function () {
+  let my_res = parsePgn("1. e4 (1. d4) {a} (1. c4) {b} (1. f4) 1... e5");
+  assert.is(my_res.length, 2);
+  assert.is(my_res[0].variations.length, 3);
+  assert.is(my_res[0].commentAfter, "a b");
+  assert.not.ok(my_res[1].commentMove);
+});
+parsingVariations("should keep comments before the next move with that move", function () {
+  let my_res = <ParseTree>parseGame("1. e4 {a} (1. d4) {[%clk 0:1:02] b} 1... e5 *", { startRule: "game" });
+  assert.is(my_res.moves[0].commentAfter, "a");
+  assert.is(my_res.moves[1].commentMove, "b");
+  assert.is(my_res.messages.length, 1);
+});
+parsingVariations("should read comments after a variation at the end of each game", function () {
+  let my_res = parseGames('[White "A"]\n\n1. e4 (1. d4) {a} *\n\n[White "B"]\n\n1. c4 (1. d4) {b}\n\n[White "C"]\n\n1. f4 *');
+  assert.is(my_res.length, 3);
+  assert.is(my_res[0].moves[0].commentAfter, "a");
+  assert.is(my_res[1].moves[0].commentAfter, "b");
+  assert.is(my_res[2].moves[0].notation.notation, "f4");
 });
 parsingVariations.run();
 

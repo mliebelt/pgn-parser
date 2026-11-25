@@ -270,13 +270,14 @@ integerString =
 	quotation_mark digits:[0-9]+ quotation_mark { return makeInteger(digits); }
 
 pgn
-  = BOM? ws cm:comments? ws mn:moveNumber? ws hm:halfMove  ws nag:nags?  dr:drawOffer? ws ca:comments? ws vari:variation? all:pgn?
+  = BOM? ws cm:comments? ws mn:moveNumber? ws hm:halfMove  ws nag:nags?  dr:drawOffer? ws ca:comments? ws vari:variations? all:pgn?
     { var arr = (all ? all : []);
       var move = {}; move.moveNumber = mn; move.notation = hm;
+      if (vari && vari.comments.length > 0) { ca = merge((ca ? [ca] : []).concat(vari.comments)); }
       if (ca) { move.commentAfter = ca.comment };
       if (cm) { move.commentMove = cm.comment };
       if (dr) { move.drawOffer = true };
-      move.variations = (vari ? vari : []); move.nag = (nag ? nag : null); arr.unshift(move);
+      move.variations = (vari ? vari.variations : []); move.nag = (nag ? nag : null); arr.unshift(move);
       move.commentDiag = ca;
       return arr; }
   / ws e:endGame ws {return e; }
@@ -416,9 +417,18 @@ minutesClock
 digit
   = d:[0-9] { return d; }
 
+// A comment behind a variation that is not followed by a move belongs to the move the variation was given for.
+variations
+  = head:variation tail:(cm:variationComments? vari:variation { return { comments: cm, variation: vari }; })* last:variationComments?
+    { return { variations: [head].concat(tail.map(t => t.variation)),
+        comments: tail.map(t => t.comments).concat([last]).filter(c => c) }; }
+
 variation
-  = pl vari:pgn pr ws all:variation?
-    { var arr = (all ? all : []); arr.unshift(vari); return arr; }
+  = pl vari:pgn pr ws { return vari; }
+
+// The lookahead does not use the rule comments, because that adds messages.
+variationComments
+  = &(((cl [^}]* cr / semicolon [^\n\r]* eol) ws)+ (pl / pr / bl / innerResult / !.)) cm:comments ws { return cm; }
 
 pl = '('
 

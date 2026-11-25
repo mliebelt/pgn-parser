@@ -9,6 +9,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+* Read comments after a variation that are followed by another variation, the result or the end of the game
+
 ## [1.4.17](https://www.npmjs.com/package/@mliebelt/pgn-parser/v/1.4.17) 25-05-04
 
 ### Changed
