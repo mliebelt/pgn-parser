@@ -6,3 +6,9 @@ updates:
     interval: daily
     time: "04:00"
   open-pull-requests-limit: 10
+  ignore:
+    # TypeScript 7 removed the JS compiler API that rollup-plugin-dts
+    # still needs; keep 6.x proposals only until the TS 7 migration.
+    # See mliebelt/pgn-writer#357.
+    - dependency-name: "typescript"
+      update-types: ["version-update:semver-major"]
